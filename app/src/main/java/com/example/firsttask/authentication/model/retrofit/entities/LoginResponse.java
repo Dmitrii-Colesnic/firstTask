@@ -1,4 +1,4 @@
-package com.example.firsttask.authentication.model.entities;
+package com.example.firsttask.authentication.model.retrofit.entities;
 
 import com.google.gson.annotations.SerializedName;
 

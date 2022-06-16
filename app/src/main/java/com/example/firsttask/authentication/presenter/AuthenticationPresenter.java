@@ -1,14 +1,22 @@
 package com.example.firsttask.authentication.presenter;
 
+import static com.example.firsttask.authentication.model.sharedpref.SharedPrefTokenStorage.DEFAULT_VALUE;
+
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.firsttask.authentication.model.ApiClient;
-import com.example.firsttask.authentication.model.entities.LoginRequest;
-import com.example.firsttask.authentication.model.entities.LoginResponse;
-import com.example.firsttask.authentication.model.entities.UserResponse;
+import com.example.firsttask.authentication.model.retrofit.ApiClient;
+import com.example.firsttask.authentication.model.retrofit.entities.LoginRequest;
+import com.example.firsttask.authentication.model.retrofit.entities.LoginResponse;
+import com.example.firsttask.authentication.model.retrofit.entities.UserResponse;
+import com.example.firsttask.authentication.model.sharedpref.SharedPrefTokenStorage;
+import com.example.firsttask.authentication.view.AuthenticationActivity;
 
+
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,7 +24,7 @@ import retrofit2.Response;
 
 public class AuthenticationPresenter {
 
-    public void login(String username, String password, Context  context) {
+    public void login(String username, String password, Context context) {
 
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setGrantType("password");
@@ -24,58 +32,45 @@ public class AuthenticationPresenter {
         loginRequest.setPassword("Vlad_890!!");
         loginRequest.setMerchantCode("303877");
 
-        ApiClient.getUserService().getToken(loginRequest).enqueue(new Callback<LoginResponse>() {
+        ApiClient.getUserService().getToken(loginRequest.getGrantType(), loginRequest.getUsername(), loginRequest.getPassword(), loginRequest.getMerchantCode())
+                .enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-
-//                String a = response.body().getToken_type();
-//                String r = response.body().getToken_type();
-//
-//                Log.e("eee", response.body().getToken_type());
-
                 Log.e("eee", "onResponse");
 
-                if(response.isSuccessful()) {
-/*
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.e("eee", response.body().getToken_type());
+                if (response.isSuccessful()) {
 
-                            LoginResponse loginResponse = response.body();
+                    SharedPrefTokenStorage sharedPrefTokenStorage = new SharedPrefTokenStorage(context);
+                    sharedPrefTokenStorage.save(response.body().getAccessToken());
 
-                        }
-                    },700);
-*/
-
-                Log.e("eee", response.body().getTokenType());
-
-                    if (response.body().getAccessToken() != null) {
-                        Toast.makeText(context, "Token was generated successfully", Toast.LENGTH_SHORT).show();
-                        //sentToken(response.body().getAccess_token());
-                    } else {
-                        Toast.makeText(context, "ERROR token generation", Toast.LENGTH_SHORT).show();
-                    }
-
+                    sentToken(response.body().getAccessToken());
                 }
 
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Log.e("eee", "onFailure");
                 t.printStackTrace();
             }
         });
 
     }
 
-    private void sentToken(String token){
+    private void sentToken(String token) {
 
-        Call<UserResponse> userResponseCall = ApiClient.getUserService().login(token);
+        Map<String,String> map = new HashMap<String, String>(){{
+            put("Authorization", "bearer"+token);
+        }};
+
+        Call<UserResponse> userResponseCall = ApiClient.getUserService().login("bearer"+token);
+
         userResponseCall.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
 
+                Log.e("eee", "onResponseToken");
+                Log.e("eee", response.body().toString());
 
             }
 
@@ -87,4 +82,20 @@ public class AuthenticationPresenter {
 
     }
 
+    public boolean isAuthenticated(Context context){
+
+        SharedPrefTokenStorage sharedPrefTokenStorage = new SharedPrefTokenStorage(context);
+
+        if(sharedPrefTokenStorage.getToken().equals(DEFAULT_VALUE)){
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    public void logout(Context context) {
+        SharedPrefTokenStorage sharedPrefTokenStorage = new SharedPrefTokenStorage(context);
+        sharedPrefTokenStorage.delete();
+    }
 }
