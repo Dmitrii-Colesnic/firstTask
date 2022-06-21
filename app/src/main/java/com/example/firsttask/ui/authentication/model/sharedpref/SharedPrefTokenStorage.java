@@ -1,4 +1,4 @@
-package com.example.firsttask.authentication.model.sharedpref;
+package com.example.firsttask.ui.authentication.model.sharedpref;
 
 import android.content.Context;
 import android.content.SharedPreferences;

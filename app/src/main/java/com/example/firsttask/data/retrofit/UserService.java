@@ -1,18 +1,14 @@
-package com.example.firsttask.authentication.model.retrofit;
+package com.example.firsttask.data.retrofit;
 
-import com.example.firsttask.authentication.model.retrofit.entities.LoginResponse;
-import com.example.firsttask.authentication.model.retrofit.entities.UserResponse;
-
-import java.util.Map;
+import com.example.firsttask.data.retrofit.entities.LoginResponse;
+import com.example.firsttask.data.retrofit.entities.UserResponse;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
 
 public interface UserService {
 

@@ -1,11 +1,10 @@
-package com.example.firsttask.authentication;
+package com.example.firsttask.data;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
-import com.example.firsttask.authentication.model.retrofit.RetrofitGenerator;
-import com.example.firsttask.authentication.model.retrofit.UserService;
+import com.example.firsttask.data.retrofit.RetrofitGenerator;
+import com.example.firsttask.data.retrofit.UserService;
 
 import retrofit2.Retrofit;
 

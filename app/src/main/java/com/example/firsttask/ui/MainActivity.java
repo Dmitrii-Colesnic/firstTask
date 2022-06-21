@@ -1,4 +1,4 @@
-package com.example.firsttask;
+package com.example.firsttask.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,9 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
-import com.example.firsttask.authentication.presenter.AuthenticationPresenter;
-import com.example.firsttask.authentication.view.AuthenticationActivity;
-import com.example.firsttask.transactions.view.DisplayDataActivity;
+import com.example.firsttask.databinding.ActivityMainBinding;
+import com.example.firsttask.ui.authentication.presenter.AuthenticationPresenter;
+import com.example.firsttask.ui.authentication.view.AuthenticationActivity;
+import com.example.firsttask.ui.transactions.view.DisplayDataActivity;
 
 public class MainActivity extends AppCompatActivity {
 

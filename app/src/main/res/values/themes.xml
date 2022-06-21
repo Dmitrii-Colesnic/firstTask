@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+    <!-- Theme.MaterialComponents.DayNight.DarkActionBar-->
     <style name="Theme.FirstTask" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/green1</item>
@@ -13,8 +14,14 @@
         <item name="colorSecondaryContainer">@color/brown2</item>
         <item name="colorOnSecondaryContainer">@color/brown0</item>
         <!-- Status bar color. -->
-        <!--<item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>-->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/green1</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!--<item name="android:statusBarColor" tools:targetApi="l">@color/green1</item>-->
         <!-- Customize your theme here. -->
+    </style>
+
+    <!--Toolbar theme(not used)-->
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.MaterialComponents.ActionBar">
+        <!-- -->
+        <item name="colorControlNormal">?attr/colorPrimaryVariant</item>
     </style>
 </resources>

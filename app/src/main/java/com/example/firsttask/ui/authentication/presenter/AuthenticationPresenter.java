@@ -1,19 +1,18 @@
-package com.example.firsttask.authentication.presenter;
+package com.example.firsttask.ui.authentication.presenter;
 
-import static com.example.firsttask.authentication.model.sharedpref.SharedPrefTokenStorage.DEFAULT_VALUE;
+import static com.example.firsttask.ui.authentication.model.sharedpref.SharedPrefTokenStorage.DEFAULT_VALUE;
 
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
-import com.example.firsttask.authentication.App;
-import com.example.firsttask.authentication.Authentication;
-import com.example.firsttask.authentication.model.retrofit.entities.LoginRequest;
-import com.example.firsttask.authentication.model.retrofit.entities.LoginResponse;
-import com.example.firsttask.authentication.model.retrofit.entities.ReturnObject;
-import com.example.firsttask.authentication.model.retrofit.entities.UserResponse;
-import com.example.firsttask.authentication.model.sharedpref.SharedPrefTokenStorage;
-import com.example.firsttask.authentication.presenter.entities.TransactionDescription;
+import com.example.firsttask.data.App;
+import com.example.firsttask.ui.authentication.Authentication;
+import com.example.firsttask.data.retrofit.entities.LoginRequest;
+import com.example.firsttask.data.retrofit.entities.LoginResponse;
+import com.example.firsttask.data.retrofit.entities.ReturnObject;
+import com.example.firsttask.data.retrofit.entities.UserResponse;
+import com.example.firsttask.ui.authentication.model.sharedpref.SharedPrefTokenStorage;
+import com.example.firsttask.ui.transactions.preseter.entities.TransactionDescription;
 
 
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@InjectViewState
 public class AuthenticationPresenter implements Authentication.Presenter {
 
     private Authentication.View view;
@@ -69,42 +67,6 @@ public class AuthenticationPresenter implements Authentication.Presenter {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Log.e("login", "onFailure");
-                t.printStackTrace();
-            }
-        });
-
-    }
-
-    private void getTransactionRecent() {
-
-        String token = sharedPrefTokenStorage.getToken();
-
-        Call<UserResponse> userResponseCall = app.getUserService().getTransactionRecent(String.format("bearer $s" ,token));
-
-        userResponseCall.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                Log.e("getTransactionRecent", "onResponse");
-
-                ArrayList<TransactionDescription> transactions = new ArrayList();
-
-                for(ReturnObject item : response.body().getReturnObject()){
-                    transactions.add(new TransactionDescription(
-                            item.getName(),
-                            item.getDescription(),
-                            item.getDateSorted(),
-                            item.getAmount(),
-                            item.getFee()
-                    ));
-                }
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                Log.e("getTransactionRecent", "onFailure");
                 t.printStackTrace();
             }
         });

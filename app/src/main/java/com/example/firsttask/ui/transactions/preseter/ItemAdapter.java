@@ -1,14 +1,14 @@
-package com.example.firsttask.authentication.presenter;
+package com.example.firsttask.ui.transactions.preseter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.firsttask.authentication.model.retrofit.entities.UserResponse;
-import com.example.firsttask.authentication.presenter.entities.TransactionDescription;
+import com.example.firsttask.ui.transactions.preseter.entities.TransactionDescription;
 import com.example.firsttask.databinding.ItemDescriptionBinding;
 
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         private final TextView tvTime;
         private final TextView tvAmount;
         private final TextView tvFee;
+        private final ImageView iv;
 
 
         public ViewHolder(ItemDescriptionBinding binding) {
@@ -34,6 +35,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             this.tvTime = binding.tvTime;
             this.tvAmount = binding.tvAmount;
             this.tvFee = binding.tvFee;
+            this.iv = binding.iv;
         }
 
         public TextView getTvName() {
@@ -54,6 +56,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         public TextView getTvFee() {
             return tvFee;
+        }
+
+        public ImageView getIv() {
+            return iv;
         }
     }
 
@@ -76,6 +82,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.tvTime.setText(array.get(position).getTime());
         holder.tvAmount.setText(array.get(position).getAmount());
         holder.tvFee.setText(array.get(position).getFee());
+        holder.iv.setImageResource(array.get(position).getImage());
     }
 
     @Override

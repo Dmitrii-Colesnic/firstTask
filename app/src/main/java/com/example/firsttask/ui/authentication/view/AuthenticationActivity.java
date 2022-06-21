@@ -1,4 +1,4 @@
-package com.example.firsttask.authentication.view;
+package com.example.firsttask.ui.authentication.view;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,9 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.firsttask.transactions.view.DisplayDataActivity;
-import com.example.firsttask.authentication.Authentication;
-import com.example.firsttask.authentication.presenter.AuthenticationPresenter;
+import com.example.firsttask.ui.transactions.view.DisplayDataActivity;
+import com.example.firsttask.ui.authentication.Authentication;
+import com.example.firsttask.ui.authentication.presenter.AuthenticationPresenter;
 import com.example.firsttask.databinding.ActivityAuthenticationBinding;
 
 public class AuthenticationActivity extends AppCompatActivity implements Authentication.View {

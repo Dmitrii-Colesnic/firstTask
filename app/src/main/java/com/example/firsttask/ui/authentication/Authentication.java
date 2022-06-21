@@ -1,8 +1,4 @@
-package com.example.firsttask.authentication;
-
-import com.example.firsttask.authentication.presenter.entities.TransactionDescription;
-
-import java.util.ArrayList;
+package com.example.firsttask.ui.authentication;
 
 public interface Authentication {
 
@@ -11,8 +7,6 @@ public interface Authentication {
         void navigateToHomeActivity();
 
         void invalidFieldsErrorDialog();
-
-//        void setUpListOfDataIntoRecyclerView(ArrayList<TransactionDescription> array);
 
     }
 

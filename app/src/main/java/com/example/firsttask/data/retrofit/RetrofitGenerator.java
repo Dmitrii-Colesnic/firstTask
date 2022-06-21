@@ -1,10 +1,10 @@
-package com.example.firsttask.authentication.model.retrofit;
+package com.example.firsttask.data.retrofit;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.example.firsttask.authentication.model.sharedpref.SharedPrefTokenStorage;
+import com.example.firsttask.ui.authentication.model.sharedpref.SharedPrefTokenStorage;
 
 import java.io.IOException;
 

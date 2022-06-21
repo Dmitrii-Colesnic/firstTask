@@ -1,4 +1,4 @@
-package com.example.firsttask.authentication.presenter.entities;
+package com.example.firsttask.ui.transactions.preseter.entities;
 
 public class TransactionDescription {
 
@@ -7,13 +7,25 @@ public class TransactionDescription {
     private String time;
     private String amount;
     private String fee;
+    private int image;
 
-    public TransactionDescription(String name, String description, String time, Integer amount, Integer fee) {
+    public TransactionDescription() {}
+
+    public TransactionDescription(String name, String description, String time, String amount, String fee, int image) {
         this.name = name;
         this.description = description;
         this.time = time;
-        this.amount = amount.toString();
-        this.fee = fee.toString();
+        this.amount = amount;
+        this.fee = fee;
+        this.image = image;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 
     public String getName() {

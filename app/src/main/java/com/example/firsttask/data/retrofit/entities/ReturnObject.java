@@ -1,4 +1,4 @@
-package com.example.firsttask.authentication.model.retrofit.entities;
+package com.example.firsttask.data.retrofit.entities;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -39,10 +39,10 @@ public class ReturnObject {
     private int type;
 
     @SerializedName("Amount")
-    private int amount;
+    private Integer amount;
 
     @SerializedName("Fee")
-    private int fee;
+    private Integer fee;
 
 
     public String getTransactionKey() {
@@ -133,19 +133,19 @@ public class ReturnObject {
         this.type = type;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
-    public int getFee() {
+    public Integer getFee() {
         return fee;
     }
 
-    public void setFee(int fee) {
+    public void setFee(Integer fee) {
         this.fee = fee;
     }
 }

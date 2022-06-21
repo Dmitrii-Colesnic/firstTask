@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".authentication.App"
+        android:name=".data.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -17,13 +17,13 @@
         android:theme="@style/Theme.FirstTask"
         tools:targetApi="31">
         <activity
-            android:name=".transactions.view.DisplayDataActivity"
+            android:name=".ui.transactions.view.DisplayDataActivity"
             android:exported="false" />
         <activity
-            android:name=".authentication.view.AuthenticationActivity"
+            android:name=".ui.authentication.view.AuthenticationActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,5 +32,6 @@
             </intent-filter>
         </activity>
     </application>
+
 
 </manifest>
