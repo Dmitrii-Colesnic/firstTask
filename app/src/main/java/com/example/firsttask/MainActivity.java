@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 
+import com.example.firsttask.authentication.Authentication;
 import com.example.firsttask.authentication.presenter.AuthenticationPresenter;
 import com.example.firsttask.authentication.view.AuthenticationActivity;
 import com.example.firsttask.databinding.ActivityMainBinding;
@@ -21,20 +23,27 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if(!authenticationPresenter.isAuthenticated(MainActivity.this)){
-            startActivity(new Intent(this, AuthenticationActivity.class));
-        }
+        if(!authenticationPresenter.isAuthenticated()){
 
-        binding.btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(authenticationPresenter.isAuthenticated(MainActivity.this)){
-                    authenticationPresenter.logout(MainActivity.this);
-                    startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
-                }
-            }
-        });
+            firstLoad();
+            //startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
+
+        } else {
+
+            startActivity(new Intent(MainActivity.this, DisplayDataActivity.class));
+
+        }
 
     }
 
+    private void firstLoad(){
+        new CountDownTimer(2000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {}
+            @Override
+            public void onFinish() {
+                startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
+            }
+        }.start();
+    }
 }

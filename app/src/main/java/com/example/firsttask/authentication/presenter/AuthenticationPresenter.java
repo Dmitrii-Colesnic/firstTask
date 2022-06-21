@@ -2,29 +2,39 @@ package com.example.firsttask.authentication.presenter;
 
 import static com.example.firsttask.authentication.model.sharedpref.SharedPrefTokenStorage.DEFAULT_VALUE;
 
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.firsttask.authentication.model.retrofit.ApiClient;
+import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpPresenter;
+import com.example.firsttask.authentication.App;
+import com.example.firsttask.authentication.Authentication;
 import com.example.firsttask.authentication.model.retrofit.entities.LoginRequest;
 import com.example.firsttask.authentication.model.retrofit.entities.LoginResponse;
 import com.example.firsttask.authentication.model.retrofit.entities.UserResponse;
 import com.example.firsttask.authentication.model.sharedpref.SharedPrefTokenStorage;
-import com.example.firsttask.authentication.view.AuthenticationActivity;
 
-
-import java.util.HashMap;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AuthenticationPresenter {
+@InjectViewState
+public class AuthenticationPresenter implements Authentication.Presenter {
 
-    public void login(String username, String password, Context context) {
+    private Authentication.View view;
+
+    App app = new App();
+
+    SharedPrefTokenStorage sharedPrefTokenStorage = new SharedPrefTokenStorage(app.getContext());
+
+    public AuthenticationPresenter() {}
+
+    public AuthenticationPresenter(Authentication.View view) {
+        this.view = view;
+    }
+
+    @Override
+    public void login(String username, String password) {
 
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setGrantType("password");
@@ -32,59 +42,56 @@ public class AuthenticationPresenter {
         loginRequest.setPassword("Vlad_890!!");
         loginRequest.setMerchantCode("303877");
 
-        ApiClient.getUserService().getToken(loginRequest.getGrantType(), loginRequest.getUsername(), loginRequest.getPassword(), loginRequest.getMerchantCode())
-                .enqueue(new Callback<LoginResponse>() {
+        Call<LoginResponse> userResponseCall = app.getUserService()
+                .login(loginRequest.getGrantType(), loginRequest.getUsername(), loginRequest.getPassword(), loginRequest.getMerchantCode());
+
+        userResponseCall.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                Log.e("eee", "onResponse");
+                Log.e("login", "onResponse");
 
                 if (response.isSuccessful()) {
-
-                    SharedPrefTokenStorage sharedPrefTokenStorage = new SharedPrefTokenStorage(context);
                     sharedPrefTokenStorage.save(response.body().getAccessToken());
 
-                    sentToken(response.body().getAccessToken());
+//                    view.startActivity(view, MainActivity.class);
+                view.navigateToHomeActivity();
+
                 }
 
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Log.e("eee", "onFailure");
+                Log.e("login", "onFailure");
                 t.printStackTrace();
             }
         });
 
     }
 
-    private void sentToken(String token) {
+    private void getTransactionRecent() {
 
-        Map<String,String> map = new HashMap<String, String>(){{
-            put("Authorization", "bearer"+token);
-        }};
+        String token = sharedPrefTokenStorage.getToken();
 
-        Call<UserResponse> userResponseCall = ApiClient.getUserService().login("bearer"+token);
+        Call<UserResponse> userResponseCall = app.getUserService().getTransactionRecent(String.format("bearer $s" ,token));
 
         userResponseCall.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-
-                Log.e("eee", "onResponseToken");
-                Log.e("eee", response.body().toString());
+                Log.e("getTransactionRecent", "onResponse");
 
             }
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
+                Log.e("getTransactionRecent", "onFailure");
                 t.printStackTrace();
             }
         });
 
     }
 
-    public boolean isAuthenticated(Context context){
-
-        SharedPrefTokenStorage sharedPrefTokenStorage = new SharedPrefTokenStorage(context);
+    public boolean isAuthenticated(){
 
         if(sharedPrefTokenStorage.getToken().equals(DEFAULT_VALUE)){
             return false;
@@ -94,8 +101,8 @@ public class AuthenticationPresenter {
 
     }
 
-    public void logout(Context context) {
-        SharedPrefTokenStorage sharedPrefTokenStorage = new SharedPrefTokenStorage(context);
+    public void logout() {
         sharedPrefTokenStorage.delete();
     }
+
 }

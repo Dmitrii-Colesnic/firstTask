@@ -5,15 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:paddingStart="50dp"
-    android:paddingEnd="50dp"
     tools:context=".authentication.view.AuthenticationActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_main"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
+        android:padding="30dp"
+        android:elevation="8dp"
+        android:background="@drawable/authentication_background"
 
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

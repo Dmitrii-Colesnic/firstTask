@@ -1,6 +1,10 @@
 package com.example.firsttask.authentication.model.retrofit;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
+
+import com.example.firsttask.authentication.model.sharedpref.SharedPrefTokenStorage;
 
 import java.io.IOException;
 
@@ -12,11 +16,27 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApiClient {
+public class RetrofitGenerator {
 
-    static final String BASE_URL = "https://pop-merchant-test-tr.paynet.md";
+    private static RetrofitGenerator retrofitGeneratorInstance = null;
 
-    private static Retrofit getRetrofit() {
+    public Retrofit retrofitInstance;
+
+    private static final String BASE_URL = "https://pop-merchant-test-tr.paynet.md";
+
+    private RetrofitGenerator(Context context) {
+        retrofitInstance = generateRetrofit(context);
+    }
+
+    public static RetrofitGenerator getRetrofit(Context context){
+        if(retrofitGeneratorInstance == null){
+            retrofitGeneratorInstance = new RetrofitGenerator(context);
+        }
+
+        return retrofitGeneratorInstance;
+    }
+
+    private Retrofit generateRetrofit(Context context) {
 
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -30,9 +50,11 @@ public class ApiClient {
                         Request original = chain.request();
 
                         Request request = original.newBuilder()
-                                .header("Authorization", String.format("bearer%s", ))
+                                .header("Authorization", String.format("bearer %s", new SharedPrefTokenStorage(context).getToken()))
+//                                .header("Accept-Language", "en-US")
+                                .build();
 
-                        return null;
+                        return chain.proceed(request);
                     }
                 })
                 .build();
@@ -44,12 +66,7 @@ public class ApiClient {
                 .build();
 
         return retrofit;
-    }
 
-    public static UserService getUserService() {
-        UserService userService = getRetrofit().create(UserService.class);
-
-        return userService;
     }
 
 }

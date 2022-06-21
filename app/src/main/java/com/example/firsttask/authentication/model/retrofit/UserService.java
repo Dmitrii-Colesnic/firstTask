@@ -18,17 +18,14 @@ public interface UserService {
 
     @FormUrlEncoded
     @POST("/auth")
-    Call<LoginResponse> getToken(
+    Call<LoginResponse> login(
             @Field("grant_type") String grantType,
             @Field("username") String username,
             @Field("password") String password,
             @Field("merchant_code") String merchantCode
     );
 
-//    @GET("/api/Transaction/Recent")
-//    Call<UserResponse> login(@QueryMap Map<String,String> authorization);
-
     @GET("/api/Transaction/Recent")
-    Call<UserResponse> login(@Query("Authorization") String authorization);
+    Call<UserResponse> getTransactionRecent(@Query("Authorization") String authorization);
 
 }
