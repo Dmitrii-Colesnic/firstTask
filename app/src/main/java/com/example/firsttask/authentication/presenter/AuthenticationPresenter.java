@@ -10,9 +10,13 @@ import com.example.firsttask.authentication.App;
 import com.example.firsttask.authentication.Authentication;
 import com.example.firsttask.authentication.model.retrofit.entities.LoginRequest;
 import com.example.firsttask.authentication.model.retrofit.entities.LoginResponse;
+import com.example.firsttask.authentication.model.retrofit.entities.ReturnObject;
 import com.example.firsttask.authentication.model.retrofit.entities.UserResponse;
 import com.example.firsttask.authentication.model.sharedpref.SharedPrefTokenStorage;
+import com.example.firsttask.authentication.presenter.entities.TransactionDescription;
 
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,13 +38,13 @@ public class AuthenticationPresenter implements Authentication.Presenter {
     }
 
     @Override
-    public void login(String username, String password) {
+    public void login(String username, String password, String merchantCode) {
 
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setGrantType("password");
-        loginRequest.setUsername("099125");
-        loginRequest.setPassword("Vlad_890!!");
-        loginRequest.setMerchantCode("303877");
+        loginRequest.setUsername(username);
+        loginRequest.setPassword(password);
+        loginRequest.setMerchantCode(merchantCode);
 
         Call<LoginResponse> userResponseCall = app.getUserService()
                 .login(loginRequest.getGrantType(), loginRequest.getUsername(), loginRequest.getPassword(), loginRequest.getMerchantCode());
@@ -56,6 +60,8 @@ public class AuthenticationPresenter implements Authentication.Presenter {
 //                    view.startActivity(view, MainActivity.class);
                 view.navigateToHomeActivity();
 
+                } else  {
+                    view.invalidFieldsErrorDialog();
                 }
 
             }
@@ -79,6 +85,20 @@ public class AuthenticationPresenter implements Authentication.Presenter {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 Log.e("getTransactionRecent", "onResponse");
+
+                ArrayList<TransactionDescription> transactions = new ArrayList();
+
+                for(ReturnObject item : response.body().getReturnObject()){
+                    transactions.add(new TransactionDescription(
+                            item.getName(),
+                            item.getDescription(),
+                            item.getDateSorted(),
+                            item.getAmount(),
+                            item.getFee()
+                    ));
+                }
+
+
 
             }
 

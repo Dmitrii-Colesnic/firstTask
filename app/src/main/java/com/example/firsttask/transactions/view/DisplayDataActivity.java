@@ -1,4 +1,4 @@
-package com.example.firsttask;
+package com.example.firsttask.transactions.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.firsttask.authentication.presenter.AuthenticationPresenter;
 import com.example.firsttask.authentication.view.AuthenticationActivity;
 import com.example.firsttask.databinding.ActivityDisplayDataBinding;
@@ -41,5 +40,7 @@ public class DisplayDataActivity extends AppCompatActivity {
         super.onDestroy();
         authenticationPresenter.logout();
     }
+
+
 
 }

@@ -5,12 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.View;
 
-import com.example.firsttask.authentication.Authentication;
 import com.example.firsttask.authentication.presenter.AuthenticationPresenter;
 import com.example.firsttask.authentication.view.AuthenticationActivity;
-import com.example.firsttask.databinding.ActivityMainBinding;
+import com.example.firsttask.transactions.view.DisplayDataActivity;
 
 public class MainActivity extends AppCompatActivity {
 

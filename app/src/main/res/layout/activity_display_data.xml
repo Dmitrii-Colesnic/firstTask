@@ -4,34 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="50dp"
-    android:paddingEnd="50dp"
-    android:paddingTop="20dp"
-    android:paddingBottom="30dp"
-    tools:context=".DisplayDataActivity">
+    tools:context=".transactions.view.DisplayDataActivity">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_authentication"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_transactions"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Authentication"
-        android:textSize="25sp"
-        android:textStyle="bold"
 
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btn_logout"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40sp"
+        android:layout_marginBottom="20dp"
         android:text="Log Out"
         android:textSize="20sp"
+        app:elevation="2dp"
 
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation" />
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_navigation_menu"
+        app:elevation="15dp"
+        android:background="@drawable/navigation_bar_background"
+
+
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
