@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.firsttask.R;
@@ -29,7 +30,15 @@ public class FavoriteItemsFragment extends Fragment /*implements Transactions.Fr
         return binding.getRoot();
     }
 
-/*    @Override
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+
+    }
+
+    /*    @Override
     public void setUpListOfDataIntoRecyclerView(ArrayList<TransactionDescription> array) {
 
 //        ItemAdapter itemAdapter = new ItemAdapter(array);

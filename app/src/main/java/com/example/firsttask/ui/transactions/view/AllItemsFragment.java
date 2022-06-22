@@ -22,6 +22,14 @@ public class AllItemsFragment extends Fragment implements Transactions.Fragment 
 
     private TransactionsPresenter transactionsPresenter = new TransactionsPresenter(AllItemsFragment.this);
 
+    private ItemAdapter itemAdapter;
+
+    public AllItemsFragment() {}
+
+    public AllItemsFragment(ItemAdapter itemAdapter) {
+        this.itemAdapter = itemAdapter;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,6 +47,11 @@ public class AllItemsFragment extends Fragment implements Transactions.Fragment 
         binding.rvTransactions.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rvTransactions.setAdapter(itemAdapter);
 
+    }
+
+    @Override
+    public void changeIsChecked(TransactionDescription transaction) {
+        transactionsPresenter.changeIsChecked(transaction);
     }
 
 }

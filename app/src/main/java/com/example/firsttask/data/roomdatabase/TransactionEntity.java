@@ -1,6 +1,13 @@
-package com.example.firsttask.ui.transactions.preseter.entities;
+package com.example.firsttask.data.roomdatabase;
 
-public class TransactionDescription {
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "transactions")
+public class TransactionEntity {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
     private String name;
     private String description;
@@ -8,34 +15,25 @@ public class TransactionDescription {
     private String amount;
     private String fee;
     private int image;
-    private int isChecked;
+    private int imageIsChecked;
 
-    public TransactionDescription() {}
-
-    public TransactionDescription(String name, String description, String time, String amount, String fee, int image, int isChecked) {
+    public TransactionEntity(int id, String name, String description, String time, String amount, String fee, int image, int imageIsChecked) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.time = time;
         this.amount = amount;
         this.fee = fee;
         this.image = image;
-        this.isChecked = isChecked;
+        this.imageIsChecked = imageIsChecked;
     }
 
-    public int getIsChecked() {
-        return isChecked;
+    public int getId() {
+        return id;
     }
 
-    public void setIsChecked(int isChecked) {
-        this.isChecked = isChecked;
-    }
-
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -76,5 +74,21 @@ public class TransactionDescription {
 
     public void setFee(String fee) {
         this.fee = fee;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+
+    public int getImageIsChecked() {
+        return imageIsChecked;
+    }
+
+    public void setImageIsChecked(int imageIsChecked) {
+        this.imageIsChecked = imageIsChecked;
     }
 }

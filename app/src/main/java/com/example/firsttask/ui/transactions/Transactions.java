@@ -16,12 +16,14 @@ public interface Transactions {
     interface Fragment {
 
         void setUpListOfDataIntoRecyclerView(ArrayList<TransactionDescription> array);
+        void changeIsChecked(TransactionDescription transaction);
         
     }
 
     interface Presenter {
 
         void getData();
+        void changeIsChecked(TransactionDescription transaction);
 
     }
 

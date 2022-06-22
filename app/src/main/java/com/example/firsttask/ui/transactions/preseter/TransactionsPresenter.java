@@ -61,6 +61,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
                     transaction.setName(item.getName());
                     transaction.setDescription(item.getDescription());
                     transaction.setFee(item.getFee().toString());
+                    transaction.setIsChecked(R.drawable.ic_heart_is_checked);
 
                     //setImage
                     if (item.getType() == 2) {
@@ -98,6 +99,16 @@ public class TransactionsPresenter implements Transactions.Presenter {
             }
         });
 
+    }
+
+    @Override
+    public void changeIsChecked(TransactionDescription transaction) {
+        //todo: logic for replace isChecked image, and for adding item to database
+        if(transaction.getIsChecked() == R.drawable.ic_heart_is_checked){
+            transaction.setIsChecked(R.drawable.ic_heart_is_not_checked);
+        } else if (transaction.getIsChecked() == R.drawable.ic_heart_is_not_checked){
+            transaction.setIsChecked(R.drawable.ic_heart_is_checked);
+        }
     }
 
 
