@@ -9,7 +9,7 @@ import android.os.CountDownTimer;
 import com.example.firsttask.databinding.ActivityMainBinding;
 import com.example.firsttask.ui.authentication.presenter.AuthenticationPresenter;
 import com.example.firsttask.ui.authentication.view.AuthenticationActivity;
-import com.example.firsttask.ui.transactions.view.DisplayDataActivity;
+import com.example.firsttask.ui.transactions.view.DataActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
 
-            startActivity(new Intent(MainActivity.this, DisplayDataActivity.class));
+            startActivity(new Intent(MainActivity.this, DataActivity.class));
+            finish();
 
         }
 

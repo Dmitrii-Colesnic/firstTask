@@ -3,12 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.13848920863309352" />
         <entry key="app/src/main/res/drawable/authentication_background.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/item_container_background.xml" value="0.231" />
+        <entry key="app/src/main/res/drawable/nav_drawer_background.xml" value="0.231" />
+        <entry key="app/src/main/res/drawable/nav_drawer_dackground.xml" value="0.231" />
         <entry key="app/src/main/res/drawable/navigation_bar_background.xml" value="0.231" />
+        <entry key="app/src/main/res/drawable/toolbar_background.xml" value="0.231" />
         <entry key="app/src/main/res/layout/activity_authentication.xml" value="0.333786231884058" />
+        <entry key="app/src/main/res/layout/activity_data.xml" value="0.23229166666666667" />
         <entry key="app/src/main/res/layout/activity_display_data.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_all_items.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_favorite_items.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_description.xml" value="0.3442028985507246" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
         <entry key="app/src/main/res/menu/navigation_drawer_menu.xml" value="0.35520833333333335" />

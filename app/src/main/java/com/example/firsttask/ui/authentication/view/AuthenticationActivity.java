@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.firsttask.ui.transactions.view.DisplayDataActivity;
+import com.example.firsttask.ui.transactions.view.DataActivity;
 import com.example.firsttask.ui.authentication.Authentication;
 import com.example.firsttask.ui.authentication.presenter.AuthenticationPresenter;
 import com.example.firsttask.databinding.ActivityAuthenticationBinding;
@@ -58,7 +58,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
 
     @Override
     public void navigateToHomeActivity() {
-        startActivity(new Intent(AuthenticationActivity.this, DisplayDataActivity.class));
+        startActivity(new Intent(AuthenticationActivity.this, DataActivity.class));
     }
 
     @Override

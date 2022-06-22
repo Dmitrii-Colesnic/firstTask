@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    >
+    android:layout_height="220dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -52,53 +51,44 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.6">
 
-                <LinearLayout
-                    android:id="@+id/ll_name_description"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:text="Sale / QR"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
 
-                    app:layout_constraintBottom_toTopOf="@id/ll_time"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/tv_description"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="637847705603219193"
+                    android:textSize="18sp"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name"
+                    app:layout_constraintBottom_toTopOf="@id/tv_time"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2022-04-05 15:49"
+                    android:textSize="16sp"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tv_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sale / QR"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tv_description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:text="3769339"
-                        android:textSize="18sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-
+                    app:layout_constraintTop_toBottomOf="@id/tv_description"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ll_name_description">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tv_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2021-08-05T10:29:31.607"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
+                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -115,7 +105,7 @@
                     android:id="@+id/tv_text_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="amount"
+                    android:text="lei"
                     android:textSize="16sp"
                     android:textStyle="bold"
 

@@ -17,7 +17,7 @@
         android:theme="@style/Theme.FirstTask"
         tools:targetApi="31">
         <activity
-            android:name=".ui.transactions.view.DisplayDataActivity"
+            android:name=".ui.transactions.view.DataActivity"
             android:exported="false" />
         <activity
             android:name=".ui.authentication.view.AuthenticationActivity"

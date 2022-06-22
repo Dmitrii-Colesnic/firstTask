@@ -24,19 +24,24 @@ import retrofit2.Response;
 public class TransactionsPresenter implements Transactions.Presenter {
 
     private Transactions.View view;
+    private Transactions.Fragment fragment;
 
     App app = new App();
 
     SharedPrefTokenStorage sharedPrefTokenStorage = new SharedPrefTokenStorage(app.getContext());
 
-    //public TransactionsPresenter() {}
+//    public TransactionsPresenter() {}
 
     public TransactionsPresenter(Transactions.View view) {
         this.view = view;
     }
 
+    public TransactionsPresenter(Transactions.Fragment fragment) {
+        this.fragment = fragment;
+    }
+
     @Override
-    public void getTransactionRecent() {
+    public void getData() {
 
         String token = sharedPrefTokenStorage.getToken();
 
@@ -53,16 +58,21 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
                     TransactionDescription transaction = new TransactionDescription();
 
+                    transaction.setName(item.getName());
+                    transaction.setDescription(item.getDescription());
+                    transaction.setFee(item.getFee().toString());
+
+                    //setImage
                     if (item.getType() == 2) {
                         transaction.setImage(R.drawable.ic_money_type2);
                     } else {
                         transaction.setImage(R.drawable.ic_love_type3);
                     }
 
+                    //setData
                     try {
-
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                        SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         Date d = sdf.parse(item.getDateTransaction());
                         transaction.setTime(output.format(d));
 
@@ -70,20 +80,14 @@ public class TransactionsPresenter implements Transactions.Presenter {
                         e.printStackTrace();
                     }
 
-
+                    //setAmount
                     Float amount = item.getAmount().floatValue()/100;
-
                     transaction.setAmount(amount.toString());
-
-                    transaction.setName(item.getName());
-                    transaction.setDescription(item.getDescription());
-//                    transaction.setAmount(item.getAmount().toString());
-                    transaction.setFee(item.getFee().toString());
 
                     transactions.add(transaction);
                 }
 
-                view.setUpListOfDataIntoRecyclerView(transactions);
+                fragment.setUpListOfDataIntoRecyclerView(transactions);
 
             }
 
@@ -94,6 +98,12 @@ public class TransactionsPresenter implements Transactions.Presenter {
             }
         });
 
+    }
+
+
+    public void logout() {
+        sharedPrefTokenStorage.delete();
+        view.navigateToAuthenticateActivity();
     }
 
 }

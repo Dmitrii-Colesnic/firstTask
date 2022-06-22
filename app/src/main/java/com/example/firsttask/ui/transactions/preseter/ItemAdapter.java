@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
-//    private String[] localDataSet;
     private ArrayList<TransactionDescription> array;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

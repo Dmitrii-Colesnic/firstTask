@@ -39,6 +39,11 @@ android {
 
 dependencies {
 
+    def room_version = "2.4.2"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
     //moxy
     implementation 'com.arello-mobile:moxy-app-compat:1.5.6'
 

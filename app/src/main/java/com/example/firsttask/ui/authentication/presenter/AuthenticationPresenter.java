@@ -29,7 +29,8 @@ public class AuthenticationPresenter implements Authentication.Presenter {
 
     SharedPrefTokenStorage sharedPrefTokenStorage = new SharedPrefTokenStorage(app.getContext());
 
-    public AuthenticationPresenter() {}
+    public AuthenticationPresenter() {
+    }
 
     public AuthenticationPresenter(Authentication.View view) {
         this.view = view;
@@ -55,10 +56,8 @@ public class AuthenticationPresenter implements Authentication.Presenter {
                 if (response.isSuccessful()) {
                     sharedPrefTokenStorage.save(response.body().getAccessToken());
 
-//                    view.startActivity(view, MainActivity.class);
-                view.navigateToHomeActivity();
-
-                } else  {
+                    view.navigateToHomeActivity();
+                } else {
                     view.invalidFieldsErrorDialog();
                 }
 
@@ -73,18 +72,14 @@ public class AuthenticationPresenter implements Authentication.Presenter {
 
     }
 
-    public boolean isAuthenticated(){
+    public boolean isAuthenticated() {
 
-        if(sharedPrefTokenStorage.getToken().equals(DEFAULT_VALUE)){
+        if (sharedPrefTokenStorage.getToken().equals(DEFAULT_VALUE)) {
             return false;
         } else {
             return true;
         }
 
-    }
-
-    public void logout() {
-        sharedPrefTokenStorage.delete();
     }
 
 }
