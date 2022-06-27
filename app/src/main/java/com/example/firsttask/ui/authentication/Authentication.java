@@ -6,7 +6,7 @@ public interface Authentication {
 
         void navigateToHomeActivity();
 
-        void invalidFieldsErrorDialog();
+        void invalidFieldsErrorDialog(String code, String message);
 
     }
 

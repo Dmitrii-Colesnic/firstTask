@@ -24,8 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
         if(!authenticationPresenter.isAuthenticated()){
 
-            firstLoad();
-            //startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
+//            firstLoad();
+            startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
+            finish();
 
         } else {
 

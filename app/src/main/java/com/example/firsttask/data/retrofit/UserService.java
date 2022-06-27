@@ -6,6 +6,7 @@ import com.example.firsttask.data.retrofit.entities.UserResponse;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -16,7 +17,7 @@ public interface UserService {
 
     @FormUrlEncoded
     @POST("/auth")
-    Single<LoginResponse> login(
+    Single<Response<LoginResponse>> login(
             @Field("grant_type") String grantType,
             @Field("username") String username,
             @Field("password") String password,
