@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="select_language">Dil Seçin</string>
+    <string name="en">en</string>
+    <string name="tr">tr</string>
+    <string name="ru">ru</string>
+    <string name="authentication">Kimlik Doğrulama</string>
+    <string name="merchant_code">Satıcı Kodu</string>
+    <string name="username">Kullanıcı adı</string>
+    <string name="password">Şifre</string>
+    <string name="log_in">Giriş yapmak</string>
+    <string name="amount">tutar</string>
+    <string name="fee">fee</string>
+    <string name="all_list">Tüm Liste</string>
+    <string name="favorites">Favoriler</string>
+    <string name="logout">Çıkış Yap</string>
+</resources>

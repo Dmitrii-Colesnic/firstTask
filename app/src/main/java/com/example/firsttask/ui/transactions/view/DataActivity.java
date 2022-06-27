@@ -74,12 +74,10 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         binding.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return selectFragment();
+                return selectFragment(item);
             }
         });
-
     }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -87,18 +85,16 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
             return true;
         }
 
-
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (binding.bottomNavigation.getSelectedItemId() == R.id.item_list) {
-            fragmentTransaction.replace(R.id.fragment_place, new AllItemsFragment());
-            fragmentTransaction.commit();
+            fragmentTransaction.replace(R.id.fragment_place, new AllItemsFragment()).commit();
             return true;
         } else if (binding.bottomNavigation.getSelectedItemId() == R.id.item_favorites) {
-            fragmentTransaction.replace(R.id.fragment_place, new FavoriteItemsFragment());
-            fragmentTransaction.commit();
+            fragmentTransaction.replace(R.id.fragment_place, new FavoriteItemsFragment()).commit();
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -108,15 +104,15 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         finish();
     }
 
-    public boolean selectFragment() {
+    public boolean selectFragment(MenuItem item) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        if (binding.bottomNavigation.getSelectedItemId() == R.id.item_favorites) {
+        if (item.getItemId() == R.id.item_list) {
             fragmentTransaction.replace(R.id.fragment_place, new AllItemsFragment()).commit();
             return true;
 
-        } else if (binding.bottomNavigation.getSelectedItemId() == R.id.item_list) {
+        } else if (item.getItemId() == R.id.item_favorites) {
             fragmentTransaction.replace(R.id.fragment_place, new FavoriteItemsFragment()).commit();
             return true;
         }

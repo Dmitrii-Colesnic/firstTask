@@ -37,7 +37,7 @@ public class RetrofitGenerator {
         return retrofitGeneratorInstance;
     }
 
-    private Retrofit generateRetrofit(Context context) {
+    private Retrofit generateRetrofit(Context context/*, String language*/) {
 
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -52,7 +52,7 @@ public class RetrofitGenerator {
 
                         Request request = original.newBuilder()
                                 .header("Authorization", String.format("bearer %s", new SharedPrefTokenStorage(context).getToken()))
-//                                .header("Accept-Language", "en-US")
+                                .header("Accept-Language", new SharedPrefTokenStorage(context).getLanguage())
                                 .build();
 
                         return chain.proceed(request);

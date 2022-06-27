@@ -13,9 +13,5 @@ public class UserResponse {
         return returnObject;
     }
 
-    public void setReturnObject(List<ReturnObject> returnObject) {
-        this.returnObject = returnObject;
-    }
-
 }
 

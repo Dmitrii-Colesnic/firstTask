@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="select_language">Выберите язык</string>
+    <string name="en">en</string>
+    <string name="tr">tr</string>
+    <string name="ru">ru</string>
+    <string name="authentication">Аутентификация</string>
+    <string name="merchant_code">Код Продавца</string>
+    <string name="username">Имя Пользователя</string>
+    <string name="password">Пароль</string>
+    <string name="log_in">Вход</string>
+    <string name="amount">количесво</string>
+    <string name="fee">fee</string>
+    <string name="all_list">Весь список</string>
+    <string name="favorites">Избранное</string>
+    <string name="logout">Выход</string>
+</resources>

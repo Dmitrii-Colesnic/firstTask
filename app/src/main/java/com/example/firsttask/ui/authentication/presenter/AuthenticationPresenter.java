@@ -4,37 +4,20 @@ import static com.example.firsttask.ui.authentication.model.sharedpref.SharedPre
 
 import android.util.Log;
 
-import com.arellomobile.mvp.InjectViewState;
-import com.example.firsttask.data.App;
+import com.example.firsttask.App;
 import com.example.firsttask.data.retrofit.entities.Error;
 import com.example.firsttask.data.retrofit.entities.ErrorCodeAndMessage;
 import com.example.firsttask.ui.authentication.Authentication;
 import com.example.firsttask.data.retrofit.entities.LoginRequest;
 import com.example.firsttask.data.retrofit.entities.LoginResponse;
-import com.example.firsttask.data.retrofit.entities.ReturnObject;
-import com.example.firsttask.data.retrofit.entities.UserResponse;
 import com.example.firsttask.ui.authentication.model.sharedpref.SharedPrefTokenStorage;
-import com.example.firsttask.ui.transactions.preseter.entities.TransactionDescription;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
-import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AuthenticationPresenter implements Authentication.Presenter {
@@ -45,8 +28,7 @@ public class AuthenticationPresenter implements Authentication.Presenter {
 
     SharedPrefTokenStorage sharedPrefTokenStorage = new SharedPrefTokenStorage(app.getContext());
 
-    public AuthenticationPresenter() {
-    }
+    public AuthenticationPresenter() {}
 
     public AuthenticationPresenter(Authentication.View view) {
         this.view = view;
@@ -75,7 +57,7 @@ public class AuthenticationPresenter implements Authentication.Presenter {
 
                         if(response.isSuccessful()){
 
-                            sharedPrefTokenStorage.save(response.body().getAccessToken());
+                            sharedPrefTokenStorage.saveToken(response.body().getAccessToken());
                             view.navigateToHomeActivity();
 
                         } else {
@@ -112,6 +94,35 @@ public class AuthenticationPresenter implements Authentication.Presenter {
                     }
                 });
 
+    }
+
+    @Override
+    public String getLanguage() {
+        String language = sharedPrefTokenStorage.getLanguage();
+
+        if(language.equals("en-US")){
+            language = "en";
+        } else if(language.equals("ru-RU")){
+            language = "ru";
+        } else if(language.equals("tr-TR")){
+            language = "tr";
+        }
+
+        return language;
+    }
+
+    @Override
+    public void saveLanguage(String language) {
+
+        if(language.equals("en")){
+            language = "en-US";
+        } else if(language.equals("ru")){
+            language = "ru-RU";
+        } else if(language.equals("tr")){
+            language = "tr-TR";
+        }
+
+        sharedPrefTokenStorage.saveLanguage(language);
     }
 
     public boolean isAuthenticated() {

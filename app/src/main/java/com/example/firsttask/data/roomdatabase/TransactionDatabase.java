@@ -23,7 +23,7 @@ public abstract class TransactionDatabase extends RoomDatabase {
     private static TransactionDatabase buildDatabaseInstance(Context context) {
         return Room.databaseBuilder(context,
                         TransactionDatabase.class,
-                        "test1")/*
+                        "test")/*
                 .allowMainThreadQueries()*/.build();
     }
 

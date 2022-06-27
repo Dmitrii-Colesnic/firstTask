@@ -51,8 +51,8 @@ public class AllItemsFragment extends Fragment implements Transactions.Fragment 
     }
 
     @Override
-    public int changeIsChecked(TransactionDescription transaction) {
-        return transactionsPresenter.changeIsChecked(transaction);
+    public void changeIsChecked(TransactionDescription transaction, int position) {
+        transactionsPresenter.changeIsChecked(transaction, itemAdapter, position);
     }
 
     @Override

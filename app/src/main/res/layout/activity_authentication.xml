@@ -13,10 +13,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/authentication_background"
         android:elevation="8dp"
-        android:paddingStart="30dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="30dp"
-        android:paddingBottom="30dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,7 +23,7 @@
             android:id="@+id/tv_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select Language"
+            android:text="@string/select_language"
             android:textSize="18sp"
             android:textStyle="bold"
 
@@ -47,31 +43,27 @@
             app:layout_constraintEnd_toEndOf="parent"
             >
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
+            <RadioButton
                 android:id="@+id/rb_language_en"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="en"
-                android:checked="true"
-
+                android:text="@string/en"
                 />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
+            <RadioButton
                 android:id="@+id/rb_language_tr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="tr"
+                android:text="@string/tr"
                 android:layout_marginStart="20dp"
-                android:checked="false"
                 />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
+            <RadioButton
                 android:id="@+id/rb_language_ru"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ru"
+                android:text="@string/ru"
                 android:layout_marginStart="20dp"
-                android:checked="false"
                 />
 
         </RadioGroup>
@@ -81,7 +73,7 @@
             android:id="@+id/tv_authentication"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Authentication"
+            android:text="@string/authentication"
             android:textSize="25sp"
             android:textStyle="bold"
 
@@ -95,6 +87,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:hint="@string/merchant_code"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +99,6 @@
                 android:id="@+id/et_merchant_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Merchant Code"
                 android:inputType="number"
                 android:imeOptions="actionDone"
                 android:maxLines="1"
@@ -118,6 +112,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:hint="@string/username"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -129,7 +126,6 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:maxLines="1"
-                android:hint="Username"
                 android:imeOptions="actionDone"
                 android:textSize="15sp" />
 
@@ -142,6 +138,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             app:passwordToggleEnabled="true"
+            android:hint="@string/password"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -151,7 +150,6 @@
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
                 android:maxLines="1"
                 android:inputType="textPassword"
                 android:imeOptions="actionDone"
@@ -164,10 +162,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40sp"
-            android:text="Log In"
+            android:text="@string/log_in"
             android:textSize="20sp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
 
-            app:layout_constraintTop_toBottomOf="@+id/til_password" />
+            app:layout_constraintTop_toBottomOf="@+id/til_password"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

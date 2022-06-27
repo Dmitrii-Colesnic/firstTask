@@ -1,4 +1,4 @@
-package com.example.firsttask.data;
+package com.example.firsttask;
 
 import android.app.Application;
 import android.content.Context;

@@ -63,8 +63,8 @@ public class FavoriteItemsFragment extends Fragment implements Transactions.Frag
     }
 
     @Override
-    public int changeIsChecked(TransactionDescription transaction) {
-        return transactionsPresenter.changeIsChecked(transaction);
+    public void changeIsChecked(TransactionDescription transaction, int position) {
+        transactionsPresenter.changeIsChecked(transaction, itemAdapter, position);
     }
 
     @Override

@@ -16,7 +16,7 @@ public interface Transactions {
     interface Fragment {
 
         void setUpListOfDataIntoRecyclerView(ArrayList<TransactionDescription> array);
-        int changeIsChecked(TransactionDescription transaction);
+        void changeIsChecked(TransactionDescription transaction, int position);
         void showToast(String toastText);
         void setProgressDialog();
         void dismissProgressDialog();
@@ -26,7 +26,7 @@ public interface Transactions {
     interface Presenter {
 
         void getData();
-        int changeIsChecked(TransactionDescription transaction);
+        void changeIsChecked(TransactionDescription transaction, ItemAdapter adapter, int position);
         void getDataFromDB();
 
     }

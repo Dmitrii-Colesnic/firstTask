@@ -22,6 +22,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     private ArrayList<TransactionDescription> array;
     private Transactions.Fragment fragment;
 
+    public void setChecked(int position, int isChecked) {
+        array.get(position).setIsChecked(isChecked);
+        notifyItemChanged(position);
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvName;
@@ -86,7 +91,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
         if (!payloads.isEmpty()) {
-            holder.ivIsChecked.setImageResource((Integer) payloads.get(0));
+//            holder.ivIsChecked.setImageResource((Integer)payloads.get(0));
+//            array.get(position).setIsChecked((Integer)payloads.get(0));
         } else {
             super.onBindViewHolder(holder, position, payloads);
         }
@@ -118,9 +124,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.ivIsChecked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int newImageIsChecked = fragment.changeIsChecked(transaction);
-                array.get(pos).setIsChecked(newImageIsChecked);
-                holder.ivIsChecked.setImageResource(newImageIsChecked);
+
+//                int newImageIsChecked = fragment.changeIsChecked(transaction);
+//                array.get(pos).setIsChecked(newImageIsChecked);
+//                holder.ivIsChecked.setImageResource(newImageIsChecked);
+                fragment.changeIsChecked(transaction, pos);
 
             }
         });

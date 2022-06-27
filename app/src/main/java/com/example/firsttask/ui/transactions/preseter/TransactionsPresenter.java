@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.firsttask.R;
-import com.example.firsttask.data.App;
+import com.example.firsttask.App;
 import com.example.firsttask.data.retrofit.entities.ReturnObject;
 import com.example.firsttask.data.retrofit.entities.UserResponse;
 import com.example.firsttask.data.roomdatabase.TransactionDatabase;
@@ -72,38 +72,6 @@ public class TransactionsPresenter implements Transactions.Presenter {
                             transaction.setFee(item.getFee().toString());
                             transaction.setIsChecked(R.drawable.ic_heart_is_not_checked);
 
-                            //setIsChecked
-                            //find if it exist in db
-//                            db.getTransactionDao().ifRowIsExistByDescriptionField(transaction.getDescription())
-//                                    .subscribeOn(Schedulers.newThread())
-//                                    .observeOn(AndroidSchedulers.mainThread())
-//                                    .subscribe(new SingleObserver<Boolean>() {
-//                                        @Override
-//                                        public void onSubscribe(Disposable d) {
-//                                            Log.e("Existing at db", "onSubscribe");
-//                                        }
-//
-//                                        @Override
-//                                        public void onSuccess(Boolean aBoolean) {
-//                                            Log.e("Existing at db", "onSuccess");
-//                                            if (aBoolean) {
-//                                                Log.e("Existing at db", "exist");
-//                                                transaction.setIsChecked(R.drawable.ic_heart_is_checked);
-//                                            } else {
-//                                                Log.e("Existing at db", "don't exist");
-//                                                transaction.setIsChecked(R.drawable.ic_heart_is_not_checked);
-//                                            }
-//
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onError(Throwable e) {
-//                                            Log.e("Existing at db", "onError");
-//
-//                                        }
-//                                    });
-
                             //setImage
                             if (item.getType() == 2) {
                                 transaction.setImage(R.drawable.ic_money_type2);
@@ -130,6 +98,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
                         }
                         //here I have full transactions array from internet
 
+                        //setIsChecked
                         db.getTransactionDao().fetchAll()
                                 .subscribeOn(Schedulers.newThread())
                                 .observeOn(AndroidSchedulers.mainThread())
@@ -144,8 +113,8 @@ public class TransactionsPresenter implements Transactions.Presenter {
                                         Log.e("fetch all data from db", "onSuccess");
                                         //here i have full array from db
                                         for (TransactionDescription itemTransaction : transactions) {
-                                            for (TransactionEntity itemEntity : transactionEntities) {
-                                                if (itemTransaction.getDescription().equals(itemEntity.getDescription())) {
+                                            for (TransactionEntity descriptionItem : transactionEntities) {
+                                                if (itemTransaction.getDescription().equals(descriptionItem.getDescription())) {
                                                     //it exist in db
                                                     Log.e("fetch all data from db", "exist");
                                                     itemTransaction.setIsChecked(R.drawable.ic_heart_is_checked);
@@ -178,74 +147,142 @@ public class TransactionsPresenter implements Transactions.Presenter {
     @Override
     public void getDataFromDB() {
 
-        db.getTransactionDao().fetchAll()
+        ArrayList<TransactionDescription> transactions = new ArrayList();
+
+        fragment.setProgressDialog();
+        app.getUserService().getTransactionRecent()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<TransactionEntity>>() {
+                .subscribe(new SingleObserver<UserResponse>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        Log.e("getData", "onSubscribe");
                     }
 
                     @Override
-                    public void onSuccess(List<TransactionEntity> transactionEntities) {
-                        Log.e("fetch all data from db", "onSuccess");
+                    public void onSuccess(UserResponse userResponse) {
+                        Log.e("getData", "stars onSuccess");
 
-                        ArrayList<TransactionDescription> transactions = new ArrayList();
-                        for (TransactionEntity entity : transactionEntities){
-                            transactions.add(new TransactionDescription(
-                                    entity.getName(),
-                                    entity.getDescription(),
-                                    entity.getTime(),
-                                    entity.getAmount(),
-                                    entity.getFee(),
-                                    entity.getImage(),
-                                    entity.getImageIsChecked()
-                            ));
+                        for (ReturnObject item : userResponse.getReturnObject()) {
+
+                            TransactionDescription transaction = new TransactionDescription();
+
+                            transaction.setName(item.getName());
+                            transaction.setDescription(item.getDescription());
+                            transaction.setFee(item.getFee().toString());
+                            transaction.setIsChecked(R.drawable.ic_heart_is_not_checked);
+
+                            //setImage
+                            if (item.getType() == 2) {
+                                transaction.setImage(R.drawable.ic_money_type2);
+                            } else {
+                                transaction.setImage(R.drawable.ic_love_type3);
+                            }
+
+                            //setData
+                            try {
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                                Date d = sdf.parse(item.getDateTransaction());
+                                transaction.setTime(output.format(d));
+
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            //setAmount
+                            Float amount = item.getAmount().floatValue() / 100;
+                            transaction.setAmount(amount.toString());
+
+                            transactions.add(transaction);
                         }
+                        //here I have full transactions array from internet
 
-                        fragment.setUpListOfDataIntoRecyclerView(transactions);
+                        ArrayList<TransactionDescription> transactionsFavorites = new ArrayList();
+                        //setIsChecked
+                        db.getTransactionDao().fetchAll()
+                                .subscribeOn(Schedulers.newThread())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new SingleObserver<List<TransactionEntity>>() {
+                                    @Override
+                                    public void onSubscribe(Disposable d) {
+                                        Log.e("fetch all data from db", "onSubscribe");
+                                    }
+
+                                    @Override
+                                    public void onSuccess(List<TransactionEntity> transactionEntities) {
+                                        Log.e("fetch all data from db", "onSuccess");
+                                        //here i have full array from db
+                                        for (TransactionDescription itemTransaction : transactions) {
+                                            for (TransactionEntity descriptionItem : transactionEntities) {
+                                                if (itemTransaction.getDescription().equals(descriptionItem.getDescription())) {
+                                                    //it exist in db
+                                                    Log.e("fetch all data from db", "exist");
+                                                    itemTransaction.setIsChecked(R.drawable.ic_heart_is_checked);
+                                                    transactionsFavorites.add(itemTransaction);
+                                                }
+                                            }
+                                        }
+
+                                        fragment.dismissProgressDialog();
+                                        fragment.setUpListOfDataIntoRecyclerView(transactionsFavorites);
+                                        Log.e("getData", "finish sequential thread");
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Log.e("fetch all data from db", "onError");
+                                    }
+                                });
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("fetch all data from db", "onError");
+                        Log.e("getData", "onError");
+                        Log.e("getData", e.toString());
                     }
                 });
 
     }
 
     @Override
-    public int changeIsChecked(TransactionDescription transaction) {
-        //todo: logic for replace isChecked image, and for adding item to database
+    public void changeIsChecked(TransactionDescription transaction, ItemAdapter adapter, int position) {
 
-        TransactionEntity transactionEntity = new TransactionEntity(
-                transaction.getName(),
-                transaction.getDescription(),
-                transaction.getTime(),
-                transaction.getAmount(),
-                transaction.getFee(),
-                transaction.getImage(),
-                transaction.getIsChecked()
-        );
+        db.getTransactionDao().ifDescriptionExist(transaction.getDescription())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Boolean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.e("changeIsChecked", "onSubscribe");
+                    }
 
-        if (transaction.getIsChecked() == R.drawable.ic_heart_is_not_checked) {
-            //TODO:
-            // if entity isn't in db,
-            //      insert into db
-            //      change isChecked to ic_heart_is_checked
-            // else
-            //      change isChecked to ic_heart_is_checked
-            transaction.setIsChecked(R.drawable.ic_heart_is_checked);
-            transactionEntity.setImageIsChecked(R.drawable.ic_heart_is_checked);
-            new InsertTask(this, transactionEntity, fragment).execute();
-        } else {
-            transaction.setIsChecked(R.drawable.ic_heart_is_not_checked);
-            transactionEntity.setImageIsChecked(R.drawable.ic_heart_is_not_checked);
-            new DeleteTask(this, transactionEntity, fragment).execute();
-        }
+                    @Override
+                    public void onSuccess(Boolean aBoolean) {
+                        Log.e("changeIsChecked", "onSuccess");
 
-        return transaction.getIsChecked();
+                        //if exist
+                        if(aBoolean){
+
+                            new DeleteTask(TransactionsPresenter.this, new TransactionEntity(transaction.getDescription()), fragment).execute();
+                            adapter.setChecked(position, R.drawable.ic_heart_is_not_checked);
+
+                        } else {
+
+                            new InsertTask(TransactionsPresenter.this, new TransactionEntity(transaction.getDescription()), fragment).execute();
+                            adapter.setChecked(position, R.drawable.ic_heart_is_checked);
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("changeIsChecked", "onError");
+
+                    }
+                });
     }
 
     private static class InsertTask extends AsyncTask<Void, Void, Boolean> {
@@ -291,7 +328,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            objectReference.get().db.getTransactionDao().deleteByDescription(entity.getDescription());
+            objectReference.get().db.getTransactionDao().delete(entity);
             return true;
         }
 
@@ -307,7 +344,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
     }
 
     public void logout() {
-        sharedPrefTokenStorage.delete();
+        sharedPrefTokenStorage.deleteToken();
         view.navigateToAuthenticateActivity();
     }
 
