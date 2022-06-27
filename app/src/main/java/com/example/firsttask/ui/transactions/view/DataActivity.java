@@ -10,7 +10,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.firsttask.R;
 import com.example.firsttask.databinding.ActivityDataBinding;
@@ -18,7 +17,6 @@ import com.example.firsttask.ui.authentication.presenter.AuthenticationPresenter
 import com.example.firsttask.ui.authentication.view.AuthenticationActivity;
 import com.example.firsttask.ui.transactions.Transactions;
 import com.example.firsttask.ui.transactions.preseter.TransactionsPresenter;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -32,8 +30,7 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private NavigationView navigationView;
-    private BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +41,6 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        bottomNavigationView = binding.bottomNavigation;
-
         // drawer layout instance to toggle the menu icon to open drawer and back button to close drawer
         drawerLayout = binding.getRoot();
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
@@ -54,8 +49,7 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        navigationView = binding.navigationView;
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        binding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -70,13 +64,14 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
 
         if (!authenticationPresenter.isAuthenticated()) {
             startActivity(new Intent(DataActivity.this, AuthenticationActivity.class));
+            finish();
         } else {
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_place, new AllItemsFragment()).commit();
         }
 
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+        binding.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 return selectFragment();
@@ -95,11 +90,11 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (bottomNavigationView.getSelectedItemId() == R.id.item_list) {
+        if (binding.bottomNavigation.getSelectedItemId() == R.id.item_list) {
             fragmentTransaction.replace(R.id.fragment_place, new AllItemsFragment());
             fragmentTransaction.commit();
             return true;
-        } else if (bottomNavigationView.getSelectedItemId() == R.id.item_favorites) {
+        } else if (binding.bottomNavigation.getSelectedItemId() == R.id.item_favorites) {
             fragmentTransaction.replace(R.id.fragment_place, new FavoriteItemsFragment());
             fragmentTransaction.commit();
             return true;
@@ -110,29 +105,18 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
     @Override
     public void navigateToAuthenticateActivity() {
         startActivity(new Intent(DataActivity.this, AuthenticationActivity.class));
+        finish();
     }
 
     public boolean selectFragment() {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-//        switch (bottomNavigationView.getSelectedItemId()) {
-//
-//            case R.id.item_list:
-//                fragmentTransaction.replace(R.id.fragment_place, new AllItemsFragment()).commit();
-//                return true;
-//
-//            case R.id.item_favorites:
-//                fragmentTransaction.replace(R.id.fragment_place, new FavoriteItemsFragment()).commit();
-//                return false;
-//
-//        }
-
-        if (bottomNavigationView.getSelectedItemId() == R.id.item_favorites) {
+        if (binding.bottomNavigation.getSelectedItemId() == R.id.item_favorites) {
             fragmentTransaction.replace(R.id.fragment_place, new AllItemsFragment()).commit();
             return true;
 
-        } else if (bottomNavigationView.getSelectedItemId() == R.id.item_list) {
+        } else if (binding.bottomNavigation.getSelectedItemId() == R.id.item_list) {
             fragmentTransaction.replace(R.id.fragment_place, new FavoriteItemsFragment()).commit();
             return true;
         }

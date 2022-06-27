@@ -15,12 +15,13 @@ import com.example.firsttask.databinding.ItemDescriptionBinding;
 import com.example.firsttask.ui.transactions.view.AllItemsFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private ArrayList<TransactionDescription> array;
+    private Transactions.Fragment fragment;
 
-    private AllItemsFragment fragment = new AllItemsFragment(this);
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvName;
@@ -68,8 +69,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         }
     }
 
-    public ItemAdapter(ArrayList<TransactionDescription> dataSet) {
+    public ItemAdapter(ArrayList<TransactionDescription> dataSet,
+                       Transactions.Fragment fragment) {
         array = dataSet;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -81,9 +84,20 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (!payloads.isEmpty()) {
+            holder.ivIsChecked.setImageResource((Integer) payloads.get(0));
+        } else {
+            super.onBindViewHolder(holder, position, payloads);
+        }
+    }
+
+    @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        TransactionDescription description = new TransactionDescription(
+        int pos = position;
+
+        TransactionDescription transaction = new TransactionDescription(
                 array.get(position).getName(),
                 array.get(position).getDescription(),
                 array.get(position).getTime(),
@@ -93,18 +107,21 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 array.get(position).getIsChecked()
         );
 
-        holder.tvName.setText(array.get(position).getName());
-        holder.tvDescription.setText(array.get(position).getDescription());
-        holder.tvTime.setText(array.get(position).getTime());
-        holder.tvAmount.setText(array.get(position).getAmount());
-        holder.tvFee.setText(array.get(position).getFee());
-        holder.iv.setImageResource(array.get(position).getImage());
-        holder.ivIsChecked.setImageResource(array.get(position).getIsChecked());
+        holder.tvName.setText(transaction.getName());
+        holder.tvDescription.setText(transaction.getDescription());
+        holder.tvTime.setText(transaction.getTime());
+        holder.tvAmount.setText(transaction.getAmount());
+        holder.tvFee.setText(transaction.getFee());
+        holder.iv.setImageResource(transaction.getImage());
+        holder.ivIsChecked.setImageResource(transaction.getIsChecked());
 
         holder.ivIsChecked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment.changeIsChecked(description);
+                int newImageIsChecked = fragment.changeIsChecked(transaction);
+                array.get(pos).setIsChecked(newImageIsChecked);
+                holder.ivIsChecked.setImageResource(newImageIsChecked);
+
             }
         });
 

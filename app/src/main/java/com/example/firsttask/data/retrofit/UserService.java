@@ -3,6 +3,8 @@ package com.example.firsttask.data.retrofit;
 import com.example.firsttask.data.retrofit.entities.LoginResponse;
 import com.example.firsttask.data.retrofit.entities.UserResponse;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -14,7 +16,7 @@ public interface UserService {
 
     @FormUrlEncoded
     @POST("/auth")
-    Call<LoginResponse> login(
+    Single<LoginResponse> login(
             @Field("grant_type") String grantType,
             @Field("username") String username,
             @Field("password") String password,
@@ -22,6 +24,6 @@ public interface UserService {
     );
 
     @GET("/api/Transaction/Recent")
-    Call<UserResponse> getTransactionRecent(@Query("Authorization") String authorization);
+    Single<UserResponse> getTransactionRecent();
 
 }

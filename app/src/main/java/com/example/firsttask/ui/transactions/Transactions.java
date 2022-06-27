@@ -16,14 +16,18 @@ public interface Transactions {
     interface Fragment {
 
         void setUpListOfDataIntoRecyclerView(ArrayList<TransactionDescription> array);
-        void changeIsChecked(TransactionDescription transaction);
-        
+        int changeIsChecked(TransactionDescription transaction);
+        void showToast(String toastText);
+        void setProgressDialog();
+        void dismissProgressDialog();
+
     }
 
     interface Presenter {
 
         void getData();
-        void changeIsChecked(TransactionDescription transaction);
+        int changeIsChecked(TransactionDescription transaction);
+        void getDataFromDB();
 
     }
 

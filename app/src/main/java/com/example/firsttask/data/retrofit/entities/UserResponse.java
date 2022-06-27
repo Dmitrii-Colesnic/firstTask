@@ -17,9 +17,5 @@ public class UserResponse {
         this.returnObject = returnObject;
     }
 
-    public ReturnObject get(int index){
-        return returnObject.get(index);
-    }
-
 }
 

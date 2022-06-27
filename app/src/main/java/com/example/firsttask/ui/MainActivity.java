@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
+                finish();
             }
         }.start();
     }

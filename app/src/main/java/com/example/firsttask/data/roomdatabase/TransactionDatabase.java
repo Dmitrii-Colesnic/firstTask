@@ -1,6 +1,5 @@
 package com.example.firsttask.data.roomdatabase;
 
-
 import android.content.Context;
 
 import androidx.room.Database;
@@ -24,7 +23,7 @@ public abstract class TransactionDatabase extends RoomDatabase {
     private static TransactionDatabase buildDatabaseInstance(Context context) {
         return Room.databaseBuilder(context,
                         TransactionDatabase.class,
-                        "Transactions")/*
+                        "test1")/*
                 .allowMainThreadQueries()*/.build();
     }
 

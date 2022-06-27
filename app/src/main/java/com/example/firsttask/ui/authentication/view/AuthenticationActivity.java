@@ -59,6 +59,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
     @Override
     public void navigateToHomeActivity() {
         startActivity(new Intent(AuthenticationActivity.this, DataActivity.class));
+        finish();
     }
 
     @Override

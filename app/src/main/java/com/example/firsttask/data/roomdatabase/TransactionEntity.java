@@ -3,7 +3,7 @@ package com.example.firsttask.data.roomdatabase;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "transactions")
+@Entity(tableName = "test1")
 public class TransactionEntity {
 
     @PrimaryKey(autoGenerate = true)
@@ -17,8 +17,7 @@ public class TransactionEntity {
     private int image;
     private int imageIsChecked;
 
-    public TransactionEntity(int id, String name, String description, String time, String amount, String fee, int image, int imageIsChecked) {
-        this.id = id;
+    public TransactionEntity(/*int id, */String name, String description, String time, String amount, String fee, int image, int imageIsChecked) {
         this.name = name;
         this.description = description;
         this.time = time;

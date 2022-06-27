@@ -15,8 +15,17 @@ import com.example.firsttask.ui.authentication.model.sharedpref.SharedPrefTokenS
 import com.example.firsttask.ui.transactions.preseter.entities.TransactionDescription;
 
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.util.ArrayList;
 
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,30 +54,27 @@ public class AuthenticationPresenter implements Authentication.Presenter {
         loginRequest.setPassword(password);
         loginRequest.setMerchantCode(merchantCode);
 
-        Call<LoginResponse> userResponseCall = app.getUserService()
-                .login(loginRequest.getGrantType(), loginRequest.getUsername(), loginRequest.getPassword(), loginRequest.getMerchantCode());
+        app.getUserService().
+                login(loginRequest.getGrantType(), loginRequest.getUsername(), loginRequest.getPassword(), loginRequest.getMerchantCode())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<LoginResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {Log.e("login", "onSubscribe");}
 
-        userResponseCall.enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                Log.e("login", "onResponse");
+                    @Override
+                    public void onSuccess(LoginResponse loginResponse) {
+                        Log.e("login", "onSuccess");
+                        sharedPrefTokenStorage.save(loginResponse.getAccessToken());
+                        view.navigateToHomeActivity();
+                    }
 
-                if (response.isSuccessful()) {
-                    sharedPrefTokenStorage.save(response.body().getAccessToken());
-
-                    view.navigateToHomeActivity();
-                } else {
-                    view.invalidFieldsErrorDialog();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Log.e("login", "onFailure");
-                t.printStackTrace();
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("login", "onError");
+                        view.invalidFieldsErrorDialog();
+                    }
+                });
 
     }
 
