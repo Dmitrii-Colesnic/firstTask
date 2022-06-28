@@ -114,7 +114,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         );
 
         holder.tvName.setText(transaction.getName());
-        holder.tvDescription.setText(transaction.getDescription());
+
+        String description = new String();
+        if(transaction.getDescription().length() > 16){
+            description = transaction.getDescription().substring(0,16) + "...";
+        } else {
+            description = transaction.getDescription();
+        }
+        holder.tvDescription.setText(description);
         holder.tvTime.setText(transaction.getTime());
         holder.tvAmount.setText(transaction.getAmount());
         holder.tvFee.setText(transaction.getFee());

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/green3">
+
+<!--    to do ripple slower-->
+<!--    https://stackoverflow.com/questions/60236260/constant-ripple-effect-in-android-->
+
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/black"/>
+        </shape>
+    </item>
+
+    <item android:drawable="@drawable/item_container_background"/>
+
+</ripple>

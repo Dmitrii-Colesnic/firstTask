@@ -14,11 +14,14 @@ import com.example.firsttask.ui.transactions.Transactions;
 import com.example.firsttask.ui.transactions.preseter.entities.TransactionDescription;
 
 import java.lang.ref.WeakReference;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -69,7 +72,6 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
                             transaction.setName(item.getName());
                             transaction.setDescription(item.getDescription());
-                            transaction.setFee(item.getFee().toString());
                             transaction.setIsChecked(R.drawable.ic_heart_is_not_checked);
 
                             //setImage
@@ -81,18 +83,26 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
                             //setData
                             try {
-                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                                SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                                Date d = sdf.parse(item.getDateTransaction());
-                                transaction.setTime(output.format(d));
+                                String input = item.getDateTransaction();
+                                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                Date date = parser.parse(input);
+                                SimpleDateFormat formatter = new SimpleDateFormat("MMM d,yyyy, HH:mm");
+                                String formattedDate = formatter.format(date);
 
+                                transaction.setTime(formattedDate);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
 
                             //setAmount
                             Float amount = item.getAmount().floatValue() / 100;
-                            transaction.setAmount(amount.toString());
+                            String parseAmount = currencyFormat(amount);
+                            transaction.setAmount(parseAmount);
+
+                            //setFee
+                            Float fee = item.getFee().floatValue() / 100;
+                            String parseFee = currencyFormat(fee);
+                            transaction.setFee(parseFee);
 
                             transactions.add(transaction);
                         }
@@ -169,7 +179,6 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
                             transaction.setName(item.getName());
                             transaction.setDescription(item.getDescription());
-                            transaction.setFee(item.getFee().toString());
                             transaction.setIsChecked(R.drawable.ic_heart_is_not_checked);
 
                             //setImage
@@ -181,18 +190,26 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
                             //setData
                             try {
-                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                                SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                                Date d = sdf.parse(item.getDateTransaction());
-                                transaction.setTime(output.format(d));
+                                String input = item.getDateTransaction();
+                                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                Date date = parser.parse(input);
+                                SimpleDateFormat formatter = new SimpleDateFormat("MMM d,yyyy, HH:mm");
+                                String formattedDate = formatter.format(date);
 
+                                transaction.setTime(formattedDate);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
 
                             //setAmount
                             Float amount = item.getAmount().floatValue() / 100;
-                            transaction.setAmount(amount.toString());
+                            String parseAmount = currencyFormat(amount);
+                            transaction.setAmount(parseAmount);
+
+                            //setFee
+                            Float fee = item.getFee().floatValue() / 100;
+                            String parseFee = currencyFormat(fee);
+                            transaction.setFee(parseFee);
 
                             transactions.add(transaction);
                         }
@@ -263,7 +280,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
                         Log.e("changeIsChecked", "onSuccess");
 
                         //if exist
-                        if(aBoolean){
+                        if (aBoolean) {
 
                             new DeleteTask(TransactionsPresenter.this, new TransactionEntity(transaction.getDescription()), fragment).execute();
                             adapter.setChecked(position, R.drawable.ic_heart_is_not_checked);
@@ -346,6 +363,16 @@ public class TransactionsPresenter implements Transactions.Presenter {
     public void logout() {
         sharedPrefTokenStorage.deleteToken();
         view.navigateToAuthenticateActivity();
+    }
+
+    private static String currencyFormat(double currency) {
+
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.US);
+        otherSymbols.setDecimalSeparator('.');
+        otherSymbols.setGroupingSeparator(',');
+
+        DecimalFormat formatter = new DecimalFormat("###,##0.00", otherSymbols);
+        return formatter.format(currency);
     }
 
 }
