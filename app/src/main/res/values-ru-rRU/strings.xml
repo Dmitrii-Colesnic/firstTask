@@ -14,4 +14,9 @@
     <string name="all_list">Весь список</string>
     <string name="favorites">Избранное</string>
     <string name="logout">Выход</string>
+    <string name="merchant_code_require_6_numbers">Код продавца запришивает 6 цифр</string>
+    <string name="username_require_6_characters">Имя пользователя запрашивает 6 символов</string>
+    <string name="fields_is_empty">Заполните все поля</string>
+    <string name="fill_fields">Заполните поля нужным количеством символов</string>
+
 </resources>

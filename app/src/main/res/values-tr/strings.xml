@@ -14,4 +14,9 @@
     <string name="all_list">Tüm Liste</string>
     <string name="favorites">Favoriler</string>
     <string name="logout">Çıkış Yap</string>
+    <string name="merchant_code_require_6_numbers">Satıcı kodu 6 sayı gerektirir</string>
+    <string name="username_require_6_characters">Kullanıcı adı 6 karakter gerektirir</string>
+    <string name="fields_is_empty">Tüm alanları doldurun</string>
+    <string name="fill_fields">Alanları gerekli sayıda karakterle doldurun</string>
+
 </resources>

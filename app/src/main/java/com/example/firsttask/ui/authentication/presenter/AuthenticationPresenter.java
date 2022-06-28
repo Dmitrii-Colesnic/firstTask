@@ -77,8 +77,9 @@ public class AuthenticationPresenter implements Authentication.Presenter {
 
                                 if(!errorCodeAndMessage.getCode().isEmpty() && !errorCodeAndMessage.getMessage().isEmpty()){
                                     view.invalidFieldsErrorDialog(errorCodeAndMessage.getCode(), errorCodeAndMessage.getMessage());
+                                } else if(errorCodeAndMessage.getCode().equals("3001") && sharedPrefTokenStorage.getLanguage().equals("ru-RU")){
+                                    view.invalidFieldsErrorDialog(errorCodeAndMessage.getCode(), "Пользователь не имеет доступа к данной операции.");
                                 }
-
                             } else {
                                 view.invalidFieldsErrorDialog("Undefined Code", "Something went wrong, try again");
                             }

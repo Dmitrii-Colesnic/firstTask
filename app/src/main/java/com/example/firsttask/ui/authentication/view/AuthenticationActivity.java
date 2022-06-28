@@ -4,14 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -47,38 +50,62 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
             @Override
             public void onClick(View view) {
 
-                if(binding.etUsername.getText().toString().isEmpty()
-                        || binding.etPassword.getText().toString().isEmpty()
-                        || binding.etMerchantCode.getText().toString().isEmpty()
-                ) {
-                    Toast.makeText(AuthenticationActivity.this, "Username/Password Required", Toast.LENGTH_SHORT).show();
-                } else {
-                    presenter.login(
-                            binding.etUsername.getText().toString(),
-                            binding.etPassword.getText().toString(),
-                            binding.etMerchantCode.getText().toString()
-                    );
+                if (fieldsIsNotEmpty()) {
+                    if(binding.etMerchantCode.getText().length() < 6
+                            || binding.etUsername.getText().length() < 6
+                    ){
+                        Toast.makeText(AuthenticationActivity.this, R.string.fill_fields, Toast.LENGTH_SHORT).show();
+                    } else {
+                        presenter.login(
+                                binding.etUsername.getText().toString(),
+                                binding.etPassword.getText().toString(),
+                                binding.etMerchantCode.getText().toString()
+                        );
+                    }
                 }
 
             }
         });
 
-        /**
-         * Clear focus on touch outside for all EditText inputs.
-         *
-         * https://gist.github.com/sc0rch/7c982999e5821e6338c25390f50d2993
-         */
+    }
+
+    /**
+     * Clear focus on touch outside for all EditText inputs.
+     *
+     * https://gist.github.com/sc0rch/7c982999e5821e6338c25390f50d2993
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 
     View.OnClickListener rbClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            RadioButton rb = (RadioButton)view;
+            RadioButton rb = (RadioButton) view;
 
             switch (rb.getId()) {
-                case R.id.rb_language_en: setLocale("en"); break;
-                case R.id.rb_language_tr: setLocale("tr"); break;
-                case R.id.rb_language_ru: setLocale("ru"); break;
+                case R.id.rb_language_en:
+                    setLocale("en");
+                    break;
+                case R.id.rb_language_tr:
+                    setLocale("tr");
+                    break;
+                case R.id.rb_language_ru:
+                    setLocale("ru");
+                    break;
             }
 
         }
@@ -90,7 +117,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
 
         setLocale(defaultLanguage);
 
-        if(defaultLanguage.equals(binding.rbLanguageEn.getText())){
+        if (defaultLanguage.equals(binding.rbLanguageEn.getText())) {
             binding.rbLanguageEn.setChecked(true);
         } else if (defaultLanguage.equals(binding.rbLanguageTr.getText())) {
             binding.rbLanguageTr.setChecked(true);
@@ -105,6 +132,36 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
         binding.etMerchantCode.setText(merchantCode);
         binding.etUsername.setText(username);
         binding.etPassword.setText(password);
+
+        binding.etMerchantCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    if(binding.etMerchantCode.getText().length() < 6  &&  binding.etMerchantCode.getText().length() >= 1){
+                        binding.tvMerchantCodeError.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.tvMerchantCodeError.setVisibility(View.GONE);
+                    }
+                } else {
+                    binding.tvMerchantCodeError.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        binding.etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    if(binding.etUsername.getText().length() < 6  &&  binding.etUsername.getText().length() >= 1){
+                        binding.tvUsernameError.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.tvUsernameError.setVisibility(View.GONE);
+                    }
+                } else {
+                    binding.tvUsernameError.setVisibility(View.GONE);
+                }
+            }
+        });
 
     }
 
@@ -124,7 +181,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
     }
 
     @Override
-    public void setLocale(String language){
+    public void setLocale(String language) {
         Resources resources = getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         Configuration configuration = resources.getConfiguration();
@@ -147,8 +204,22 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
         binding.tilUsername.setHint(R.string.username);
         binding.tilPassword.setHint(R.string.password);
         binding.btnLogin.setText(R.string.log_in);
+        binding.tvMerchantCodeError.setText(R.string.merchant_code_require_6_numbers);
+        binding.tvUsernameError.setText(R.string.username_require_6_characters);
+
     }
 
+    private boolean fieldsIsNotEmpty() {
 
+        if(binding.etMerchantCode.getText().length() == 0
+                || binding.etUsername.getText().length() == 0
+                || binding.etPassword.getText().length() == 0
+        ) {
+            Toast.makeText(AuthenticationActivity.this, R.string.fields_is_empty, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
 
 }

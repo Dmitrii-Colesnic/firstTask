@@ -7,6 +7,10 @@
     android:layout_gravity="center"
     tools:context=".ui.authentication.view.AuthenticationActivity">
 
+<!--    Edittext attribut for hiding the keyboard-->
+<!--    android:imeOptions="actionDone"-->
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_main"
         android:layout_width="350dp"
@@ -100,18 +104,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:imeOptions="actionDone"
+                android:maxLength="6"
                 android:maxLines="1"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_merchant_code_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/merchant_code_require_6_numbers"
+            android:textSize="10sp"
+            android:textColor="@color/red"
+            android:visibility="gone"
+
+            app:layout_constraintTop_toBottomOf="@id/til_merchant_code"
+            app:layout_constraintStart_toStartOf="@id/til_merchant_code"
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_username"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:hint="@string/username"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
@@ -125,18 +143,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:maxLength="6"
                 android:maxLines="1"
-                android:imeOptions="actionDone"
                 android:textSize="15sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_username_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/username_require_6_characters"
+            android:textSize="10sp"
+            android:textColor="@color/red"
+            android:visibility="gone"
+
+            app:layout_constraintTop_toBottomOf="@id/til_username"
+            app:layout_constraintStart_toStartOf="@id/til_username"
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_password"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             app:passwordToggleEnabled="true"
             android:hint="@string/password"
             android:layout_marginStart="30dp"
@@ -150,9 +181,9 @@
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLength="24"
                 android:maxLines="1"
                 android:inputType="textPassword"
-                android:imeOptions="actionDone"
                 android:textSize="15sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
