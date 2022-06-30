@@ -1,17 +1,28 @@
 package com.example.firsttask.ui.transactions.preseter;
 
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.util.Log;
 
 import com.example.firsttask.R;
 import com.example.firsttask.App;
 import com.example.firsttask.data.retrofit.entities.ReturnObject;
-import com.example.firsttask.data.retrofit.entities.UserResponse;
+import com.example.firsttask.data.retrofit.entities.details.DetailsResponse;
+import com.example.firsttask.data.retrofit.entities.history.HistoryResponse;
+import com.example.firsttask.data.retrofit.entities.history.HistoryReturnObject;
+import com.example.firsttask.data.retrofit.entities.recent.UserResponse;
 import com.example.firsttask.data.roomdatabase.TransactionDatabase;
 import com.example.firsttask.data.roomdatabase.TransactionEntity;
+import com.example.firsttask.ui.MainActivity;
+import com.example.firsttask.ui.authentication.view.AuthenticationActivity;
+import com.example.firsttask.ui.transactions.adapter.ItemAdapter;
 import com.example.firsttask.ui.authentication.model.sharedpref.SharedPrefTokenStorage;
 import com.example.firsttask.ui.transactions.Transactions;
-import com.example.firsttask.ui.transactions.preseter.entities.TransactionDescription;
+import com.example.firsttask.ui.transactions.adapter.entities.ParentTransactionDescription;
+import com.example.firsttask.ui.transactions.adapter.entities.TransactionDescription;
+import com.example.firsttask.ui.transactions.view.InvoiceDetailsActivity;
+import com.example.firsttask.ui.transactions.view.entities.InvoiceDetails;
 
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
@@ -27,6 +38,9 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TransactionsPresenter implements Transactions.Presenter {
 
@@ -70,6 +84,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
                             TransactionDescription transaction = new TransactionDescription();
 
+                            transaction.setTransactionKey(item.getTransactionKey());
                             transaction.setName(item.getName());
                             transaction.setDescription(item.getDescription());
                             transaction.setIsChecked(R.drawable.ic_heart_is_not_checked);
@@ -155,6 +170,205 @@ public class TransactionsPresenter implements Transactions.Presenter {
     }
 
     @Override
+    public void getTransactionsHistory() {
+
+        String startDate = "2022-02-01";
+        String endDate = "2022-11-01";
+
+        app.getUserService().getTransactionsHistory(startDate, endDate)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<HistoryResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.e("getTransactionsHistory", "onSubscribe");
+                    }
+
+                    @Override
+                    public void onSuccess(HistoryResponse historyResponse) {
+                        Log.e("getTransactionsHistory", "onSuccess");
+
+                        ArrayList<ParentTransactionDescription> historyTransactions = new ArrayList();
+                        for (HistoryReturnObject historyItem : historyResponse.getHistoryReturnObject()) {
+
+                            ParentTransactionDescription parentTransaction = new ParentTransactionDescription();
+
+                            String stringDate = "date can't be define";
+                            try {
+                                String input = historyItem.getSortedDate();
+                                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                Date date = parser.parse(input);
+                                SimpleDateFormat formatter = new SimpleDateFormat("MMMM, yyyy");
+                                stringDate = formatter.format(date);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            parentTransaction.setDate(stringDate);
+
+                            ArrayList<TransactionDescription> transactions = new ArrayList();
+                            for (ReturnObject item : historyItem.getReturnObjects()) {
+
+                                TransactionDescription transaction = new TransactionDescription();
+
+                                transaction.setTransactionKey(item.getTransactionKey());
+                                transaction.setName(item.getName());
+                                transaction.setDescription(item.getDescription());
+                                transaction.setIsChecked(0);
+
+                                //setImage
+                                if (item.getType() == 2) {
+                                    transaction.setImage(R.drawable.ic_money_type2);
+                                } else {
+                                    transaction.setImage(R.drawable.ic_love_type3);
+                                }
+
+                                //setData
+                                try {
+                                    String input = item.getDateTransaction();
+                                    SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                    Date date = parser.parse(input);
+                                    SimpleDateFormat formatter = new SimpleDateFormat("MMM d,yyyy, HH:mm");
+                                    String formattedDate = formatter.format(date);
+
+                                    transaction.setTime(formattedDate);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                //setAmount
+                                Float amount = item.getAmount().floatValue() / 100;
+                                String parseAmount = currencyFormat(amount);
+                                transaction.setAmount(parseAmount);
+
+                                //setFee
+                                Float fee = item.getFee().floatValue() / 100;
+                                String parseFee = currencyFormat(fee);
+                                transaction.setFee(parseFee);
+
+                                transactions.add(transaction);
+                            }
+                            parentTransaction.setTransactionDescriptions(transactions);
+
+                            historyTransactions.add(parentTransaction);
+                        }
+
+                        fragment.setUpListOfDataIntoParentRecyclerView(historyTransactions);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("getTransactionsHistory", "onError");
+                        Log.e("getTransactionsHistory", e.toString());
+                    }
+                });
+
+    }
+
+    @Override
+    public void getTransactionDetails(String transactionKey) {
+
+        view.setProgressDialog();
+        app.getUserService().getDetails(transactionKey)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<DetailsResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.e("getTransactionDetails", "onSubscribe");
+                    }
+
+                    @Override
+                    public void onSuccess(DetailsResponse detailsResponse) {
+                        Log.e("getTransactionDetails", "onSuccess");
+
+                        InvoiceDetails invoiceDetails = new InvoiceDetails();
+
+                        Float amount = detailsResponse.getReturnObjectDetails().getAmount().floatValue() / 100;
+                        String parseAmount = currencyFormat(amount);
+                        invoiceDetails.setAmount(parseAmount);
+
+                        invoiceDetails.setOrderNumber(detailsResponse.getReturnObjectDetails().getOrderNumber());
+                        invoiceDetails.setCategories(detailsResponse.getReturnObjectDetails().getCategories());
+
+                        if (detailsResponse.getReturnObjectDetails().getSentTo() != null) {
+                            invoiceDetails.setSentTo(detailsResponse.getReturnObjectDetails().getSentTo());
+                        } else {
+                            invoiceDetails.setSentTo("-");
+                        }
+
+                        if (detailsResponse.getReturnObjectDetails().getCreated() != null) {
+                            try {
+                                String input = detailsResponse.getReturnObjectDetails().getCreated();
+                                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                Date date = parser.parse(input);
+                                SimpleDateFormat formatter = new SimpleDateFormat("dd MMM HH:mm");
+                                String formattedDate = formatter.format(date);
+
+                                invoiceDetails.setCreated(formattedDate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            invoiceDetails.setCreated("-");
+                        }
+
+                        if (detailsResponse.getReturnObjectDetails().getExpired() != null) {
+                            try {
+                                String input = detailsResponse.getReturnObjectDetails().getExpired();
+                                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                Date date = parser.parse(input);
+                                SimpleDateFormat formatter = new SimpleDateFormat("dd MMM HH:mm");
+                                String formattedDate = formatter.format(date);
+
+                                invoiceDetails.setExpired(formattedDate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            invoiceDetails.setExpired("-");
+                        }
+
+                        if (detailsResponse.getReturnObjectDetails().getPaymentDate() != null) {
+                            try {
+                                String input = detailsResponse.getReturnObjectDetails().getPaymentDate();
+                                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                Date date = parser.parse(input);
+                                SimpleDateFormat formatter = new SimpleDateFormat("dd MMM HH:mm");
+                                String formattedDate = formatter.format(date);
+
+                                invoiceDetails.setPaymentDate(formattedDate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            invoiceDetails.setPaymentDate("-");
+                        }
+
+                        Float commission = detailsResponse.getReturnObjectDetails().getCommission().floatValue() / 100;
+                        String parseCommission = currencyFormat(commission);
+                        invoiceDetails.setCommission(parseCommission);
+
+                        new CountDownTimer(2000, 1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {}
+                            @Override
+                            public void onFinish() {
+                                view.dismissProgressDialog();
+                                view.setDetailsData(invoiceDetails);
+                            }
+                        }.start();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("getTransactionDetails", "onError");
+
+                    }
+                });
+    }
+
+    @Override
     public void getDataFromDB() {
 
         ArrayList<TransactionDescription> transactions = new ArrayList();
@@ -177,6 +391,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
                             TransactionDescription transaction = new TransactionDescription();
 
+                            transaction.setTransactionKey(item.getTransactionKey());
                             transaction.setName(item.getName());
                             transaction.setDescription(item.getDescription());
                             transaction.setIsChecked(R.drawable.ic_heart_is_not_checked);

@@ -1,9 +1,12 @@
 package com.example.firsttask.data.retrofit;
 
-import com.example.firsttask.data.retrofit.entities.LoginResponse;
-import com.example.firsttask.data.retrofit.entities.UserResponse;
+import com.example.firsttask.data.retrofit.entities.details.DetailsResponse;
+import com.example.firsttask.data.retrofit.entities.history.HistoryResponse;
+import com.example.firsttask.data.retrofit.entities.login.LoginResponse;
+import com.example.firsttask.data.retrofit.entities.recent.UserResponse;
 
-import io.reactivex.Observable;
+import java.util.Date;
+
 import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -26,5 +29,14 @@ public interface UserService {
 
     @GET("/api/Transaction/Recent")
     Single<UserResponse> getTransactionRecent();
+
+    @GET("api/Transaction/History")
+    Single<HistoryResponse> getTransactionsHistory(
+            @Query("pStartDate") String pStartDate,
+            @Query("pEndDate") String pEndDate
+            );
+
+    @GET("/api/Transaction/Details")
+    Single<DetailsResponse> getDetails(@Query("pTransactionKey") String transactionKey);
 
 }

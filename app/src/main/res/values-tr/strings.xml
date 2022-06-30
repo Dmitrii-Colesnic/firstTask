@@ -18,5 +18,17 @@
     <string name="username_require_6_characters">Kullanıcı adı 6 karakter gerektirir</string>
     <string name="fields_is_empty">Tüm alanları doldurun</string>
     <string name="fill_fields">Alanları gerekli sayıda karakterle doldurun</string>
+    <string name="history">Tarih</string>
+    <string name="transactions_favorites">Işlemler/Favoriler</string>
+    <string name="invoice_details">Fatura Detayları</string>
+    <string name="order_amount">Order Amount</string>
+    <string name="invoice_number">Invoice Number</string>
+    <string name="categories">Categories</string>
+    <string name="sent_to">Sent to</string>
+    <string name="created">Created</string>
+    <string name="expires">Expires</string>
+    <string name="payment_date">Payment Date</string>
+    <string name="commission">Commission</string>
+    <string name="transactions">Transactions</string>
 
 </resources>

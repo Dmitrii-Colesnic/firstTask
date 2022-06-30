@@ -1,4 +1,4 @@
-package com.example.firsttask.data.retrofit.entities;
+package com.example.firsttask.data.retrofit.entities.recent;
 
 import com.google.gson.annotations.SerializedName;
 

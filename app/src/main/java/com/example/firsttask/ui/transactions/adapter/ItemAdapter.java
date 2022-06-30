@@ -1,4 +1,4 @@
-package com.example.firsttask.ui.transactions.preseter;
+package com.example.firsttask.ui.transactions.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,12 +7,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firsttask.ui.transactions.Transactions;
-import com.example.firsttask.ui.transactions.preseter.entities.TransactionDescription;
+import com.example.firsttask.ui.transactions.adapter.entities.TransactionDescription;
 import com.example.firsttask.databinding.ItemDescriptionBinding;
-import com.example.firsttask.ui.transactions.view.AllItemsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         notifyItemChanged(position);
     }
 
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvName;
         private final TextView tvDescription;
@@ -36,6 +35,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         private final TextView tvFee;
         private final ImageView iv;
         private final ImageView ivIsChecked;
+        private final ConstraintLayout constraintLayout;
 
         public ViewHolder(ItemDescriptionBinding binding) {
             super(binding.getRoot());
@@ -47,30 +47,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             this.tvFee = binding.tvFee;
             this.iv = binding.iv;
             this.ivIsChecked = binding.ivIsChecked;
-        }
-
-        public TextView getTvName() {
-            return tvName;
-        }
-
-        public TextView getTvDescription() {
-            return tvDescription;
-        }
-
-        public TextView getTvTime() {
-            return tvTime;
-        }
-
-        public TextView getTvAmount() {
-            return tvAmount;
-        }
-
-        public TextView getTvFee() {
-            return tvFee;
-        }
-
-        public ImageView getIv() {
-            return iv;
+            this.constraintLayout = binding.clMainLayout;
         }
     }
 
@@ -78,6 +55,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                        Transactions.Fragment fragment) {
         array = dataSet;
         this.fragment = fragment;
+    }
+
+    public ItemAdapter(ArrayList<TransactionDescription> array) {
+        this.array = array;
     }
 
     @NonNull
@@ -88,55 +69,73 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         );
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
-        if (!payloads.isEmpty()) {
-//            holder.ivIsChecked.setImageResource((Integer)payloads.get(0));
-//            array.get(position).setIsChecked((Integer)payloads.get(0));
-        } else {
-            super.onBindViewHolder(holder, position, payloads);
-        }
-    }
+//    @Override
+//    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
+//        if (!payloads.isEmpty()) {
+////            holder.ivIsChecked.setImageResource((Integer)payloads.get(0));
+////            array.get(position).setIsChecked((Integer)payloads.get(0));
+//        } else {
+//            super.onBindViewHolder(holder, position, payloads);
+//        }
+//    }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+        TransactionDescription transaction = array.get(position);
 
         int pos = position;
 
-        TransactionDescription transaction = new TransactionDescription(
-                array.get(position).getName(),
-                array.get(position).getDescription(),
-                array.get(position).getTime(),
-                array.get(position).getAmount(),
-                array.get(position).getFee(),
-                array.get(position).getImage(),
-                array.get(position).getIsChecked()
-        );
-
-        holder.tvName.setText(transaction.getName());
-
-        String description = new String();
-        if(transaction.getDescription().length() > 16){
-            description = transaction.getDescription().substring(0,16) + "...";
+        String name;
+        if(transaction.getName().length() > 16){
+            name = transaction.getName().substring(0,16) + "...";
         } else {
-            description = transaction.getDescription();
+            name = transaction.getName();
         }
-        holder.tvDescription.setText(description);
+        holder.tvName.setText(name);
+
+        String description;
+        if(transaction.getDescription() != null){
+
+            if(transaction.getDescription().length() > 16){
+                description = transaction.getDescription().substring(0,16) + "...";
+            } else {
+                description = transaction.getDescription();
+            }
+            holder.tvDescription.setText(description);
+
+        } else {
+            holder.tvDescription.setVisibility(View.GONE);
+        }
+
         holder.tvTime.setText(transaction.getTime());
         holder.tvAmount.setText(transaction.getAmount());
         holder.tvFee.setText(transaction.getFee());
         holder.iv.setImageResource(transaction.getImage());
-        holder.ivIsChecked.setImageResource(transaction.getIsChecked());
+        if(transaction.getIsChecked() == 0){
+            holder.ivIsChecked.setVisibility(View.GONE);
+        } else {
+            holder.ivIsChecked.setVisibility(View.VISIBLE);
+            holder.ivIsChecked.setImageResource(transaction.getIsChecked());
+        }
 
         holder.ivIsChecked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 //                int newImageIsChecked = fragment.changeIsChecked(transaction);
 //                array.get(pos).setIsChecked(newImageIsChecked);
 //                holder.ivIsChecked.setImageResource(newImageIsChecked);
-                fragment.changeIsChecked(transaction, pos);
+                if(fragment != null){
+                    fragment.changeIsChecked(transaction, pos);
+                }
+            }
+        });
 
+        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(fragment != null){
+                    fragment.getTransactionDetails(transaction.getTransactionKey());
+                }
             }
         });
 

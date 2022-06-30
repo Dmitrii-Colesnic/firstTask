@@ -1,23 +1,27 @@
 package com.example.firsttask.ui.transactions.view;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.firsttask.R;
-import com.example.firsttask.data.roomdatabase.TransactionDatabase;
-import com.example.firsttask.data.roomdatabase.TransactionEntity;
 import com.example.firsttask.databinding.FragmentAllItemsBinding;
 import com.example.firsttask.ui.transactions.Transactions;
-import com.example.firsttask.ui.transactions.preseter.ItemAdapter;
+import com.example.firsttask.ui.transactions.adapter.ItemAdapter;
+import com.example.firsttask.ui.transactions.adapter.entities.ParentTransactionDescription;
 import com.example.firsttask.ui.transactions.preseter.TransactionsPresenter;
-import com.example.firsttask.ui.transactions.preseter.entities.TransactionDescription;
+import com.example.firsttask.ui.transactions.adapter.entities.TransactionDescription;
 
 import java.util.ArrayList;
 
@@ -27,9 +31,9 @@ public class AllItemsFragment extends Fragment implements Transactions.Fragment 
 
     private TransactionsPresenter transactionsPresenter = new TransactionsPresenter(AllItemsFragment.this);
 
-    private AlertDialog loadingDialog;
+    private Dialog loadingDialog;
 
-    ItemAdapter itemAdapter;
+    private ItemAdapter itemAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,19 +66,32 @@ public class AllItemsFragment extends Fragment implements Transactions.Fragment 
 
     @Override
     public void setProgressDialog() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        builder.setView(R.layout.loading_dialog).setCancelable(false);
-
-        loadingDialog = builder.create();
+        loadingDialog = new Dialog(getActivity());
+        loadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loadingDialog.setContentView(R.layout.loading_dialog);
+        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        loadingDialog.setCancelable(false);
         loadingDialog.show();
-
     }
 
     @Override
     public void dismissProgressDialog() {
         loadingDialog.dismiss();
+    }
+
+    @Override
+    public void setUpListOfDataIntoParentRecyclerView(ArrayList<ParentTransactionDescription> array) {
+
+    }
+
+    @Override
+    public void navigateToActivity(Class<?> cls) {
+        startActivity(new Intent(getActivity(), cls));
+    }
+
+    @Override
+    public void getTransactionDetails(String transactionKey) {
+
     }
 
 

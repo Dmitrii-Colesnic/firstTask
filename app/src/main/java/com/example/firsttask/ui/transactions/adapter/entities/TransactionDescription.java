@@ -1,7 +1,8 @@
-package com.example.firsttask.ui.transactions.preseter.entities;
+package com.example.firsttask.ui.transactions.adapter.entities;
 
 public class TransactionDescription {
 
+    private String transactionKey;
     private String name;
     private String description;
     private String time;
@@ -20,6 +21,14 @@ public class TransactionDescription {
         this.fee = fee;
         this.image = image;
         this.isChecked = isChecked;
+    }
+
+    public String getTransactionKey() {
+        return transactionKey;
+    }
+
+    public void setTransactionKey(String transactionKey) {
+        this.transactionKey = transactionKey;
     }
 
     public int getIsChecked() {

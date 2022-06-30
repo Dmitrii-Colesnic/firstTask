@@ -5,11 +5,11 @@ import static com.example.firsttask.ui.authentication.model.sharedpref.SharedPre
 import android.util.Log;
 
 import com.example.firsttask.App;
-import com.example.firsttask.data.retrofit.entities.Error;
-import com.example.firsttask.data.retrofit.entities.ErrorCodeAndMessage;
+import com.example.firsttask.data.retrofit.entities.recent.Error;
+import com.example.firsttask.data.retrofit.entities.recent.ErrorCodeAndMessage;
 import com.example.firsttask.ui.authentication.Authentication;
-import com.example.firsttask.data.retrofit.entities.LoginRequest;
-import com.example.firsttask.data.retrofit.entities.LoginResponse;
+import com.example.firsttask.data.retrofit.entities.login.LoginRequest;
+import com.example.firsttask.data.retrofit.entities.login.LoginResponse;
 import com.example.firsttask.ui.authentication.model.sharedpref.SharedPrefTokenStorage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

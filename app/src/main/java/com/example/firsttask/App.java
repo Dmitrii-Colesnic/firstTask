@@ -6,6 +6,7 @@ import android.content.Context;
 import com.example.firsttask.data.retrofit.RetrofitGenerator;
 import com.example.firsttask.data.retrofit.UserService;
 
+import io.reactivex.plugins.RxJavaPlugins;
 import retrofit2.Retrofit;
 
 public class App extends Application {

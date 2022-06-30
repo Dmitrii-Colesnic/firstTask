@@ -24,4 +24,16 @@
     <string name="username_require_6_characters">Username require 6 characters</string>
     <string name="fields_is_empty">Fill in all the fields</string>
     <string name="fill_fields">Fill in the fields with the required number of characters</string>
+    <string name="history">History</string>
+    <string name="transactions_favorites">Transactions/Favorites</string>
+    <string name="invoice_details">Invoice Details</string>
+    <string name="order_amount">Order Amount</string>
+    <string name="invoice_number">Invoice Number</string>
+    <string name="categories">Categories</string>
+    <string name="sent_to">Sent to</string>
+    <string name="created">Created</string>
+    <string name="expires">Expires</string>
+    <string name="payment_date">Payment Date</string>
+    <string name="commission">Commission</string>
+    <string name="transactions">Transactions</string>
 </resources>

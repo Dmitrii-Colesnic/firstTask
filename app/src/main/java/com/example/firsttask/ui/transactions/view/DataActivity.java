@@ -5,11 +5,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.firsttask.R;
 import com.example.firsttask.databinding.ActivityDataBinding;
@@ -17,6 +19,7 @@ import com.example.firsttask.ui.authentication.presenter.AuthenticationPresenter
 import com.example.firsttask.ui.authentication.view.AuthenticationActivity;
 import com.example.firsttask.ui.transactions.Transactions;
 import com.example.firsttask.ui.transactions.preseter.TransactionsPresenter;
+import com.example.firsttask.ui.transactions.view.entities.InvoiceDetails;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -26,7 +29,7 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
     private AuthenticationPresenter authenticationPresenter = new AuthenticationPresenter();
     private TransactionsPresenter transactionsPresenter = new TransactionsPresenter(DataActivity.this);
 
-    ActivityDataBinding binding;
+    private ActivityDataBinding binding;
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -40,6 +43,7 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
 
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // drawer layout instance to toggle the menu icon to open drawer and back button to close drawer
         drawerLayout = binding.getRoot();
@@ -53,9 +57,23 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
                 switch (item.getItemId()) {
                     case R.id.nav_logout:
                         transactionsPresenter.logout();
+                        break;
+                    case R.id.nav_History:
+                        fragmentTransaction.replace(R.id.fragment_place, new HistoryFragment()).commit();
+                        binding.bottomNavigation.setVisibility(View.GONE);
+                        drawerLayout.close();
+                        break;
+                    case R.id.nav_Transactions:
+                        fragmentTransaction.replace(R.id.fragment_place, new AllItemsFragment()).commit();
+                        binding.bottomNavigation.setVisibility(View.VISIBLE);
+                        drawerLayout.close();
+                        break;
                 }
 
                 return true;
@@ -102,6 +120,20 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
     public void navigateToAuthenticateActivity() {
         startActivity(new Intent(DataActivity.this, AuthenticationActivity.class));
         finish();
+    }
+
+    @Override
+    public void setProgressDialog() {
+
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+    }
+
+    @Override
+    public void setDetailsData(InvoiceDetails invoiceDetails) {
+
     }
 
     public boolean selectFragment(MenuItem item) {

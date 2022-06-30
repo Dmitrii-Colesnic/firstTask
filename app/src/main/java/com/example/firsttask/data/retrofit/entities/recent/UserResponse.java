@@ -1,5 +1,6 @@
-package com.example.firsttask.data.retrofit.entities;
+package com.example.firsttask.data.retrofit.entities.recent;
 
+import com.example.firsttask.data.retrofit.entities.ReturnObject;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
