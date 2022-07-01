@@ -57,9 +57,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         this.fragment = fragment;
     }
 
-    public ItemAdapter(ArrayList<TransactionDescription> array) {
-        this.array = array;
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
+
+    //    public ItemAdapter(ArrayList<TransactionDescription> array) {
+//        this.array = array;
+//    }
 
     @NonNull
     @Override

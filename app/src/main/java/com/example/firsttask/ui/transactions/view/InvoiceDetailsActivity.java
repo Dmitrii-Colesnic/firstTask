@@ -11,11 +11,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.TextView;
 
 import com.example.firsttask.R;
-import com.example.firsttask.data.retrofit.entities.ReturnObject;
-import com.example.firsttask.data.retrofit.entities.details.ReturnObjectDetails;
 import com.example.firsttask.databinding.ActivityInvoiceDetailsBinding;
 import com.example.firsttask.ui.transactions.Transactions;
 import com.example.firsttask.ui.transactions.preseter.TransactionsPresenter;
@@ -99,7 +96,7 @@ public class InvoiceDetailsActivity extends AppCompatActivity implements Transac
         binding.tvInvoiceNumber.setText(invoiceDetails.getOrderNumber());
 
         if(invoiceDetails.getCategories().equals("Expired")){
-            binding.flCategories.setBackgroundResource(R.drawable.categories_background_purple);
+            binding.flCategories.setBackgroundResource(R.drawable.categories_background_gray);
         } else if (invoiceDetails.getCategories().equals("Paid")){
             binding.flCategories.setBackgroundResource(R.drawable.categories_background_green);
         } else {

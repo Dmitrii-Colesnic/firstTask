@@ -3,6 +3,7 @@ package com.example.firsttask.ui.transactions.view;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,12 +14,16 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firsttask.R;
 import com.example.firsttask.databinding.FragmentAllItemsBinding;
 import com.example.firsttask.ui.transactions.Transactions;
 import com.example.firsttask.ui.transactions.adapter.ItemAdapter;
+import com.example.firsttask.ui.transactions.adapter.SwipeController;
 import com.example.firsttask.ui.transactions.adapter.entities.ParentTransactionDescription;
 import com.example.firsttask.ui.transactions.preseter.TransactionsPresenter;
 import com.example.firsttask.ui.transactions.adapter.entities.TransactionDescription;
@@ -34,6 +39,7 @@ public class AllItemsFragment extends Fragment implements Transactions.Fragment 
     private Dialog loadingDialog;
 
     private ItemAdapter itemAdapter;
+    private SwipeController swipeController = new SwipeController();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +58,15 @@ public class AllItemsFragment extends Fragment implements Transactions.Fragment 
         binding.rvTransactions.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rvTransactions.setAdapter(itemAdapter);
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
+        itemTouchHelper.attachToRecyclerView(binding.rvTransactions);
+
+        binding.rvTransactions.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                swipeController.onDraw(c);
+            }
+        });
     }
 
     @Override

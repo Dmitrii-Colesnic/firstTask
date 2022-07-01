@@ -55,18 +55,19 @@
 
             app:layout_constraintStart_toEndOf="@id/cl_image_location"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.55">
+            app:layout_constraintWidth_percent="0.5">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sale / QR"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
 
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_description"
@@ -94,10 +95,11 @@
                 android:id="@+id/iv_isChecked"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:padding="10dp"
+                android:paddingStart="10dp"
+                android:paddingBottom="13dp"
+                android:paddingEnd="10dp"
 
                 android:src="@drawable/ic_heart_is_checked"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -110,29 +112,26 @@
             app:layout_constraintEnd_toEndOf="parent"
 
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.3">
+            app:layout_constraintWidth_percent="0.35">
 
             <TextView
                 android:id="@+id/tv_units"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$"
-                android:textColor="@color/teal_700"
-                android:textSize="13sp"
+                android:text="TRY"
+                android:textSize="14sp"
                 android:textStyle="bold"
 
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:text="15,300.00"
-                android:textColor="@color/teal_700"
-                android:textSize="13sp"
+                android:layout_marginEnd="3dp"
+                android:text="15,875,300.00"
+                android:textSize="14sp"
                 android:textStyle="bold"
 
                 app:layout_constraintEnd_toStartOf="@id/tv_units"
@@ -144,7 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="6.12"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textColor="@color/gray"
 
                 app:layout_constraintEnd_toEndOf="parent"

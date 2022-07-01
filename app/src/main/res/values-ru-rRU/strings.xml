@@ -30,5 +30,7 @@
     <string name="payment_date">Payment Date</string>
     <string name="commission">Commission</string>
     <string name="transactions">Transactions</string>
+    <string name="reject">REJECT</string>
+    <string name="resend">RESEND</string>
 
 </resources>
