@@ -58,15 +58,15 @@ public class AllItemsFragment extends Fragment implements Transactions.Fragment 
         binding.rvTransactions.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rvTransactions.setAdapter(itemAdapter);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
-        itemTouchHelper.attachToRecyclerView(binding.rvTransactions);
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
+//        itemTouchHelper.attachToRecyclerView(binding.rvTransactions);
 
-        binding.rvTransactions.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                swipeController.onDraw(c);
-            }
-        });
+//        binding.rvTransactions.addItemDecoration(new RecyclerView.ItemDecoration() {
+//            @Override
+//            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+//                swipeController.onDraw(c);
+//            }
+//        });
     }
 
     @Override

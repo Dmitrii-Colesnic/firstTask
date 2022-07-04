@@ -85,7 +85,7 @@ public class SwipeController extends Callback {
         }
         currentItemViewHolder = viewHolder;
 
-        drawButtons(c, viewHolder);
+//        drawButtons(c, viewHolder);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -164,43 +164,43 @@ public class SwipeController extends Callback {
 
     }
 
-    private void drawButtons(Canvas c, RecyclerView.ViewHolder viewHolder) {
-        float buttonWidthWithoutPadding = buttonWidth - 20;
-        float corners = 16;
-
-        View itemView = viewHolder.itemView;
-        Paint p = new Paint();
-
-//        RectF leftButton = new RectF(itemView.getLeft(), itemView.getTop(), itemView.getLeft() + buttonWidthWithoutPadding, itemView.getBottom());
-//        p.setColor(Color.BLUE);
-//        c.drawRoundRect(leftButton, corners, corners, p);
-//        drawText("EDIT", c, leftButton, p);
-
-        RectF rightButton = new RectF(itemView.getRight() - buttonWidthWithoutPadding, itemView.getTop(), itemView.getRight(), itemView.getBottom());
-        p.setColor(Color.RED);
-        c.drawRoundRect(rightButton, corners, corners, p);
-        drawText("DELETE", c, rightButton, p);
-
-        buttonInstance = null;
-        if (buttonShowedState == ButtonsState.RIGHT_VISIBLE) {
-            buttonInstance = rightButton;
-        }
-    }
-
-    private void drawText(String text, Canvas c, RectF button, Paint p) {
-        float textSize = 60;
-        p.setColor(Color.WHITE);
-        p.setAntiAlias(true);
-        p.setTextSize(textSize);
-
-        float textWidth = p.measureText(text);
-        c.drawText(text, button.centerX() - (textWidth / 2), button.centerY() + (textSize / 2), p);
-    }
-
-    public void onDraw(Canvas c) {
-        if (currentItemViewHolder != null) {
-            drawButtons(c, currentItemViewHolder);
-        }
-    }
+//    private void drawButtons(Canvas c, RecyclerView.ViewHolder viewHolder) {
+//        float buttonWidthWithoutPadding = buttonWidth - 20;
+//        float corners = 16;
+//
+//        View itemView = viewHolder.itemView;
+//        Paint p = new Paint();
+//
+////        RectF leftButton = new RectF(itemView.getLeft(), itemView.getTop(), itemView.getLeft() + buttonWidthWithoutPadding, itemView.getBottom());
+////        p.setColor(Color.BLUE);
+////        c.drawRoundRect(leftButton, corners, corners, p);
+////        drawText("EDIT", c, leftButton, p);
+//
+//        RectF rightButton = new RectF(itemView.getRight() - buttonWidthWithoutPadding, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+//        p.setColor(Color.RED);
+//        c.drawRoundRect(rightButton, corners, corners, p);
+//        drawText("DELETE", c, rightButton, p);
+//
+//        buttonInstance = null;
+//        if (buttonShowedState == ButtonsState.RIGHT_VISIBLE) {
+//            buttonInstance = rightButton;
+//        }
+//    }
+//
+//    private void drawText(String text, Canvas c, RectF button, Paint p) {
+//        float textSize = 60;
+//        p.setColor(Color.WHITE);
+//        p.setAntiAlias(true);
+//        p.setTextSize(textSize);
+//
+//        float textWidth = p.measureText(text);
+//        c.drawText(text, button.centerX() - (textWidth / 2), button.centerY() + (textSize / 2), p);
+//    }
+//
+//    public void onDraw(Canvas c) {
+//        if (currentItemViewHolder != null) {
+//            drawButtons(c, currentItemViewHolder);
+//        }
+//    }
 
 }

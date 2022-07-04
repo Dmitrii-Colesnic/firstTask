@@ -1,156 +1,202 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--<androidx.constraintlayout.widget.ConstraintLayout -->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:layout_marginBottom="10dp"-->
+<!--    >-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="85dp"
-    android:layout_marginBottom="10dp"
-    >
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_main_layout"
+    <com.daimajia.swipe.SwipeLayout xmlns:swipe="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/swipe"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:background="@drawable/item_container_background_ripple"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_height="85dp"
+        android:layout_marginBottom="10dp"
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        swipe:leftEdgeSwipeOffset="0dp"
+        swipe:rightEdgeSwipeOffset="0dp">
 
+        <!--Main-->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_image_location"
-            android:layout_width="0dp"
+            android:id="@+id/cl_main_layout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/item_container_background_ripple"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingStart="20dp"
+            android:paddingTop="15dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="15dp"
 
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.15"
-            >
-
-            <ImageView
-                android:id="@+id/iv"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/ic_love_type3"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_name_location"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:layout_constraintEnd_toStartOf="@id/cl_amount_location"
-
-            app:layout_constraintStart_toEndOf="@id/cl_image_location"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.5">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sale / QR"
-                android:textSize="14sp"
-                android:textStyle="bold"
-
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="637847705603219193"
-                android:textColor="@color/gray"
-                android:textSize="12sp"
-
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_name" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2022-04-05 15:49"
-                android:textSize="12sp"
-                android:textColor="@color/gray"
-
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_description" />
-
-            <ImageView
-                android:id="@+id/iv_isChecked"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:paddingStart="10dp"
-                android:paddingBottom="13dp"
-                android:paddingEnd="10dp"
-
-                android:src="@drawable/ic_heart_is_checked"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_amount_location"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.35">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_image_location"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
 
-            <TextView
-                android:id="@+id/tv_units"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TRY"
-                android:textSize="14sp"
-                android:textStyle="bold"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="3dp"
-                android:text="15,875,300.00"
-                android:textSize="14sp"
-                android:textStyle="bold"
-
-                app:layout_constraintEnd_toStartOf="@id/tv_units"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintWidth_percent="0.15">
 
-            <TextView
-                android:id="@+id/tv_fee"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="6.12"
-                android:textSize="14sp"
-                android:textColor="@color/gray"
+                <ImageView
+                    android:id="@+id/iv"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_love_type3"
 
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_name_location"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toStartOf="@id/cl_amount_location"
+
+                app:layout_constraintStart_toEndOf="@id/cl_image_location"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.5">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sale / QR"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="637847705603219193"
+                    android:textColor="@color/gray"
+                    android:textSize="12sp"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2022-04-05 15:49"
+                    android:textColor="@color/gray"
+                    android:textSize="12sp"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+                <ImageView
+                    android:id="@+id/iv_isChecked"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="13dp"
+
+                    android:src="@drawable/ic_heart_is_checked"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_amount_location"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_units" />
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.35">
+
+                <TextView
+                    android:id="@+id/tv_units"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TRY"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="15,875,300.00"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+
+                    app:layout_constraintEnd_toStartOf="@id/tv_units"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6.12"
+                    android:textColor="@color/gray"
+                    android:textSize="14sp"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_units" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--Swipe-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_swipe"
+            android:layout_width="200dp"
+            android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="text1"
+
+                swipe:layout_constraintBottom_toBottomOf="parent"
+                swipe:layout_constraintEnd_toStartOf="@id/text2"
+                swipe:layout_constraintStart_toStartOf="parent"
+                swipe:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="text2"
+
+                swipe:layout_constraintBottom_toBottomOf="parent"
+                swipe:layout_constraintEnd_toEndOf="parent"
+                swipe:layout_constraintStart_toEndOf="@id/text1"
+                swipe:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.daimajia.swipe.SwipeLayout>
+</LinearLayout>
+
+
+    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->

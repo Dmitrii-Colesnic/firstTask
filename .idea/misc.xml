@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.13848920863309352" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/authentication_background.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/button_reject_background.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/button_resend_background.xml" value="0.2395" />
@@ -30,6 +31,7 @@
         <entry key="app/src/main/res/layout/item_description.xml" value="0.33" />
         <entry key="app/src/main/res/layout/loading_dialog.xml" value="0.4148418491484185" />
         <entry key="app/src/main/res/layout/parent_item_description.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/test_item_swipe.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.33" />
         <entry key="app/src/main/res/menu/navigation_drawer_menu.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2395" />

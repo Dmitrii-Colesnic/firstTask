@@ -10,12 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
+import com.example.firsttask.R;
 import com.example.firsttask.ui.transactions.Transactions;
 import com.example.firsttask.ui.transactions.adapter.entities.TransactionDescription;
-import com.example.firsttask.databinding.ItemDescriptionBinding;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
@@ -27,6 +30,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         notifyItemChanged(position);
     }
 
+    public ItemAdapter(ArrayList<TransactionDescription> dataSet,
+                       Transactions.Fragment fragment) {
+        array = dataSet;
+        this.fragment = fragment;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvName;
         private final TextView tvDescription;
@@ -36,26 +45,36 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         private final ImageView iv;
         private final ImageView ivIsChecked;
         private final ConstraintLayout constraintLayout;
+        private final SwipeLayout swipeLayout;
 
-        public ViewHolder(ItemDescriptionBinding binding) {
-            super(binding.getRoot());
+        public ViewHolder(/*ItemDescriptionBinding binding*/ View itemView) {
+            super(itemView);
 
-            this.tvName = binding.tvName;
-            this.tvDescription = binding.tvDescription;
-            this.tvTime = binding.tvTime;
-            this.tvAmount = binding.tvAmount;
-            this.tvFee = binding.tvFee;
-            this.iv = binding.iv;
-            this.ivIsChecked = binding.ivIsChecked;
-            this.constraintLayout = binding.clMainLayout;
+//            this.tvName = binding.tvName;
+//            this.tvDescription = binding.tvDescription;
+//            this.tvTime = binding.tvTime;
+//            this.tvAmount = binding.tvAmount;
+//            this.tvFee = binding.tvFee;
+//            this.iv = binding.iv;
+//            this.ivIsChecked = binding.ivIsChecked;
+//            this.constraintLayout = binding.clMainLayout;
+
+            this.tvName = itemView.findViewById(R.id.tv_name);
+            this.tvDescription = itemView.findViewById(R.id.tv_description);
+            this.tvTime = itemView.findViewById(R.id.tv_time);
+            this.tvAmount = itemView.findViewById(R.id.tv_amount);
+            this.tvFee = itemView.findViewById(R.id.tv_fee);
+            this.iv = itemView.findViewById(R.id.iv);
+            this.ivIsChecked = itemView.findViewById(R.id.iv_isChecked);
+            this.constraintLayout = itemView.findViewById(R.id.constraintLayout);
+            this.swipeLayout = itemView.findViewById(R.id.swipe);
+
         }
+
+
     }
 
-    public ItemAdapter(ArrayList<TransactionDescription> dataSet,
-                       Transactions.Fragment fragment) {
-        array = dataSet;
-        this.fragment = fragment;
-    }
+
 
     @Override
     public int getItemViewType(int position) {
@@ -69,9 +88,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(ItemDescriptionBinding.inflate(
-                LayoutInflater.from(parent.getContext()), parent, false)
-        );
+//        return new ViewHolder(ItemDescriptionBinding.inflate(
+//                LayoutInflater.from(parent.getContext()), parent, false)
+//        );
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_description, parent, false);
+        return new ViewHolder(view);
     }
 
 //    @Override
@@ -88,21 +109,42 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, final int position) {
         TransactionDescription transaction = array.get(position);
 
+        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+        holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.iv));
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         int pos = position;
 
         String name;
-        if(transaction.getName().length() > 16){
-            name = transaction.getName().substring(0,16) + "...";
+        if (transaction.getName().length() > 16) {
+            name = transaction.getName().substring(0, 16) + "...";
         } else {
             name = transaction.getName();
         }
         holder.tvName.setText(name);
 
         String description;
-        if(transaction.getDescription() != null){
+        if (transaction.getDescription() != null) {
 
-            if(transaction.getDescription().length() > 16){
-                description = transaction.getDescription().substring(0,16) + "...";
+            if (transaction.getDescription().length() > 16) {
+                description = transaction.getDescription().substring(0, 16) + "...";
             } else {
                 description = transaction.getDescription();
             }
@@ -116,7 +158,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.tvAmount.setText(transaction.getAmount());
         holder.tvFee.setText(transaction.getFee());
         holder.iv.setImageResource(transaction.getImage());
-        if(transaction.getIsChecked() == 0){
+        if (transaction.getIsChecked() == 0) {
             holder.ivIsChecked.setVisibility(View.GONE);
         } else {
             holder.ivIsChecked.setVisibility(View.VISIBLE);
@@ -126,21 +168,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.ivIsChecked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                int newImageIsChecked = fragment.changeIsChecked(transaction);
-//                array.get(pos).setIsChecked(newImageIsChecked);
-//                holder.ivIsChecked.setImageResource(newImageIsChecked);
-                if(fragment != null){
-                    fragment.changeIsChecked(transaction, pos);
-                }
+                fragment.changeIsChecked(transaction, pos);
             }
         });
 
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(fragment != null){
-                    fragment.getTransactionDetails(transaction.getTransactionKey());
-                }
+                fragment.getTransactionDetails(transaction.getTransactionKey());
             }
         });
 
