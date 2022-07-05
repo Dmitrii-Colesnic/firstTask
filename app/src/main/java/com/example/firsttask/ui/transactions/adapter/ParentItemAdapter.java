@@ -1,5 +1,6 @@
 package com.example.firsttask.ui.transactions.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -60,6 +61,8 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Vi
 //        layoutManager.setInitialPrefetchItemCount(item.getTransactionDescriptions().size());
 
         ItemAdapter itemAdapter = new ItemAdapter(item.getTransactionDescriptions(), fragment);
+
+        Log.e("ParentAdapter", "itemAdapter");
 
         holder.rvTransactions.setLayoutManager(layoutManager);
         holder.rvTransactions.setAdapter(itemAdapter);

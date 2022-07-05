@@ -53,6 +53,15 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            if (extras.getString("HistoryFragment").equals("HistoryFragment")) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_place, new HistoryFragment()).commit();
+            }
+        }
+
         binding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -84,9 +93,11 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
             startActivity(new Intent(DataActivity.this, AuthenticationActivity.class));
             finish();
         } else {
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_place, new AllItemsFragment()).commit();
+            if(extras == null) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_place, new AllItemsFragment()).commit();
+            }
         }
 
         binding.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {

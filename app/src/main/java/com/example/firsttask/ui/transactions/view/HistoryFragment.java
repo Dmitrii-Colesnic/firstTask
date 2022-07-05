@@ -37,7 +37,6 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
 
     private ParentItemAdapter parentItemAdapter;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHistoryBinding.inflate(inflater, container, false);
@@ -67,6 +66,7 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
         Intent intent = new Intent(getActivity(), InvoiceDetailsActivity.class);
         intent.putExtra("transactionKey", transactionKey);
         startActivity(intent);
+        getActivity().finish();
 
     }
 

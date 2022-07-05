@@ -10,20 +10,23 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
-import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
+import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
+import com.daimajia.swipe.util.Attributes;
 import com.example.firsttask.R;
+import com.example.firsttask.databinding.ItemDescriptionBinding;
 import com.example.firsttask.ui.transactions.Transactions;
 import com.example.firsttask.ui.transactions.adapter.entities.TransactionDescription;
 
 import java.util.ArrayList;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+public class ItemAdapter extends RecyclerSwipeAdapter<ItemAdapter.ViewHolder> {
 
     private ArrayList<TransactionDescription> array;
     private Transactions.Fragment fragment;
+
+//    SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
 
     public void setChecked(int position, int isChecked) {
         array.get(position).setIsChecked(isChecked);
@@ -36,6 +39,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         this.fragment = fragment;
     }
 
+    @Override
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.swipe;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvName;
         private final TextView tvDescription;
@@ -45,35 +53,33 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         private final ImageView iv;
         private final ImageView ivIsChecked;
         private final ConstraintLayout constraintLayout;
-        private final SwipeLayout swipeLayout;
+        private final SwipeLayout swipe;
 
-        public ViewHolder(/*ItemDescriptionBinding binding*/ View itemView) {
-            super(itemView);
+        public ViewHolder(ItemDescriptionBinding binding /*View itemView*/) {
+            super(binding.getRoot());
 
-//            this.tvName = binding.tvName;
-//            this.tvDescription = binding.tvDescription;
-//            this.tvTime = binding.tvTime;
-//            this.tvAmount = binding.tvAmount;
-//            this.tvFee = binding.tvFee;
-//            this.iv = binding.iv;
-//            this.ivIsChecked = binding.ivIsChecked;
-//            this.constraintLayout = binding.clMainLayout;
-
-            this.tvName = itemView.findViewById(R.id.tv_name);
-            this.tvDescription = itemView.findViewById(R.id.tv_description);
-            this.tvTime = itemView.findViewById(R.id.tv_time);
-            this.tvAmount = itemView.findViewById(R.id.tv_amount);
-            this.tvFee = itemView.findViewById(R.id.tv_fee);
-            this.iv = itemView.findViewById(R.id.iv);
-            this.ivIsChecked = itemView.findViewById(R.id.iv_isChecked);
-            this.constraintLayout = itemView.findViewById(R.id.constraintLayout);
-            this.swipeLayout = itemView.findViewById(R.id.swipe);
+            this.tvName = binding.tvName;
+            this.tvDescription = binding.tvDescription;
+            this.tvTime = binding.tvTime;
+            this.tvAmount = binding.tvAmount;
+            this.tvFee = binding.tvFee;
+            this.iv = binding.iv;
+            this.ivIsChecked = binding.ivIsChecked;
+            this.constraintLayout = binding.clMainLayout;
+            this.swipe = binding.swipe;
+//
+//            this.tvName = itemView.findViewById(R.id.tv_name);
+//            this.tvDescription = itemView.findViewById(R.id.tv_description);
+//            this.tvTime = itemView.findViewById(R.id.tv_time);
+//            this.tvAmount = itemView.findViewById(R.id.tv_amount);
+//            this.tvFee = itemView.findViewById(R.id.tv_fee);
+//            this.iv = itemView.findViewById(R.id.iv);
+//            this.ivIsChecked = itemView.findViewById(R.id.iv_isChecked);
+//            this.constraintLayout = itemView.findViewById(R.id.cl_main_layout);
+//            this.swipeLayout = itemView.findViewById(R.id.swipe);
 
         }
-
-
     }
-
 
 
     @Override
@@ -81,18 +87,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         return super.getItemViewType(position);
     }
 
-    //    public ItemAdapter(ArrayList<TransactionDescription> array) {
+//    public ItemAdapter(ArrayList<TransactionDescription> array) {
 //        this.array = array;
 //    }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        return new ViewHolder(ItemDescriptionBinding.inflate(
-//                LayoutInflater.from(parent.getContext()), parent, false)
-//        );
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_description, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(ItemDescriptionBinding.inflate(
+                LayoutInflater.from(parent.getContext()), parent, false)
+        );
+//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_description, parent, false);
+//        return new ViewHolder(view);
     }
 
 //    @Override
@@ -107,20 +113,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+
         TransactionDescription transaction = array.get(position);
 
-        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
-        holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
-            @Override
-            public void onOpen(SwipeLayout layout) {
-                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.iv));
-            }
-        });
-
-
-
-
-
+        holder.swipe.setShowMode(SwipeLayout.ShowMode.PullOut);
+        holder.swipe.addDrag(SwipeLayout.DragEdge.Right, holder.swipe.findViewById(R.id.cl_swipe));
 
 
 
@@ -178,6 +175,40 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 fragment.getTransactionDetails(transaction.getTransactionKey());
             }
         });
+
+        mItemManger.bindView(holder.swipe, position);
+//        mItemManger.setMode(Attributes.Mode.Single);
+//        holder.swipe.addSwipeListener(new SwipeLayout.SwipeListener() {
+//            @Override
+//            public void onStartOpen(SwipeLayout layout) {
+//                mItemManger.closeAllExcept(layout);
+//            }
+//
+//            @Override
+//            public void onOpen(SwipeLayout layout) {
+//
+//            }
+//
+//            @Override
+//            public void onStartClose(SwipeLayout layout) {
+//
+//            }
+//
+//            @Override
+//            public void onClose(SwipeLayout layout) {
+//
+//            }
+//
+//            @Override
+//            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+//
+//            }
+//
+//            @Override
+//            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+//
+//            }
+//        });
 
     }
 

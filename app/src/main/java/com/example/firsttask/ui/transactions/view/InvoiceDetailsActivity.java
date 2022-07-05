@@ -6,6 +6,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -41,6 +42,10 @@ public class InvoiceDetailsActivity extends AppCompatActivity implements Transac
             @Override
             public void onClick(View v) {
                 onBackPressed();
+//                Intent intent = new Intent(InvoiceDetailsActivity.this, DataActivity.class);
+//                intent.putExtra("HistoryFragment", "HistoryFragment");
+//                startActivity(intent);
+//                finish();
             }
         });
 
@@ -112,4 +117,11 @@ public class InvoiceDetailsActivity extends AppCompatActivity implements Transac
         dismissProgressDialog();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(InvoiceDetailsActivity.this, DataActivity.class);
+        intent.putExtra("HistoryFragment", "HistoryFragment");
+        startActivity(intent);
+        finish();
+    }
 }

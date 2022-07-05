@@ -1,32 +1,26 @@
 package com.example.firsttask.ui.transactions.view;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firsttask.R;
 import com.example.firsttask.databinding.FragmentAllItemsBinding;
 import com.example.firsttask.ui.transactions.Transactions;
 import com.example.firsttask.ui.transactions.adapter.ItemAdapter;
-import com.example.firsttask.ui.transactions.adapter.SwipeController;
 import com.example.firsttask.ui.transactions.adapter.entities.ParentTransactionDescription;
-import com.example.firsttask.ui.transactions.preseter.TransactionsPresenter;
 import com.example.firsttask.ui.transactions.adapter.entities.TransactionDescription;
+import com.example.firsttask.ui.transactions.preseter.TransactionsPresenter;
 
 import java.util.ArrayList;
 
@@ -39,7 +33,6 @@ public class AllItemsFragment extends Fragment implements Transactions.Fragment 
     private Dialog loadingDialog;
 
     private ItemAdapter itemAdapter;
-    private SwipeController swipeController = new SwipeController();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
