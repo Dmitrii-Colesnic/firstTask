@@ -125,10 +125,10 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
                     presenter.setStartDate(pStartDate);
                     presenter.setEndDate(pEndDate);
 
-                    Intent intent = new Intent(getActivity(), DataActivity.class);
-                    intent.putExtra("HistoryFragment", "HistoryFragment");
-                    startActivity(intent);
-                    getActivity().finish();
+                    binding.rvParentTransaction.setVisibility(View.VISIBLE);
+                    binding.ivCalendar50.setVisibility(View.GONE);
+                    presenter.getTransactionsHistory(pStartDate, pEndDate, pStatus.toString(), pSearch);
+
                 });
             }
         };

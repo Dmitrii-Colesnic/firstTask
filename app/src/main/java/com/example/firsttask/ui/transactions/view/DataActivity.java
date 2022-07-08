@@ -151,7 +151,11 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
     }
 
     @Override
-    public void navigateToActivity(Class<?> cls) {startActivity(new Intent(DataActivity.this, cls));}
+    public void navigateToAuthenticateActivity() {
+        startActivity(new Intent(DataActivity.this, AuthenticationActivity.class));
+        finish();
+    }
+
 
     @Override
     public void showToast(String toastText) {Toast.makeText(DataActivity.this, toastText, Toast.LENGTH_SHORT).show();}

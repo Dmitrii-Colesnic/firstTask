@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.firsttask.App;
 import com.example.firsttask.R;
 import com.example.firsttask.databinding.ActivityInvoiceDetailsBinding;
+import com.example.firsttask.ui.authentication.view.AuthenticationActivity;
 import com.example.firsttask.ui.transactions.Transactions;
 import com.example.firsttask.ui.transactions.preseter.TransactionsPresenter;
 import com.example.firsttask.ui.transactions.view.entities.InvoiceDetails;
@@ -42,16 +43,7 @@ public class InvoiceDetailsActivity extends AppCompatActivity implements Transac
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-//                Intent intent = new Intent(InvoiceDetailsActivity.this, DataActivity.class);
-//                intent.putExtra("HistoryFragment", "HistoryFragment");
-//                startActivity(intent);
-//                finish();
-            }
-        });
+        binding.toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
@@ -84,9 +76,11 @@ public class InvoiceDetailsActivity extends AppCompatActivity implements Transac
 
     }
 
-
     @Override
-    public void navigateToActivity(Class<?> cls) {startActivity(new Intent(InvoiceDetailsActivity.this, cls));}
+    public void navigateToAuthenticateActivity() {
+        startActivity(new Intent(InvoiceDetailsActivity.this, AuthenticationActivity.class));
+        finish();
+    }
 
     @Override
     public void showToast(String toastText) {Toast.makeText(InvoiceDetailsActivity.this, toastText, Toast.LENGTH_SHORT).show();}

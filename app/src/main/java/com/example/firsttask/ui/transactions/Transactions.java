@@ -14,7 +14,7 @@ public interface Transactions {
     interface View {
 
         // DataActivity
-        void navigateToActivity(Class<?> cls);
+        void navigateToAuthenticateActivity();
 
         // InvoiceDetailsActivity
         void setProgressDialog();

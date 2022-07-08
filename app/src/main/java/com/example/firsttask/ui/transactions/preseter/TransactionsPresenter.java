@@ -810,7 +810,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
     public void logout() {
         sharedPrefTokenStorage.deleteToken();
-        view.navigateToActivity(AuthenticationActivity.class);
+        view.navigateToAuthenticateActivity();
     }
 
     private static String currencyFormat(double currency) {
