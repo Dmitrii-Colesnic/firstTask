@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -44,6 +45,9 @@ public class FavoriteItemsFragment extends Fragment implements Transactions.Frag
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState
     ) {
         binding = FragmentFavoriteItemsBinding.inflate(inflater, container, false);
+
+        ImageView ivCalendar = getActivity().findViewById(R.id.iv_calendar);
+        ivCalendar.setVisibility(View.GONE);
 
         transactionsPresenter.getDataFromDB();
 

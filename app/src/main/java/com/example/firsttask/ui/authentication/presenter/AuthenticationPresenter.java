@@ -1,6 +1,6 @@
 package com.example.firsttask.ui.authentication.presenter;
 
-import static com.example.firsttask.ui.authentication.model.sharedpref.SharedPrefTokenStorage.DEFAULT_VALUE;
+import static com.example.firsttask.data.sharedpref.SharedPrefTokenStorage.DEFAULT_VALUE;
 
 import android.util.Log;
 
@@ -10,7 +10,7 @@ import com.example.firsttask.data.retrofit.entities.recent.ErrorCodeAndMessage;
 import com.example.firsttask.ui.authentication.Authentication;
 import com.example.firsttask.data.retrofit.entities.login.LoginRequest;
 import com.example.firsttask.data.retrofit.entities.login.LoginResponse;
-import com.example.firsttask.ui.authentication.model.sharedpref.SharedPrefTokenStorage;
+import com.example.firsttask.data.sharedpref.SharedPrefTokenStorage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -58,6 +58,10 @@ public class AuthenticationPresenter implements Authentication.Presenter {
                         if(response.isSuccessful()){
 
                             sharedPrefTokenStorage.saveToken(response.body().getAccessToken());
+
+                            sharedPrefTokenStorage.removeStartDate();
+                            sharedPrefTokenStorage.removeEndDate();
+
                             view.navigateToHomeActivity();
 
                         } else {

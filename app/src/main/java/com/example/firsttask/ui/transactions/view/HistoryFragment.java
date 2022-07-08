@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +19,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.firsttask.App;
@@ -32,8 +37,11 @@ import com.example.firsttask.ui.transactions.adapter.ParentItemAdapter;
 import com.example.firsttask.ui.transactions.adapter.entities.ParentTransactionDescription;
 import com.example.firsttask.ui.transactions.adapter.entities.TransactionDescription;
 import com.example.firsttask.ui.transactions.preseter.TransactionsPresenter;
+import com.google.android.material.datepicker.MaterialDatePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,6 +51,9 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
 
     private final TransactionsPresenter presenter = new TransactionsPresenter(HistoryFragment.this);
 
+
+    ImageView ivCalendar;
+
     private Dialog loadingDialog;
 
     private ParentItemAdapter parentItemAdapter;
@@ -51,15 +62,80 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
 
     private Integer pStatus = 0;
 
+    private String pStartDate = "";
+
+    private String pEndDate = "";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHistoryBinding.inflate(inflater, container, false);
 
-        presenter.getTransactionsHistory("", "", pStatus.toString(), pSearch);
+        ivCalendar = getActivity().findViewById(R.id.iv_calendar);
+        ivCalendar.setVisibility(View.VISIBLE);
+
+        setCalendar();
+
+        if(presenter.datesExist()){
+            pStartDate = presenter.getStartDate();
+            pEndDate = presenter.getEndDate();
+            binding.rvParentTransaction.setVisibility(View.VISIBLE);
+            binding.ivCalendar50.setVisibility(View.GONE);
+            presenter.getTransactionsHistory(pStartDate, pEndDate, pStatus.toString(), pSearch);
+        } else {
+            binding.rvParentTransaction.setVisibility(View.GONE);
+            binding.ivCalendar50.setVisibility(View.VISIBLE);
+        }
 
         initializingFilterButtons();
 
         return binding.getRoot();
+    }
+
+    private void setCalendar() {
+
+        final FragmentManager fm = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+
+        MaterialDatePicker<Pair<Long, Long>> materialDatePicker = MaterialDatePicker.Builder
+                .dateRangePicker()
+                .setSelection(Pair.create(MaterialDatePicker.thisMonthInUtcMilliseconds(), MaterialDatePicker.todayInUtcMilliseconds()))
+                .build();
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                materialDatePicker.show(fm, "Tag_picker");
+
+                materialDatePicker.addOnPositiveButtonClickListener(selection -> {
+//                Get the selected DATE RANGE
+                    Pair selectedDates = (Pair) materialDatePicker.getSelection();
+//              then obtain the startDate & endDate from the range
+                    final Pair<Date, Date> rangeDate = new Pair<>(new Date((Long) selectedDates.first), new Date((Long) selectedDates.second));
+//              assigned variables
+                    Date startDate = rangeDate.first;
+                    Date endDate = rangeDate.second;
+//              Format the dates in ur desired display mode
+                    SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd");
+//              Display it by setText
+                    Log.e("date 1", simpleFormat.format(startDate));
+                    Log.e("date 2", simpleFormat.format(endDate));
+
+                    pStartDate = simpleFormat.format(startDate);
+                    pEndDate = simpleFormat.format(endDate);
+
+                    presenter.setStartDate(pStartDate);
+                    presenter.setEndDate(pEndDate);
+
+                    Intent intent = new Intent(getActivity(), DataActivity.class);
+                    intent.putExtra("HistoryFragment", "HistoryFragment");
+                    startActivity(intent);
+                    getActivity().finish();
+                });
+            }
+        };
+
+        ivCalendar.setOnClickListener(listener);
+        binding.ivCalendar50.setOnClickListener(listener);
+
     }
 
     @Override
@@ -72,7 +148,7 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
 //                        || event.getAction() == KeyEvent.ACTION_DOWN
                 ) {
                     pSearch = tvSearch.getText().toString();
-                    presenter.getTransactionsHistory("", "", pStatus.toString(), pSearch);
+                    presenter.getTransactionsHistory(pStartDate, pEndDate, pStatus.toString(), pSearch);
                     return true;
                 }
 
@@ -81,11 +157,15 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
         });
 
 
-
         binding.etSearch.addTextChangedListener(
                 new TextWatcher() {
-                    @Override public void onTextChanged(CharSequence s, int start, int before, int count) { }
-                    @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
 
                     private Timer timer = new Timer();
                     private final long DELAY = 500;
@@ -99,7 +179,7 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
                                     @Override
                                     public void run() {
                                         pSearch = binding.etSearch.getText().toString();
-                                        presenter.getTransactionsHistory("", "", pStatus.toString(), pSearch);
+                                        presenter.getTransactionsHistory(pStartDate, pEndDate, pStatus.toString(), pSearch);
                                     }
                                 },
                                 DELAY
@@ -124,7 +204,7 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
             binding.btnFilterPaid.setBackgroundResource(R.drawable.button_filter_background);
             binding.btnFilterPaid.setTextColor(Color.GRAY);
 
-            presenter.getTransactionsHistory("", "", pStatus.toString(), pSearch);
+            presenter.getTransactionsHistory(pStartDate, pEndDate, pStatus.toString(), pSearch);
         });
 
         binding.btnFilterPending.setOnClickListener(v -> {
@@ -139,7 +219,7 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
             binding.btnFilterPaid.setBackgroundResource(R.drawable.button_filter_background);
             binding.btnFilterPaid.setTextColor(Color.GRAY);
 
-            presenter.getTransactionsHistory("", "", pStatus.toString(), pSearch);
+            presenter.getTransactionsHistory(pStartDate, pEndDate, pStatus.toString(), pSearch);
         });
 
         binding.btnFilterPaid.setOnClickListener(v -> {
@@ -154,7 +234,7 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
             binding.btnFilterAll.setBackgroundResource(R.drawable.button_filter_background);
             binding.btnFilterAll.setTextColor(Color.GRAY);
 
-            presenter.getTransactionsHistory("", "", pStatus.toString(), pSearch);
+            presenter.getTransactionsHistory(pStartDate, pEndDate, pStatus.toString(), pSearch);
         });
 
     }
@@ -182,9 +262,9 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
         dialog.setCancelable(false);
 
         dialog.findViewById(R.id.btn_try_again).setOnClickListener(v -> {
-            if(App.isNetworkAvailable()){
+            if (App.isNetworkAvailable()) {
                 dialog.dismiss();
-                presenter.getTransactionsHistory("", "", pStatus.toString(), pSearch);
+                presenter.getTransactionsHistory(pStartDate, pEndDate, pStatus.toString(), pSearch);
             }
         });
 
@@ -222,7 +302,7 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
         TextView tvMessage = dialog.findViewById(R.id.tv_copy_link_message);
         tvMessage.setText(message);
 
-        if(tvTitle.getText() == App.getContext().getResources().getString(R.string.copy_link)) {
+        if (tvTitle.getText() == App.getContext().getResources().getString(R.string.copy_link)) {
 
             dialog.findViewById(R.id.btn_copy_link).setOnClickListener(v -> {
                 ClipboardManager clipboard = (ClipboardManager) App.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -251,7 +331,9 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
     }
 
     @Override
-    public void showToast(String toastText) {Toast.makeText(getActivity(), toastText, Toast.LENGTH_SHORT).show();}
+    public void showToast(String toastText) {
+        Toast.makeText(getActivity(), toastText, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void setProgressDialog() {
@@ -267,8 +349,6 @@ public class HistoryFragment extends Fragment implements Transactions.Fragment {
     public void dismissProgressDialog() {
         loadingDialog.dismiss();
     }
-
-
 
 
 }

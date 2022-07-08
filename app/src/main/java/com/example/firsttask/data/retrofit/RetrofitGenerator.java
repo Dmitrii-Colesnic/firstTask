@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.example.firsttask.ui.authentication.model.sharedpref.SharedPrefTokenStorage;
+import com.example.firsttask.data.sharedpref.SharedPrefTokenStorage;
 
 import java.io.IOException;
 

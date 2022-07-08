@@ -93,6 +93,8 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
                 switch (item.getItemId()) {
                     case R.id.nav_logout:
                         transactionsPresenter.logout();
+                        transactionsPresenter.deleteStartDate();
+                        transactionsPresenter.deleteEndDate();
                         break;
                     case R.id.nav_History:
                         fragmentTransaction.replace(R.id.fragment_place, new HistoryFragment()).commit();

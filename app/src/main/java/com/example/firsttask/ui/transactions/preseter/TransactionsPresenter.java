@@ -2,18 +2,10 @@ package com.example.firsttask.ui.transactions.preseter;
 
 import static android.content.ContentValues.TAG;
 
-import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.firsttask.R;
 import com.example.firsttask.App;
@@ -27,14 +19,13 @@ import com.example.firsttask.data.roomdatabase.TransactionDatabase;
 import com.example.firsttask.data.roomdatabase.TransactionEntity;
 import com.example.firsttask.ui.authentication.view.AuthenticationActivity;
 import com.example.firsttask.ui.transactions.adapter.ItemAdapter;
-import com.example.firsttask.ui.authentication.model.sharedpref.SharedPrefTokenStorage;
+import com.example.firsttask.data.sharedpref.SharedPrefTokenStorage;
 import com.example.firsttask.ui.transactions.Transactions;
 import com.example.firsttask.ui.transactions.adapter.entities.ParentTransactionDescription;
 import com.example.firsttask.ui.transactions.adapter.entities.TransactionDescription;
 import com.example.firsttask.ui.transactions.view.entities.InvoiceDetails;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -204,14 +195,54 @@ public class TransactionsPresenter implements Transactions.Presenter {
         }
     }
 
+    @Override
+    public boolean datesExist() {
+
+        if(sharedPrefTokenStorage.getStartDate().equals("none")  ||  sharedPrefTokenStorage.getEndDate().equals("none"))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public String getStartDate() {
+        return sharedPrefTokenStorage.getStartDate();
+    }
+
+    @Override
+    public String getEndDate() {
+        return sharedPrefTokenStorage.getEndDate();
+    }
+
+    @Override
+    public void setStartDate(String startDate) {
+        sharedPrefTokenStorage.saveStartDate(startDate);
+    }
+
+    @Override
+    public void setEndDate(String endDate) {
+        sharedPrefTokenStorage.saveEndDate(endDate);
+    }
+
+    @Override
+    public void deleteStartDate() {
+        sharedPrefTokenStorage.removeStartDate();
+    }
+
+    @Override
+    public void deleteEndDate() {
+        sharedPrefTokenStorage.removeEndDate();
+    }
 
     @Override
     public void getTransactionsHistory(String startDate, String endDate, String pStatus, String pSearch) {
 
         if(App.isNetworkAvailable()) {
 
-            startDate = "2022-02-01";
-            endDate = "2022-11-01";
+//            startDate = "2022-02-01";
+//            endDate = "2022-11-01";
 
             if (pStatus.equals("0")) {
                 pStatus = "";

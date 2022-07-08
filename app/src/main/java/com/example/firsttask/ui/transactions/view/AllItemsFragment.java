@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,7 +43,11 @@ public class AllItemsFragment extends Fragment implements Transactions.Fragment 
                              Bundle savedInstanceState) {
         binding = FragmentAllItemsBinding.inflate(inflater, container, false);
 
+        ImageView ivCalendar = getActivity().findViewById(R.id.iv_calendar);
+        ivCalendar.setVisibility(View.GONE);
+
         transactionsPresenter.getData();
+
 
         return binding.getRoot();
     }

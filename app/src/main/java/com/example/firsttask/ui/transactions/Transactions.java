@@ -53,6 +53,14 @@ public interface Transactions {
         void getTransactionDetails(String transactionKey);
         void getTransactionLink(String transactionKey);
         void getPDF();
+
+        boolean datesExist();
+        String getStartDate();
+        String getEndDate();
+        void setStartDate(String startDate);
+        void setEndDate(String endDate);
+        void deleteStartDate();
+        void deleteEndDate();
     }
 
 }
