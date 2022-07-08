@@ -10,9 +10,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.firsttask.App;
 import com.example.firsttask.R;
 import com.example.firsttask.databinding.ActivityInvoiceDetailsBinding;
 import com.example.firsttask.ui.transactions.Transactions;
@@ -71,12 +75,21 @@ public class InvoiceDetailsActivity extends AppCompatActivity implements Transac
 
         }
 
+        binding.ivSavePdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.getPDF();
+            }
+        });
+
     }
+
 
     @Override
-    public void navigateToAuthenticateActivity() {
+    public void navigateToActivity(Class<?> cls) {startActivity(new Intent(InvoiceDetailsActivity.this, cls));}
 
-    }
+    @Override
+    public void showToast(String toastText) {Toast.makeText(InvoiceDetailsActivity.this, toastText, Toast.LENGTH_SHORT).show();}
 
     @Override
     public void setProgressDialog() {
@@ -95,8 +108,6 @@ public class InvoiceDetailsActivity extends AppCompatActivity implements Transac
 
     @Override
     public void setDetailsData(InvoiceDetails invoiceDetails){
-        setProgressDialog();
-
         binding.tvOrderAmount.setText(invoiceDetails.getAmount());
         binding.tvInvoiceNumber.setText(invoiceDetails.getOrderNumber());
 
@@ -113,8 +124,6 @@ public class InvoiceDetailsActivity extends AppCompatActivity implements Transac
         binding.tvExpires.setText(invoiceDetails.getExpired());
         binding.tvPaymentDate.setText(invoiceDetails.getPaymentDate());
         binding.tvCommission.setText(invoiceDetails.getCommission());
-
-        dismissProgressDialog();
     }
 
     @Override
@@ -124,4 +133,44 @@ public class InvoiceDetailsActivity extends AppCompatActivity implements Transac
         startActivity(intent);
         finish();
     }
+
+    @Override
+    public void showNoInternetDialog() {
+
+        Dialog dialog = new Dialog(InvoiceDetailsActivity.this);
+        dialog.setContentView(R.layout.no_internet_dialog);
+        dialog.setCancelable(false);
+
+        dialog.findViewById(R.id.btn_try_again).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(App.isNetworkAvailable()){
+                    dialog.dismiss();
+
+                    Bundle extras = getIntent().getExtras();
+                    if(extras != null){
+                        String transactionKey = extras.getString("transactionKey");
+                        presenter.getTransactionDetails(transactionKey);
+                    } else {
+                        Intent intent = new Intent(InvoiceDetailsActivity.this, DataActivity.class);
+                        intent.putExtra("HistoryFragment", "HistoryFragment");
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            }
+        });
+
+        dialog.findViewById(R.id.btn_exit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                System.exit(0);
+            }
+        });
+
+        dialog.show();
+
+    }
+
 }

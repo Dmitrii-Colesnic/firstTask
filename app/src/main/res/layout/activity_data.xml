@@ -16,7 +16,7 @@
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="15dp"
+            app:cardElevation="7.5dp"
             app:cardPreventCornerOverlap="false"
 
             app:layout_constraintTop_toTopOf="parent">
@@ -30,6 +30,7 @@
                 >
 
                 <TextView
+                    android:id="@+id/tv_transactions_toolbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/transactions"

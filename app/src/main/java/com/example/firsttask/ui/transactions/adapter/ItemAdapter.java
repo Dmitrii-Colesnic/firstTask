@@ -3,6 +3,7 @@ package com.example.firsttask.ui.transactions.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,7 +54,13 @@ public class ItemAdapter extends RecyclerSwipeAdapter<ItemAdapter.ViewHolder> {
         private final ImageView iv;
         private final ImageView ivIsChecked;
         private final ConstraintLayout constraintLayout;
+
         private final SwipeLayout swipe;
+        private final FrameLayout flCircleGreen;
+        private final FrameLayout flCircleRed;
+        private final FrameLayout flCircleGray;
+
+        private final ConstraintLayout clSwipe;
 
         public ViewHolder(ItemDescriptionBinding binding /*View itemView*/) {
             super(binding.getRoot());
@@ -67,6 +74,11 @@ public class ItemAdapter extends RecyclerSwipeAdapter<ItemAdapter.ViewHolder> {
             this.ivIsChecked = binding.ivIsChecked;
             this.constraintLayout = binding.clMainLayout;
             this.swipe = binding.swipe;
+            this.flCircleGreen = binding.flCircleGreen;
+            this.flCircleRed = binding.flCircleRed;
+            this.flCircleGray = binding.flCircleGray;
+
+            this.clSwipe = binding.clSwipe;
 //
 //            this.tvName = itemView.findViewById(R.id.tv_name);
 //            this.tvDescription = itemView.findViewById(R.id.tv_description);
@@ -119,13 +131,10 @@ public class ItemAdapter extends RecyclerSwipeAdapter<ItemAdapter.ViewHolder> {
         holder.swipe.setShowMode(SwipeLayout.ShowMode.PullOut);
         holder.swipe.addDrag(SwipeLayout.DragEdge.Right, holder.swipe.findViewById(R.id.cl_swipe));
 
-
-
-
-
-
-
-
+        if(!transaction.getName().substring(0,2).equals("In")){
+            holder.flCircleGreen.setVisibility(View.GONE);
+            holder.clSwipe.setMaxWidth(450);
+        }
 
         int pos = position;
 
@@ -172,7 +181,23 @@ public class ItemAdapter extends RecyclerSwipeAdapter<ItemAdapter.ViewHolder> {
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.swipe.close();
                 fragment.getTransactionDetails(transaction.getTransactionKey());
+            }
+        });
+
+        holder.flCircleGray.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment.getTransactionDetails(transaction.getTransactionKey());
+            }
+        });
+
+        holder.flCircleGreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.swipe.close();
+                fragment.getTransactionLink(transaction.getTransactionKey());
             }
         });
 

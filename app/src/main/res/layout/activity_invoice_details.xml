@@ -11,7 +11,7 @@
         android:id="@+id/card_view_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="20dp"
+        app:cardElevation="5dp"
         app:cardPreventCornerOverlap="false"
 
         app:layout_constraintTop_toTopOf="parent">
@@ -25,15 +25,38 @@
             tools:ignore="Overdraw"
             >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/invoice_details"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:layout_marginRight="?android:attr/actionBarSize"
-                android:gravity="center"
-                />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/invoice_details"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_save_pdf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_save_25"
+                    android:layout_marginEnd="20dp"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -43,7 +66,7 @@
         android:id="@+id/card_view_cl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="10dp"
+        app:cardElevation="2.5dp"
         app:cardPreventCornerOverlap="false"
 
         app:layout_constraintEnd_toEndOf="parent"

@@ -6,13 +6,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.firsttask.App;
 import com.example.firsttask.R;
 import com.example.firsttask.databinding.ActivityDataBinding;
 import com.example.firsttask.ui.authentication.presenter.AuthenticationPresenter;
@@ -22,6 +36,8 @@ import com.example.firsttask.ui.transactions.preseter.TransactionsPresenter;
 import com.example.firsttask.ui.transactions.view.entities.InvoiceDetails;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Locale;
 
 
 public class DataActivity extends AppCompatActivity implements Transactions.View {
@@ -41,9 +57,23 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         binding = ActivityDataBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setLocale();
+
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            if (extras.getString("HistoryFragment").equals("HistoryFragment")) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_place, new HistoryFragment()).commit();
+                binding.bottomNavigation.setVisibility(View.GONE);
+            }
+        } else {
+            binding.bottomNavigation.setVisibility(View.VISIBLE);
+        }
 
         // drawer layout instance to toggle the menu icon to open drawer and back button to close drawer
         drawerLayout = binding.getRoot();
@@ -52,15 +82,6 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         // pass the Open and Close toggle for the drawer layout listener to toggle the button
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-
-        Bundle extras = getIntent().getExtras();
-        if(extras != null) {
-            if (extras.getString("HistoryFragment").equals("HistoryFragment")) {
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_place, new HistoryFragment()).commit();
-            }
-        }
 
         binding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -128,24 +149,49 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
     }
 
     @Override
-    public void navigateToAuthenticateActivity() {
-        startActivity(new Intent(DataActivity.this, AuthenticationActivity.class));
-        finish();
+    public void navigateToActivity(Class<?> cls) {startActivity(new Intent(DataActivity.this, cls));}
+
+    @Override
+    public void showToast(String toastText) {Toast.makeText(DataActivity.this, toastText, Toast.LENGTH_SHORT).show();}
+
+    @Override
+    public void showNoInternetDialog() {
+
+        Dialog dialog = new Dialog(DataActivity.this);
+        dialog.setContentView(R.layout.no_internet_dialog);
+        dialog.setCancelable(false);
+
+        dialog.findViewById(R.id.btn_try_again).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(App.isNetworkAvailable()){
+                    dialog.dismiss();
+                    startActivity(new Intent(DataActivity.this, DataActivity.class));
+                    finish();
+                }
+            }
+        });
+
+        dialog.findViewById(R.id.btn_exit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                System.exit(0);
+            }
+        });
+
+        dialog.show();
+
     }
 
     @Override
-    public void setProgressDialog() {
-
-    }
+    public void setProgressDialog() {}
 
     @Override
-    public void dismissProgressDialog() {
-    }
+    public void dismissProgressDialog() {}
 
     @Override
-    public void setDetailsData(InvoiceDetails invoiceDetails) {
-
-    }
+    public void setDetailsData(InvoiceDetails invoiceDetails) {}
 
     public boolean selectFragment(MenuItem item) {
         FragmentManager fragmentManager = getFragmentManager();
@@ -163,4 +209,59 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         return false;
     }
 
+    /**    Clear focus on touch outside for all EditText inputs.    */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+    private void setLocale() {
+        String language = authenticationPresenter.getLanguage();
+
+//        Locale locale = new Locale(language);
+//        Locale.setDefault(locale);
+//        Configuration config = getBaseContext().getResources().getConfiguration();
+//        config.locale = locale;
+//        getBaseContext()
+//                .getResources()
+//                .updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
+        Resources resources = getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = new Locale(language);
+        resources.updateConfiguration(configuration, metrics);
+        onConfigurationChanged(configuration);
+
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        MenuItem itemAllList = binding.bottomNavigation.getMenu().findItem(R.id.item_list);
+        MenuItem itemFavorites = binding.bottomNavigation.getMenu().findItem(R.id.item_favorites);
+        MenuItem navLogout = binding.navigationView.getMenu().findItem(R.id.nav_logout);
+        MenuItem navHistory = binding.navigationView.getMenu().findItem(R.id.nav_History);
+        MenuItem navTransactions = binding.navigationView.getMenu().findItem(R.id.nav_Transactions);
+
+        binding.tvTransactionsToolbar.setText(R.string.transactions);
+        itemAllList.setTitle(R.string.all_list);
+        itemFavorites.setTitle(R.string.favorites);
+        navLogout.setTitle(R.string.logout);
+        navHistory.setTitle(R.string.history);
+        navTransactions.setTitle(R.string.transactions_favorites);
+    }
 }

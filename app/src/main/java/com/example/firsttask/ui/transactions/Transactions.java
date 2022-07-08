@@ -1,5 +1,7 @@
 package com.example.firsttask.ui.transactions;
 
+import android.view.View;
+
 import com.example.firsttask.ui.transactions.adapter.ItemAdapter;
 import com.example.firsttask.ui.transactions.adapter.entities.ParentTransactionDescription;
 import com.example.firsttask.ui.transactions.adapter.entities.TransactionDescription;
@@ -12,12 +14,15 @@ public interface Transactions {
     interface View {
 
         // DataActivity
-        void navigateToAuthenticateActivity();
+        void navigateToActivity(Class<?> cls);
 
         // InvoiceDetailsActivity
         void setProgressDialog();
         void dismissProgressDialog();
         void setDetailsData(InvoiceDetails invoiceDetails);
+        void showToast(String toastText);
+
+        void showNoInternetDialog();
     }
 
     interface Fragment {
@@ -26,6 +31,8 @@ public interface Transactions {
         void setUpListOfDataIntoRecyclerView(ArrayList<TransactionDescription> array);
         void changeIsChecked(TransactionDescription transaction, int position);
         void getTransactionDetails(String transactionKey);
+        void getTransactionLink(String transactionKey);
+        void linkDialog(String title ,String message);
 
         void setProgressDialog();
         void dismissProgressDialog();
@@ -34,6 +41,7 @@ public interface Transactions {
 
         void navigateToActivity(Class<?> cls);
 
+        void showNoInternetDialog();
     }
 
     interface Presenter {
@@ -41,9 +49,10 @@ public interface Transactions {
         void getData();
         void changeIsChecked(TransactionDescription transaction, ItemAdapter adapter, int position);
         void getDataFromDB();
-        void getTransactionsHistory();
+        void getTransactionsHistory(String startDate, String endDate, String pStatus, String pSearch);
         void getTransactionDetails(String transactionKey);
-
+        void getTransactionLink(String transactionKey);
+        void getPDF();
     }
 
 }

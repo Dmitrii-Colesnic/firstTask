@@ -38,4 +38,15 @@
     <string name="transactions">Transactions</string>
     <string name="reject">REJECT</string>
     <string name="resend">RESEND</string>
+    <string name="copy_link">Copy Link</string>
+    <string name="search">search</string>
+    <string name="all">All</string>
+    <string name="pending">Pending</string>
+    <string name="paid">Paid</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="check_internet_connection_and_try_again">Check internet connection and try again</string>
+    <string name="try_again">Try Again</string>
+    <string name="exit">Exit</string>
+    <string name="copied">copied</string>
+    <string name="error">Error</string>
 </resources>

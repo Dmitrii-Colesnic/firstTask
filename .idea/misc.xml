@@ -6,11 +6,14 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.13848920863309352" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/authentication_background.xml" value="0.2" />
+        <entry key="app/src/main/res/drawable/button_filter_background.xml" value="0.2905" />
+        <entry key="app/src/main/res/drawable/button_filter_background_clicked.xml" value="0.2905" />
         <entry key="app/src/main/res/drawable/button_reject_background.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/button_resend_background.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/categories_background.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/categories_background_purple.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/categories_background_red.xml" value="0.2395" />
+        <entry key="app/src/main/res/drawable/edit_text_search_system_background.xml" value="0.2905" />
         <entry key="app/src/main/res/drawable/fl_circle_gray_background.xml" value="0.2905" />
         <entry key="app/src/main/res/drawable/fl_circle_green_background.xml" value="0.2905" />
         <entry key="app/src/main/res/drawable/fl_circle_red_background.xml" value="0.2905" />
@@ -28,13 +31,17 @@
         <entry key="app/src/main/res/layout/activity_history.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/activity_invoice_details.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/copy_link__dialog.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/fragment_all_items.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_favorite_items.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_history.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/item_description.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_description_test.xml" value="0.33" />
         <entry key="app/src/main/res/layout/loading_dialog.xml" value="0.4148418491484185" />
+        <entry key="app/src/main/res/layout/no_internet_dialog.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/parent_item_description.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/swipe.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/swipe_description.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/test_item_swipe.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.33" />
         <entry key="app/src/main/res/menu/navigation_drawer_menu.xml" value="0.35520833333333335" />

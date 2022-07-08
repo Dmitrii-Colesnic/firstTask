@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(!authenticationPresenter.isAuthenticated()){
 
-//            firstLoad();
             startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
             finish();
 
@@ -35,17 +34,5 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-    }
-
-    private void firstLoad(){
-        new CountDownTimer(2000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {}
-            @Override
-            public void onFinish() {
-                startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
-                finish();
-            }
-        }.start();
     }
 }

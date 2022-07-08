@@ -1,7 +1,9 @@
 package com.example.firsttask.ui.transactions.view;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.firsttask.App;
 import com.example.firsttask.R;
 import com.example.firsttask.databinding.FragmentAllItemsBinding;
 import com.example.firsttask.ui.transactions.Transactions;
@@ -88,19 +91,47 @@ public class AllItemsFragment extends Fragment implements Transactions.Fragment 
     }
 
     @Override
-    public void setUpListOfDataIntoParentRecyclerView(ArrayList<ParentTransactionDescription> array) {
+    public void navigateToActivity(Class<?> cls) {startActivity(new Intent(getActivity(), cls));}
+
+    @Override
+    public void showNoInternetDialog() {
+
+        Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.no_internet_dialog);
+        dialog.setCancelable(false);
+
+        dialog.findViewById(R.id.btn_try_again).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(App.isNetworkAvailable()){
+                    dialog.dismiss();
+                    transactionsPresenter.getData();
+                }
+            }
+        });
+
+        dialog.findViewById(R.id.btn_exit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+                System.exit(0);
+            }
+        });
+
+        dialog.show();
 
     }
 
     @Override
-    public void navigateToActivity(Class<?> cls) {
-        startActivity(new Intent(getActivity(), cls));
-    }
+    public void setUpListOfDataIntoParentRecyclerView(ArrayList<ParentTransactionDescription> array) {}
 
     @Override
-    public void getTransactionDetails(String transactionKey) {
+    public void getTransactionDetails(String transactionKey) {}
 
-    }
+    @Override
+    public void getTransactionLink(String transactionKey) {}
 
+    @Override
+    public void linkDialog(String title, String message) {}
 
 }

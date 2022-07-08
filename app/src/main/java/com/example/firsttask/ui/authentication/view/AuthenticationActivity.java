@@ -182,6 +182,16 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
 
     @Override
     public void setLocale(String language) {
+
+        Locale locale = new Locale(language);
+        presenter.saveLanguage(language);
+        Locale.setDefault(locale);
+        Configuration config = getBaseContext().getResources().getConfiguration();
+        config.locale = locale;
+        getBaseContext()
+                .getResources()
+                .updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
         Resources resources = getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         Configuration configuration = resources.getConfiguration();

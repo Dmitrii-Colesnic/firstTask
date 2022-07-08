@@ -1,9 +1,19 @@
 package com.example.firsttask.ui.transactions.preseter;
 
-import android.content.Intent;
+import static android.content.ContentValues.TAG;
+
+import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.firsttask.R;
 import com.example.firsttask.App;
@@ -11,19 +21,24 @@ import com.example.firsttask.data.retrofit.entities.ReturnObject;
 import com.example.firsttask.data.retrofit.entities.details.DetailsResponse;
 import com.example.firsttask.data.retrofit.entities.history.HistoryResponse;
 import com.example.firsttask.data.retrofit.entities.history.HistoryReturnObject;
+import com.example.firsttask.data.retrofit.entities.link.LinkResponse;
 import com.example.firsttask.data.retrofit.entities.recent.UserResponse;
 import com.example.firsttask.data.roomdatabase.TransactionDatabase;
 import com.example.firsttask.data.roomdatabase.TransactionEntity;
-import com.example.firsttask.ui.MainActivity;
 import com.example.firsttask.ui.authentication.view.AuthenticationActivity;
 import com.example.firsttask.ui.transactions.adapter.ItemAdapter;
 import com.example.firsttask.ui.authentication.model.sharedpref.SharedPrefTokenStorage;
 import com.example.firsttask.ui.transactions.Transactions;
 import com.example.firsttask.ui.transactions.adapter.entities.ParentTransactionDescription;
 import com.example.firsttask.ui.transactions.adapter.entities.TransactionDescription;
-import com.example.firsttask.ui.transactions.view.InvoiceDetailsActivity;
 import com.example.firsttask.ui.transactions.view.entities.InvoiceDetails;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -38,6 +53,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,157 +80,32 @@ public class TransactionsPresenter implements Transactions.Presenter {
     @Override
     public void getData() {
 
-        ArrayList<TransactionDescription> transactions = new ArrayList();
+        if(App.isNetworkAvailable()) {
 
-        fragment.setProgressDialog();
-        app.getUserService().getTransactionRecent()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<UserResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        Log.e("getData", "onSubscribe");
-                    }
+            ArrayList<TransactionDescription> transactions = new ArrayList();
 
-                    @Override
-                    public void onSuccess(UserResponse userResponse) {
-                        Log.e("getData", "stars onSuccess");
-
-                        for (ReturnObject item : userResponse.getReturnObject()) {
-
-                            TransactionDescription transaction = new TransactionDescription();
-
-                            transaction.setTransactionKey(item.getTransactionKey());
-                            transaction.setName(item.getName());
-                            transaction.setDescription(item.getDescription());
-                            transaction.setIsChecked(R.drawable.ic_heart_is_not_checked);
-
-                            //setImage
-                            if (item.getType() == 2) {
-                                transaction.setImage(R.drawable.ic_money_type2);
-                            } else {
-                                transaction.setImage(R.drawable.ic_love_type3);
-                            }
-
-                            //setData
-                            try {
-                                String input = item.getDateTransaction();
-                                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                                Date date = parser.parse(input);
-                                SimpleDateFormat formatter = new SimpleDateFormat("MMM d,yyyy, HH:mm");
-                                String formattedDate = formatter.format(date);
-
-                                transaction.setTime(formattedDate);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-
-                            //setAmount
-                            Float amount = item.getAmount().floatValue() / 100;
-                            String parseAmount = currencyFormat(amount);
-                            transaction.setAmount(parseAmount);
-
-                            //setFee
-                            Float fee = item.getFee().floatValue() / 100;
-                            String parseFee = currencyFormat(fee);
-                            transaction.setFee(parseFee);
-
-                            transactions.add(transaction);
+            fragment.setProgressDialog();
+            app.getUserService().getTransactionRecent()
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleObserver<UserResponse>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            Log.e("getData", "onSubscribe");
                         }
-                        //here I have full transactions array from internet
 
-                        //setIsChecked
-                        db.getTransactionDao().fetchAll()
-                                .subscribeOn(Schedulers.newThread())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new SingleObserver<List<TransactionEntity>>() {
-                                    @Override
-                                    public void onSubscribe(Disposable d) {
-                                        Log.e("fetch all data from db", "onSubscribe");
-                                    }
+                        @Override
+                        public void onSuccess(UserResponse userResponse) {
+                            Log.e("getData", "stars onSuccess");
 
-                                    @Override
-                                    public void onSuccess(List<TransactionEntity> transactionEntities) {
-                                        Log.e("fetch all data from db", "onSuccess");
-                                        //here i have full array from db
-                                        for (TransactionDescription itemTransaction : transactions) {
-                                            for (TransactionEntity descriptionItem : transactionEntities) {
-                                                if (itemTransaction.getDescription().equals(descriptionItem.getDescription())) {
-                                                    //it exist in db
-                                                    Log.e("fetch all data from db", "exist");
-                                                    itemTransaction.setIsChecked(R.drawable.ic_heart_is_checked);
-                                                }
-                                            }
-                                        }
-
-                                        fragment.dismissProgressDialog();
-                                        fragment.setUpListOfDataIntoRecyclerView(transactions);
-                                        Log.e("getData", "finish sequential thread");
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Log.e("fetch all data from db", "onError");
-                                    }
-                                });
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("getData", "onError");
-                        Log.e("getData", e.toString());
-                    }
-                });
-
-    }
-
-    @Override
-    public void getTransactionsHistory() {
-
-        String startDate = "2022-02-01";
-        String endDate = "2022-11-01";
-
-        app.getUserService().getTransactionsHistory(startDate, endDate)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<HistoryResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        Log.e("getTransactionsHistory", "onSubscribe");
-                    }
-
-                    @Override
-                    public void onSuccess(HistoryResponse historyResponse) {
-                        Log.e("getTransactionsHistory", "onSuccess");
-
-                        ArrayList<ParentTransactionDescription> historyTransactions = new ArrayList();
-                        for (HistoryReturnObject historyItem : historyResponse.getHistoryReturnObject()) {
-
-                            ParentTransactionDescription parentTransaction = new ParentTransactionDescription();
-
-                            String stringDate = "date can't be define";
-                            try {
-                                String input = historyItem.getSortedDate();
-                                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                                Date date = parser.parse(input);
-                                SimpleDateFormat formatter = new SimpleDateFormat("MMMM, yyyy");
-                                stringDate = formatter.format(date);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-
-                            parentTransaction.setDate(stringDate);
-
-                            ArrayList<TransactionDescription> transactions = new ArrayList();
-                            for (ReturnObject item : historyItem.getReturnObjects()) {
+                            for (ReturnObject item : userResponse.getReturnObject()) {
 
                                 TransactionDescription transaction = new TransactionDescription();
 
                                 transaction.setTransactionKey(item.getTransactionKey());
                                 transaction.setName(item.getName());
                                 transaction.setDescription(item.getDescription());
-                                transaction.setIsChecked(0);
+                                transaction.setIsChecked(R.drawable.ic_heart_is_not_checked);
 
                                 //setImage
                                 if (item.getType() == 2) {
@@ -248,233 +139,544 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
                                 transactions.add(transaction);
                             }
-                            parentTransaction.setTransactionDescriptions(transactions);
+                            //here I have full transactions array from internet
 
-                            historyTransactions.add(parentTransaction);
+                            //setIsChecked
+                            db.getTransactionDao().fetchAll()
+                                    .subscribeOn(Schedulers.newThread())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new SingleObserver<List<TransactionEntity>>() {
+                                        @Override
+                                        public void onSubscribe(Disposable d) {
+                                            Log.e("fetch all data from db", "onSubscribe");
+                                        }
+
+                                        @Override
+                                        public void onSuccess(List<TransactionEntity> transactionEntities) {
+                                            Log.e("fetch all data from db", "onSuccess");
+                                            //here i have full array from db
+                                            for (TransactionDescription itemTransaction : transactions) {
+                                                for (TransactionEntity descriptionItem : transactionEntities) {
+                                                    if (itemTransaction.getDescription().equals(descriptionItem.getDescription())) {
+                                                        //it exist in db
+                                                        Log.e("fetch all data from db", "exist");
+                                                        itemTransaction.setIsChecked(R.drawable.ic_heart_is_checked);
+                                                    }
+                                                }
+                                            }
+
+                                            fragment.setUpListOfDataIntoRecyclerView(transactions);
+                                            new CountDownTimer(50, 1000) {
+                                                @Override
+                                                public void onTick(long millisUntilFinished) {
+                                                }
+
+                                                @Override
+                                                public void onFinish() {
+                                                    fragment.dismissProgressDialog();
+                                                }
+                                            }.start();
+                                            Log.e("getData", "finish sequential thread");
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            Log.e("fetch all data from db", "onError");
+                                        }
+                                    });
+
                         }
 
-                        fragment.setUpListOfDataIntoParentRecyclerView(historyTransactions);
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e("getData", "onError");
+                            if(App.isNetworkAvailable()) {
+                                fragment.navigateToActivity(AuthenticationActivity.class);
+                            } else {
+                                fragment.showNoInternetDialog();
+                            }
+                            Log.e("getData", e.toString());
+                        }
+                    });
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("getTransactionsHistory", "onError");
-                        Log.e("getTransactionsHistory", e.toString());
-                    }
-                });
+        } else {
+            fragment.showNoInternetDialog();
+        }
+    }
 
+
+    @Override
+    public void getTransactionsHistory(String startDate, String endDate, String pStatus, String pSearch) {
+
+        if(App.isNetworkAvailable()) {
+
+            startDate = "2022-02-01";
+            endDate = "2022-11-01";
+
+            if (pStatus.equals("0")) {
+                pStatus = "";
+            }
+
+            app.getUserService().getTransactionsHistory(startDate, endDate, pStatus, pSearch)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleObserver<HistoryResponse>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            Log.e("getTransactionsHistory", "onSubscribe");
+                        }
+
+                        @Override
+                        public void onSuccess(HistoryResponse historyResponse) {
+                            Log.e("getTransactionsHistory", "onSuccess");
+
+                            ArrayList<ParentTransactionDescription> historyTransactions = new ArrayList();
+                            for (HistoryReturnObject historyItem : historyResponse.getHistoryReturnObject()) {
+
+                                ParentTransactionDescription parentTransaction = new ParentTransactionDescription();
+
+                                String stringDate = "date can't be define";
+                                try {
+                                    String input = historyItem.getSortedDate();
+                                    SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                    Date date = parser.parse(input);
+                                    SimpleDateFormat formatter = new SimpleDateFormat("MMMM, yyyy");
+                                    stringDate = formatter.format(date);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                parentTransaction.setDate(stringDate);
+
+                                ArrayList<TransactionDescription> transactions = new ArrayList();
+                                for (ReturnObject item : historyItem.getReturnObjects()) {
+
+                                    TransactionDescription transaction = new TransactionDescription();
+
+                                    transaction.setTransactionKey(item.getTransactionKey());
+                                    transaction.setName(item.getName());
+                                    transaction.setDescription(item.getDescription());
+                                    transaction.setIsChecked(0);
+
+                                    //setImage
+                                    if (item.getType() == 2) {
+                                        transaction.setImage(R.drawable.ic_money_type2);
+                                    } else {
+                                        transaction.setImage(R.drawable.ic_love_type3);
+                                    }
+
+                                    //setData
+                                    try {
+                                        String input = item.getDateTransaction();
+                                        SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                        Date date = parser.parse(input);
+                                        SimpleDateFormat formatter = new SimpleDateFormat("MMM d,yyyy, HH:mm");
+                                        String formattedDate = formatter.format(date);
+
+                                        transaction.setTime(formattedDate);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    //setAmount
+                                    Float amount = item.getAmount().floatValue() / 100;
+                                    String parseAmount = currencyFormat(amount);
+                                    transaction.setAmount(parseAmount);
+
+                                    //setFee
+                                    Float fee = item.getFee().floatValue() / 100;
+                                    String parseFee = currencyFormat(fee);
+                                    transaction.setFee(parseFee);
+
+                                    transactions.add(transaction);
+                                }
+                                parentTransaction.setTransactionDescriptions(transactions);
+
+                                historyTransactions.add(parentTransaction);
+                            }
+
+                            fragment.setUpListOfDataIntoParentRecyclerView(historyTransactions);
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e("getTransactionsHistory", "onError");
+                            Log.e("getTransactionsHistory", e.toString());
+                            if(!App.isNetworkAvailable()) {
+                                fragment.showNoInternetDialog();
+                            }
+                        }
+                    });
+        } else {
+            fragment.showNoInternetDialog();
+        }
     }
 
     @Override
     public void getTransactionDetails(String transactionKey) {
 
-        view.setProgressDialog();
-        app.getUserService().getDetails(transactionKey)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<DetailsResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        Log.e("getTransactionDetails", "onSubscribe");
+        if(App.isNetworkAvailable()) {
+
+            view.setProgressDialog();
+            app.getUserService().getDetails(transactionKey)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleObserver<DetailsResponse>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            Log.e("getTransactionDetails", "onSubscribe");
+                        }
+
+                        @Override
+                        public void onSuccess(DetailsResponse detailsResponse) {
+                            Log.e("getTransactionDetails", "onSuccess");
+
+                            InvoiceDetails invoiceDetails = new InvoiceDetails();
+
+                            Float amount = detailsResponse.getReturnObjectDetails().getAmount().floatValue() / 100;
+                            String parseAmount = currencyFormat(amount);
+                            invoiceDetails.setAmount(parseAmount);
+
+                            invoiceDetails.setOrderNumber(detailsResponse.getReturnObjectDetails().getOrderNumber());
+                            invoiceDetails.setCategories(detailsResponse.getReturnObjectDetails().getCategories());
+
+                            if (detailsResponse.getReturnObjectDetails().getSentTo() != null) {
+                                invoiceDetails.setSentTo(detailsResponse.getReturnObjectDetails().getSentTo());
+                            } else {
+                                invoiceDetails.setSentTo("-");
+                            }
+
+                            if (detailsResponse.getReturnObjectDetails().getCreated() != null) {
+                                try {
+                                    String input = detailsResponse.getReturnObjectDetails().getCreated();
+                                    SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                    Date date = parser.parse(input);
+                                    SimpleDateFormat formatter = new SimpleDateFormat("dd MMM HH:mm");
+                                    String formattedDate = formatter.format(date);
+
+                                    invoiceDetails.setCreated(formattedDate);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                invoiceDetails.setCreated("-");
+                            }
+
+                            if (detailsResponse.getReturnObjectDetails().getExpired() != null) {
+                                try {
+                                    String input = detailsResponse.getReturnObjectDetails().getExpired();
+                                    SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                    Date date = parser.parse(input);
+                                    SimpleDateFormat formatter = new SimpleDateFormat("dd MMM HH:mm");
+                                    String formattedDate = formatter.format(date);
+
+                                    invoiceDetails.setExpired(formattedDate);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                invoiceDetails.setExpired("-");
+                            }
+
+                            if (detailsResponse.getReturnObjectDetails().getPaymentDate() != null) {
+                                try {
+                                    String input = detailsResponse.getReturnObjectDetails().getPaymentDate();
+                                    SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                    Date date = parser.parse(input);
+                                    SimpleDateFormat formatter = new SimpleDateFormat("dd MMM HH:mm");
+                                    String formattedDate = formatter.format(date);
+
+                                    invoiceDetails.setPaymentDate(formattedDate);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                invoiceDetails.setPaymentDate("-");
+                            }
+
+                            Float commission = detailsResponse.getReturnObjectDetails().getCommission().floatValue() / 100;
+                            String parseCommission = currencyFormat(commission);
+                            invoiceDetails.setCommission(parseCommission);
+
+                            view.setDetailsData(invoiceDetails);
+                            new CountDownTimer(50, 1000) {
+                                @Override
+                                public void onTick(long millisUntilFinished) {}
+                                @Override
+                                public void onFinish() {
+                                    view.dismissProgressDialog();
+                                }
+                            }.start();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e("getTransactionDetails", "onError");
+                            if(!App.isNetworkAvailable()) {
+                                view.showNoInternetDialog();
+                            }
+                        }
+                    });
+
+        } else {
+            view.showNoInternetDialog();
+        }
+    }
+
+    @Override
+    public void getTransactionLink(String transactionKey) {
+
+        if(App.isNetworkAvailable()) {
+
+            app.getUserService().getInvoiceLink(transactionKey)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleObserver<LinkResponse>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                        }
+
+                        @Override
+                        public void onSuccess(LinkResponse linkResponse) {
+
+                            if (linkResponse.getResultCode() == 0) {
+                                fragment.linkDialog(App.getContext().getResources().getString(R.string.copy_link), linkResponse.getReturnObject());
+                            } else {
+                                fragment.linkDialog(App.getContext().getResources().getString(R.string.error), linkResponse.getResultMessage());
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e("getTransactionLink", "onError");
+                            if(!App.isNetworkAvailable()) {
+                                fragment.showNoInternetDialog();
+                            }
+                        }
+                    });
+
+        } else {
+            fragment.showNoInternetDialog();
+        }
+    }
+
+    @Override
+    public void getPDF() {
+
+        if(App.isNetworkAvailable()) {
+
+            view.setProgressDialog();
+            app.getUserService().getPDF().enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Log.e("getPDF", "onResponse");
+
+                    Boolean a = writeResponseBodyToDisk(response.body());
+
+                    if (a) {
+                        view.showToast("Saved Successfully");
+                    } else {
+                        view.showToast("Can't Save");
                     }
 
-                    @Override
-                    public void onSuccess(DetailsResponse detailsResponse) {
-                        Log.e("getTransactionDetails", "onSuccess");
+                    view.dismissProgressDialog();
+                    Log.e("onResponse", a.toString());
+                }
 
-                        InvoiceDetails invoiceDetails = new InvoiceDetails();
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e("getPDF", "onFailure");
+                    if(!App.isNetworkAvailable()) {
+                        fragment.showNoInternetDialog();
+                    }
+                }
+            });
 
-                        Float amount = detailsResponse.getReturnObjectDetails().getAmount().floatValue() / 100;
-                        String parseAmount = currencyFormat(amount);
-                        invoiceDetails.setAmount(parseAmount);
+        } else {
+            view.showNoInternetDialog();
+        }
 
-                        invoiceDetails.setOrderNumber(detailsResponse.getReturnObjectDetails().getOrderNumber());
-                        invoiceDetails.setCategories(detailsResponse.getReturnObjectDetails().getCategories());
+    }
 
-                        if (detailsResponse.getReturnObjectDetails().getSentTo() != null) {
-                            invoiceDetails.setSentTo(detailsResponse.getReturnObjectDetails().getSentTo());
-                        } else {
-                            invoiceDetails.setSentTo("-");
-                        }
+    private boolean writeResponseBodyToDisk(ResponseBody body) {
+        try {
 
-                        if (detailsResponse.getReturnObjectDetails().getCreated() != null) {
-                            try {
-                                String input = detailsResponse.getReturnObjectDetails().getCreated();
-                                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                                Date date = parser.parse(input);
-                                SimpleDateFormat formatter = new SimpleDateFormat("dd MMM HH:mm");
-                                String formattedDate = formatter.format(date);
+            String fileName = "testPDF.pdf";
 
-                                invoiceDetails.setCreated(formattedDate);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            invoiceDetails.setCreated("-");
-                        }
+            File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + fileName);
 
-                        if (detailsResponse.getReturnObjectDetails().getExpired() != null) {
-                            try {
-                                String input = detailsResponse.getReturnObjectDetails().getExpired();
-                                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                                Date date = parser.parse(input);
-                                SimpleDateFormat formatter = new SimpleDateFormat("dd MMM HH:mm");
-                                String formattedDate = formatter.format(date);
+            if(filePath.exists()){
+                int count = 1;
+                do {
+                    fileName = "testPDF(" + count + ").pdf";
+                    filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + fileName);
+                    count++;
+                } while (filePath.exists());
+            }
 
-                                invoiceDetails.setExpired(formattedDate);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            invoiceDetails.setExpired("-");
-                        }
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
 
-                        if (detailsResponse.getReturnObjectDetails().getPaymentDate() != null) {
-                            try {
-                                String input = detailsResponse.getReturnObjectDetails().getPaymentDate();
-                                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                                Date date = parser.parse(input);
-                                SimpleDateFormat formatter = new SimpleDateFormat("dd MMM HH:mm");
-                                String formattedDate = formatter.format(date);
+            try {
+                byte[] fileReader = new byte[4096];
 
-                                invoiceDetails.setPaymentDate(formattedDate);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            invoiceDetails.setPaymentDate("-");
-                        }
+                long fileSize = body.contentLength();
+                long fileSizeDownloaded = 0;
 
-                        Float commission = detailsResponse.getReturnObjectDetails().getCommission().floatValue() / 100;
-                        String parseCommission = currencyFormat(commission);
-                        invoiceDetails.setCommission(parseCommission);
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(filePath);
 
-                        new CountDownTimer(2000, 1000) {
-                            @Override
-                            public void onTick(long millisUntilFinished) {}
-                            @Override
-                            public void onFinish() {
-                                view.dismissProgressDialog();
-                                view.setDetailsData(invoiceDetails);
-                            }
-                        }.start();
+                while (true) {
+                    int read = inputStream.read(fileReader);
+
+                    if (read == -1) {
+                        break;
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("getTransactionDetails", "onError");
+                    outputStream.write(fileReader, 0, read);
 
-                    }
-                });
+                    fileSizeDownloaded += read;
+
+                    Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
+                }
+
+                outputStream.flush();
+
+                return true;
+            } catch (IOException e) {
+                return false;
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     @Override
     public void getDataFromDB() {
 
-        ArrayList<TransactionDescription> transactions = new ArrayList();
+        if(App.isNetworkAvailable()) {
 
-        fragment.setProgressDialog();
-        app.getUserService().getTransactionRecent()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<UserResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        Log.e("getData", "onSubscribe");
-                    }
+            ArrayList<TransactionDescription> transactions = new ArrayList();
 
-                    @Override
-                    public void onSuccess(UserResponse userResponse) {
-                        Log.e("getData", "stars onSuccess");
-
-                        for (ReturnObject item : userResponse.getReturnObject()) {
-
-                            TransactionDescription transaction = new TransactionDescription();
-
-                            transaction.setTransactionKey(item.getTransactionKey());
-                            transaction.setName(item.getName());
-                            transaction.setDescription(item.getDescription());
-                            transaction.setIsChecked(R.drawable.ic_heart_is_not_checked);
-
-                            //setImage
-                            if (item.getType() == 2) {
-                                transaction.setImage(R.drawable.ic_money_type2);
-                            } else {
-                                transaction.setImage(R.drawable.ic_love_type3);
-                            }
-
-                            //setData
-                            try {
-                                String input = item.getDateTransaction();
-                                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                                Date date = parser.parse(input);
-                                SimpleDateFormat formatter = new SimpleDateFormat("MMM d,yyyy, HH:mm");
-                                String formattedDate = formatter.format(date);
-
-                                transaction.setTime(formattedDate);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-
-                            //setAmount
-                            Float amount = item.getAmount().floatValue() / 100;
-                            String parseAmount = currencyFormat(amount);
-                            transaction.setAmount(parseAmount);
-
-                            //setFee
-                            Float fee = item.getFee().floatValue() / 100;
-                            String parseFee = currencyFormat(fee);
-                            transaction.setFee(parseFee);
-
-                            transactions.add(transaction);
+            fragment.setProgressDialog();
+            app.getUserService().getTransactionRecent()
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleObserver<UserResponse>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            Log.e("getData", "onSubscribe");
                         }
-                        //here I have full transactions array from internet
 
-                        ArrayList<TransactionDescription> transactionsFavorites = new ArrayList();
-                        //setIsChecked
-                        db.getTransactionDao().fetchAll()
-                                .subscribeOn(Schedulers.newThread())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new SingleObserver<List<TransactionEntity>>() {
-                                    @Override
-                                    public void onSubscribe(Disposable d) {
-                                        Log.e("fetch all data from db", "onSubscribe");
-                                    }
+                        @Override
+                        public void onSuccess(UserResponse userResponse) {
+                            Log.e("getData", "stars onSuccess");
 
-                                    @Override
-                                    public void onSuccess(List<TransactionEntity> transactionEntities) {
-                                        Log.e("fetch all data from db", "onSuccess");
-                                        //here i have full array from db
-                                        for (TransactionDescription itemTransaction : transactions) {
-                                            for (TransactionEntity descriptionItem : transactionEntities) {
-                                                if (itemTransaction.getDescription().equals(descriptionItem.getDescription())) {
-                                                    //it exist in db
-                                                    Log.e("fetch all data from db", "exist");
-                                                    itemTransaction.setIsChecked(R.drawable.ic_heart_is_checked);
-                                                    transactionsFavorites.add(itemTransaction);
-                                                }
-                                            }
+                            for (ReturnObject item : userResponse.getReturnObject()) {
+
+                                TransactionDescription transaction = new TransactionDescription();
+
+                                transaction.setTransactionKey(item.getTransactionKey());
+                                transaction.setName(item.getName());
+                                transaction.setDescription(item.getDescription());
+                                transaction.setIsChecked(R.drawable.ic_heart_is_not_checked);
+
+                                //setImage
+                                if (item.getType() == 2) {
+                                    transaction.setImage(R.drawable.ic_money_type2);
+                                } else {
+                                    transaction.setImage(R.drawable.ic_love_type3);
+                                }
+
+                                //setData
+                                try {
+                                    String input = item.getDateTransaction();
+                                    SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                    Date date = parser.parse(input);
+                                    SimpleDateFormat formatter = new SimpleDateFormat("MMM d,yyyy, HH:mm");
+                                    String formattedDate = formatter.format(date);
+
+                                    transaction.setTime(formattedDate);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                //setAmount
+                                Float amount = item.getAmount().floatValue() / 100;
+                                String parseAmount = currencyFormat(amount);
+                                transaction.setAmount(parseAmount);
+
+                                //setFee
+                                Float fee = item.getFee().floatValue() / 100;
+                                String parseFee = currencyFormat(fee);
+                                transaction.setFee(parseFee);
+
+                                transactions.add(transaction);
+                            }
+                            //here I have full transactions array from internet
+
+                            ArrayList<TransactionDescription> transactionsFavorites = new ArrayList();
+                            //setIsChecked
+                            db.getTransactionDao().fetchAll()
+                                    .subscribeOn(Schedulers.newThread())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new SingleObserver<List<TransactionEntity>>() {
+                                        @Override
+                                        public void onSubscribe(Disposable d) {
+                                            Log.e("fetch all data from db", "onSubscribe");
                                         }
 
-                                        fragment.dismissProgressDialog();
-                                        fragment.setUpListOfDataIntoRecyclerView(transactionsFavorites);
-                                        Log.e("getData", "finish sequential thread");
-                                    }
+                                        @Override
+                                        public void onSuccess(List<TransactionEntity> transactionEntities) {
+                                            Log.e("fetch all data from db", "onSuccess");
+                                            //here i have full array from db
+                                            for (TransactionDescription itemTransaction : transactions) {
+                                                for (TransactionEntity descriptionItem : transactionEntities) {
+                                                    if (itemTransaction.getDescription().equals(descriptionItem.getDescription())) {
+                                                        //it exist in db
+                                                        Log.e("fetch all data from db", "exist");
+                                                        itemTransaction.setIsChecked(R.drawable.ic_heart_is_checked);
+                                                        transactionsFavorites.add(itemTransaction);
+                                                    }
+                                                }
+                                            }
 
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Log.e("fetch all data from db", "onError");
-                                    }
-                                });
+                                            fragment.dismissProgressDialog();
+                                            fragment.setUpListOfDataIntoRecyclerView(transactionsFavorites);
+                                            Log.e("getData", "finish sequential thread");
+                                        }
 
-                    }
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            Log.e("fetch all data from db", "onError");
+                                        }
+                                    });
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("getData", "onError");
-                        Log.e("getData", e.toString());
-                    }
-                });
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e("getData", "onError");
+                            Log.e("getData", e.toString());
+                            if(!App.isNetworkAvailable()){
+                                fragment.showNoInternetDialog();
+                            }
+                        }
+                    });
+
+        } else {
+            fragment.showNoInternetDialog();
+        }
 
     }
 
@@ -577,7 +779,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
     public void logout() {
         sharedPrefTokenStorage.deleteToken();
-        view.navigateToAuthenticateActivity();
+        view.navigateToActivity(AuthenticationActivity.class);
     }
 
     private static String currencyFormat(double currency) {

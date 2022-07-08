@@ -28,6 +28,7 @@
     <color name="paid_color_green">#00BFA5</color>
     <color name="dim_red">#D32F2F</color>
     <color name="light_gray">#6D7278</color>
+    <color name="search_system_gray_color">#F3F3F3</color>
 
 
 </resources>

@@ -14,7 +14,7 @@
         android:id="@+id/cl_swipe"
         android:layout_width="240dp"
         android:layout_height="85dp"
-        android:orientation="vertical">
+        >
 
         <FrameLayout
             android:id="@+id/fl_circle_green"
