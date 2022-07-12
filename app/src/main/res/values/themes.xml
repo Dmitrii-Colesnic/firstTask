@@ -2,21 +2,33 @@
     <!-- Base application theme. -->
     <!-- Theme.MaterialComponents.DayNight.DarkActionBar-->
     <style name="Theme.FirstTask" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/green1</item>
-        <item name="colorOnPrimary">@color/green5</item>
-        <item name="colorPrimaryContainer">@color/green2</item>
-        <item name="colorOnPrimaryContainer">@color/green0</item>
 
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/brown1</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <item name="colorSecondaryContainer">@color/brown2</item>
-        <item name="colorOnSecondaryContainer">@color/brown0</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primaryVariant</item>
+        <item name="colorOnPrimary">@color/OnPrimary</item>
+        <item name="colorPrimaryContainer">@color/primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/onPrimaryContainer</item>
+
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondaryVariant</item>
+        <item name="colorOnSecondary">@color/OnSecondary</item>
+        <item name="colorSecondaryContainer">@color/secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/onSecondaryContainer</item>
+
+        <item name="colorBackgroundFloating">@color/background</item>
+        <item name="colorOnBackground">@color/onBackground</item>
+
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/onSurface</item>
+
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/onError</item>
+
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!--<item name="android:statusBarColor" tools:targetApi="l">@color/green1</item>-->
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:statusBarColor" tools:targetApi="m">@color/background</item>
         <!-- Customize your theme here. -->
+
     </style>
 
     <!--Toolbar theme-->

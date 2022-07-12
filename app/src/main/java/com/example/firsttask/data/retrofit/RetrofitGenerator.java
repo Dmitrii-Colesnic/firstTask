@@ -37,6 +37,12 @@ public class RetrofitGenerator {
         return retrofitGeneratorInstance;
     }
 
+//    public static void deleteRetrofit(){
+//        if(retrofitGeneratorInstance != null){
+//            retrofitGeneratorInstance = null;
+//        }
+//    }
+
     private Retrofit generateRetrofit(Context context/*, String language*/) {
 
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();

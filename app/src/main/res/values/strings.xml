@@ -49,4 +49,5 @@
     <string name="exit">Exit</string>
     <string name="copied">copied</string>
     <string name="error">Error</string>
+    <string name="timeFormat">\"yyyy-MM-dd\"</string>
 </resources>

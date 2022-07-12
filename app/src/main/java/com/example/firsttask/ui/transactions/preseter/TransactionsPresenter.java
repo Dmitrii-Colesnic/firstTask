@@ -2,6 +2,8 @@ package com.example.firsttask.ui.transactions.preseter;
 
 import static android.content.ContentValues.TAG;
 
+import static com.example.firsttask.data.sharedpref.SharedPrefTokenStorage.DEFAULT_DATE;
+
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -9,6 +11,7 @@ import android.util.Log;
 
 import com.example.firsttask.R;
 import com.example.firsttask.App;
+import com.example.firsttask.data.retrofit.RetrofitGenerator;
 import com.example.firsttask.data.retrofit.entities.ReturnObject;
 import com.example.firsttask.data.retrofit.entities.details.DetailsResponse;
 import com.example.firsttask.data.retrofit.entities.history.HistoryResponse;
@@ -198,7 +201,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
     @Override
     public boolean datesExist() {
 
-        if(sharedPrefTokenStorage.getStartDate().equals("none")  ||  sharedPrefTokenStorage.getEndDate().equals("none"))
+        if(sharedPrefTokenStorage.getStartDate().equals(DEFAULT_DATE)  ||  sharedPrefTokenStorage.getEndDate().equals("none"))
         {
             return false;
         }
@@ -810,6 +813,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
     public void logout() {
         sharedPrefTokenStorage.deleteToken();
+//        RetrofitGenerator.deleteRetrofit();
         view.navigateToAuthenticateActivity();
     }
 

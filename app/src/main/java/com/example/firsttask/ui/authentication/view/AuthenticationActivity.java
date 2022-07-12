@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -133,36 +135,52 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
         binding.etUsername.setText(username);
         binding.etPassword.setText(password);
 
-        binding.etMerchantCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    if(binding.etMerchantCode.getText().length() < 6  &&  binding.etMerchantCode.getText().length() >= 1){
-                        binding.tvMerchantCodeError.setVisibility(View.VISIBLE);
-                    } else {
-                        binding.tvMerchantCodeError.setVisibility(View.GONE);
-                    }
+        int yellow = getResources().getColor(R.color.primary);
+
+        binding.etMerchantCode.setOnFocusChangeListener((v, hasFocus) -> {
+            int color;
+            if(!hasFocus){
+                if(binding.etMerchantCode.getText().length() < 6  &&  binding.etMerchantCode.getText().length() >= 1){
+                    binding.tvMerchantCodeError.setVisibility(View.VISIBLE);
                 } else {
                     binding.tvMerchantCodeError.setVisibility(View.GONE);
                 }
+                color = Color.GRAY;
+            } else {
+                binding.tvMerchantCodeError.setVisibility(View.GONE);
+                color = yellow;
             }
+            binding.tilMerchantCode.setStartIconTintList(ColorStateList.valueOf(color));
         });
 
-        binding.etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    if(binding.etUsername.getText().length() < 6  &&  binding.etUsername.getText().length() >= 1){
-                        binding.tvUsernameError.setVisibility(View.VISIBLE);
-                    } else {
-                        binding.tvUsernameError.setVisibility(View.GONE);
-                    }
+        binding.etUsername.setOnFocusChangeListener((v, hasFocus) -> {
+            int color;
+            if(!hasFocus){
+                if(binding.etUsername.getText().length() < 6  &&  binding.etUsername.getText().length() >= 1){
+                    binding.tvUsernameError.setVisibility(View.VISIBLE);
                 } else {
                     binding.tvUsernameError.setVisibility(View.GONE);
                 }
+                color = Color.GRAY;
+            } else {
+                binding.tvUsernameError.setVisibility(View.GONE);
+                color = yellow;
             }
+            binding.tilUsername.setStartIconTintList(ColorStateList.valueOf(color));
         });
 
+        binding.etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                int color;
+                if(!hasFocus){
+                    color = Color.GRAY;
+                } else {
+                    color = yellow;
+                }
+                binding.tilPassword.setStartIconTintList(ColorStateList.valueOf(color));
+            }
+        });
     }
 
     @Override

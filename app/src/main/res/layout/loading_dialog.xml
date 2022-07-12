@@ -11,7 +11,7 @@
         style="?android:attr/progressBarStyleLargeInverse"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:indeterminateTint="@color/green2"
+        android:indeterminateTint="@color/primary"
         android:indeterminate="true"
 
         app:layout_constraintBottom_toBottomOf="parent"

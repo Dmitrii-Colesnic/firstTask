@@ -43,5 +43,6 @@
     <string name="exit">Выход</string>
     <string name="copied">скопировано</string>
     <string name="error">Ошибка</string>
+    <string name="timeFormat">\"yyyy-MM-dd\"</string>
 
 </resources>

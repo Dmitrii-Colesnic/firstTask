@@ -156,7 +156,6 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         finish();
     }
 
-
     @Override
     public void showToast(String toastText) {Toast.makeText(DataActivity.this, toastText, Toast.LENGTH_SHORT).show();}
 

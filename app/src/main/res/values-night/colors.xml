@@ -3,9 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="primary">#212121</color>
-    <color name="primaryVariant">#000000</color>
-    <color name="OnPrimary">#FFFFFFFF</color>
+    <color name="primary">#FFFFFFFF</color>
+    <color name="primaryVariant">#c7c7c7</color>
+    <color name="OnPrimary">#FF000000</color>
     <color name="primaryContainer">#c60200</color>
     <color name="onPrimaryContainer">#FFFFFFFF</color>
 
@@ -13,7 +13,7 @@
     <color name="secondaryVariant">#f18701</color>
     <color name="OnSecondary">#FF000000</color>
     <color name="secondaryContainer">#c60200</color>
-    <color name="onSecondaryContainer">#FFFFFFFF</color>
+    <color name="onSecondaryContainer">#adb5bd</color>
 
     <color name="background">#FFFFFFFF</color>
     <color name="onBackground">#FF000000</color>
@@ -26,9 +26,9 @@
 
     <color name="itemRipple">#ff9a9b</color>
 
-    <color name="navigation">#FFFFFFFF</color>
-    <color name="button_reject">#FFFFFFFF</color>
-    <color name="button_resend">#263238</color>
+    <color name="navigation">#484848</color>
+    <color name="button_reject">#414244</color>
+    <color name="button_resend">#c60200</color>
 
 
     <!-- app settings-->

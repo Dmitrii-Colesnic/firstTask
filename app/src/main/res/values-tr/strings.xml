@@ -43,5 +43,6 @@
     <string name="exit">çıkış</string>
     <string name="copied">kopyalanmış</string>
     <string name="error">Hata</string>
+    <string name="timeFormat">\"yyyy-MM-dd\"</string>
 
 </resources>
