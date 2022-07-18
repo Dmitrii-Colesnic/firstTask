@@ -1,6 +1,5 @@
-package com.example.firsttask.ui.transactions.view;
+package com.example.firsttask.ui.transactions.view.history;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.ClipData;
@@ -30,7 +29,6 @@ import androidx.core.util.Pair;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.archit.calendardaterangepicker.customviews.DateRangeCalendarView;
 import com.example.firsttask.App;
 import com.example.firsttask.R;
 import com.example.firsttask.databinding.FragmentHistoryBinding;
@@ -43,13 +41,9 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import ru.slybeaver.slycalendarview.SlyCalendarDialog;
 
 public class HistoryFragment extends Fragment implements Transactions.Fragment {
 

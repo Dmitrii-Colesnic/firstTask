@@ -1,8 +1,6 @@
-package com.example.firsttask.ui.transactions.view;
+package com.example.firsttask.ui.transactions.view.transactions;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;

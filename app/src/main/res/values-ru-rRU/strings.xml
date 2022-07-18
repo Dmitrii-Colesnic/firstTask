@@ -44,5 +44,17 @@
     <string name="copied">скопировано</string>
     <string name="error">Ошибка</string>
     <string name="timeFormat">\"yyyy-MM-dd\"</string>
+    <string name="skip">Skip</string>
+    <string name="Next">Next</string>
+    <string name="utility_billing">Utility billing</string>
+    <string name="utility_billing_text">Make utility bill payments and many other directly from your mobile phone.</string>
+    <string name="quick_payments">Quick payments</string>
+    <string name="quick_payments_text">Pay with your smartphone through Scan and Pay or directly from the app using QR-code.</string>
+    <string name="store_bank_cards">Store bank cards</string>
+    <string name="store_bank_cards_text">Link a bank card to make transactions easily and secure. No need to store cards any more.</string>
+    <string name="pay_with_one_invoice">Pay with one invoice</string>
+    <string name="pay_with_one_invoice_text">Add all payments in shopping basket to pay at once.</string>
+    <string name="finish">Finish</string>
+    <string name="material_chart">Material chart</string>
 
 </resources>

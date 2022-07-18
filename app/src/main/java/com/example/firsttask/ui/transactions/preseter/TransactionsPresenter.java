@@ -1,7 +1,6 @@
 package com.example.firsttask.ui.transactions.preseter;
 
 import static android.content.ContentValues.TAG;
-
 import static com.example.firsttask.data.sharedpref.SharedPrefTokenStorage.DEFAULT_DATE;
 
 import android.os.AsyncTask;
@@ -9,9 +8,8 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.util.Log;
 
-import com.example.firsttask.R;
 import com.example.firsttask.App;
-import com.example.firsttask.data.retrofit.RetrofitGenerator;
+import com.example.firsttask.R;
 import com.example.firsttask.data.retrofit.entities.ReturnObject;
 import com.example.firsttask.data.retrofit.entities.details.DetailsResponse;
 import com.example.firsttask.data.retrofit.entities.history.HistoryResponse;
@@ -20,10 +18,10 @@ import com.example.firsttask.data.retrofit.entities.link.LinkResponse;
 import com.example.firsttask.data.retrofit.entities.recent.UserResponse;
 import com.example.firsttask.data.roomdatabase.TransactionDatabase;
 import com.example.firsttask.data.roomdatabase.TransactionEntity;
-import com.example.firsttask.ui.authentication.view.AuthenticationActivity;
-import com.example.firsttask.ui.transactions.adapter.ItemAdapter;
 import com.example.firsttask.data.sharedpref.SharedPrefTokenStorage;
+import com.example.firsttask.ui.authentication.view.AuthenticationActivity;
 import com.example.firsttask.ui.transactions.Transactions;
+import com.example.firsttask.ui.transactions.adapter.ItemAdapter;
 import com.example.firsttask.ui.transactions.adapter.entities.ParentTransactionDescription;
 import com.example.firsttask.ui.transactions.adapter.entities.TransactionDescription;
 import com.example.firsttask.ui.transactions.view.entities.InvoiceDetails;
@@ -63,6 +61,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
     SharedPrefTokenStorage sharedPrefTokenStorage = new SharedPrefTokenStorage(App.getContext());
 
+
     public TransactionsPresenter(Transactions.View view) {
         this.view = view;
     }
@@ -74,11 +73,12 @@ public class TransactionsPresenter implements Transactions.Presenter {
     @Override
     public void getData() {
 
-        if(App.isNetworkAvailable()) {
+        if (App.isNetworkAvailable()) {
 
             ArrayList<TransactionDescription> transactions = new ArrayList();
 
             fragment.setProgressDialog();
+
             app.getUserService().getTransactionRecent()
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -162,9 +162,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
                                             fragment.setUpListOfDataIntoRecyclerView(transactions);
                                             new CountDownTimer(50, 1000) {
                                                 @Override
-                                                public void onTick(long millisUntilFinished) {
-                                                }
-
+                                                public void onTick(long millisUntilFinished) {}
                                                 @Override
                                                 public void onFinish() {
                                                     fragment.dismissProgressDialog();
@@ -184,7 +182,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
                         @Override
                         public void onError(Throwable e) {
                             Log.e("getData", "onError");
-                            if(App.isNetworkAvailable()) {
+                            if (App.isNetworkAvailable()) {
                                 fragment.navigateToActivity(AuthenticationActivity.class);
                             } else {
                                 fragment.showNoInternetDialog();
@@ -201,8 +199,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
     @Override
     public boolean datesExist() {
 
-        if(sharedPrefTokenStorage.getStartDate().equals(DEFAULT_DATE)  ||  sharedPrefTokenStorage.getEndDate().equals("none"))
-        {
+        if (sharedPrefTokenStorage.getStartDate().equals(DEFAULT_DATE) || sharedPrefTokenStorage.getEndDate().equals("none")) {
             return false;
         }
 
@@ -242,7 +239,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
     @Override
     public void getTransactionsHistory(String startDate, String endDate, String pStatus, String pSearch) {
 
-        if(App.isNetworkAvailable()) {
+        if (App.isNetworkAvailable()) {
 
 //            startDate = "2022-02-01";
 //            endDate = "2022-11-01";
@@ -337,7 +334,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
                         public void onError(Throwable e) {
                             Log.e("getTransactionsHistory", "onError");
                             Log.e("getTransactionsHistory", e.toString());
-                            if(!App.isNetworkAvailable()) {
+                            if (!App.isNetworkAvailable()) {
                                 fragment.showNoInternetDialog();
                             }
                         }
@@ -350,7 +347,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
     @Override
     public void getTransactionDetails(String transactionKey) {
 
-        if(App.isNetworkAvailable()) {
+        if (App.isNetworkAvailable()) {
 
             view.setProgressDialog();
             app.getUserService().getDetails(transactionKey)
@@ -434,9 +431,11 @@ public class TransactionsPresenter implements Transactions.Presenter {
                             invoiceDetails.setCommission(parseCommission);
 
                             view.setDetailsData(invoiceDetails);
-                            new CountDownTimer(50, 1000) {
+                            new CountDownTimer(500, 1000) {
                                 @Override
-                                public void onTick(long millisUntilFinished) {}
+                                public void onTick(long millisUntilFinished) {
+                                }
+
                                 @Override
                                 public void onFinish() {
                                     view.dismissProgressDialog();
@@ -447,7 +446,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
                         @Override
                         public void onError(Throwable e) {
                             Log.e("getTransactionDetails", "onError");
-                            if(!App.isNetworkAvailable()) {
+                            if (!App.isNetworkAvailable()) {
                                 view.showNoInternetDialog();
                             }
                         }
@@ -461,7 +460,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
     @Override
     public void getTransactionLink(String transactionKey) {
 
-        if(App.isNetworkAvailable()) {
+        if (App.isNetworkAvailable()) {
 
             app.getUserService().getInvoiceLink(transactionKey)
                     .subscribeOn(Schedulers.newThread())
@@ -485,7 +484,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
                         @Override
                         public void onError(Throwable e) {
                             Log.e("getTransactionLink", "onError");
-                            if(!App.isNetworkAvailable()) {
+                            if (!App.isNetworkAvailable()) {
                                 fragment.showNoInternetDialog();
                             }
                         }
@@ -499,7 +498,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
     @Override
     public void getPDF() {
 
-        if(App.isNetworkAvailable()) {
+        if (App.isNetworkAvailable()) {
 
             view.setProgressDialog();
             app.getUserService().getPDF().enqueue(new Callback<ResponseBody>() {
@@ -522,7 +521,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Log.e("getPDF", "onFailure");
-                    if(!App.isNetworkAvailable()) {
+                    if (!App.isNetworkAvailable()) {
                         fragment.showNoInternetDialog();
                     }
                 }
@@ -541,7 +540,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
 
             File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + fileName);
 
-            if(filePath.exists()){
+            if (filePath.exists()) {
                 int count = 1;
                 do {
                     fileName = "testPDF(" + count + ").pdf";
@@ -598,7 +597,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
     @Override
     public void getDataFromDB() {
 
-        if(App.isNetworkAvailable()) {
+        if (App.isNetworkAvailable()) {
 
             ArrayList<TransactionDescription> transactions = new ArrayList();
 
@@ -702,7 +701,7 @@ public class TransactionsPresenter implements Transactions.Presenter {
                         public void onError(Throwable e) {
                             Log.e("getData", "onError");
                             Log.e("getData", e.toString());
-                            if(!App.isNetworkAvailable()){
+                            if (!App.isNetworkAvailable()) {
                                 fragment.showNoInternetDialog();
                             }
                         }

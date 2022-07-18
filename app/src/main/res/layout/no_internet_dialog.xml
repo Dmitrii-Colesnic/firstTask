@@ -65,9 +65,9 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/button_resend_background"
+        android:background="@drawable/button_reject_background"
         android:text="@string/exit"
-        android:textColor="@color/white"
+        android:textColor="@color/invoice_details"
         android:textSize="12sp"
 
         app:layout_constraintBottom_toBottomOf="parent"

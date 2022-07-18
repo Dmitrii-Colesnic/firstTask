@@ -8,12 +8,12 @@ import android.net.NetworkInfo;
 import com.example.firsttask.data.retrofit.RetrofitGenerator;
 import com.example.firsttask.data.retrofit.UserService;
 
-import io.reactivex.plugins.RxJavaPlugins;
 import retrofit2.Retrofit;
 
 public class App extends Application {
 
     private static Context mContext;
+    public static boolean firstStart = true;
 
     @Override
     public void onCreate() {

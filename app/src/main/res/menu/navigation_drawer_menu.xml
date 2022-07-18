@@ -19,4 +19,9 @@
         android:title="@string/transactions_favorites"
         />
 
+    <item
+        android:id="@+id/nav_material"
+        android:title="@string/material_chart"
+        />
+
 </menu>

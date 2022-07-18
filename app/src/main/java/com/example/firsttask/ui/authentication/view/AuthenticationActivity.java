@@ -1,9 +1,5 @@
 package com.example.firsttask.ui.authentication.view;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -20,11 +16,15 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.firsttask.R;
-import com.example.firsttask.ui.transactions.view.DataActivity;
+import com.example.firsttask.databinding.ActivityAuthenticationBinding;
 import com.example.firsttask.ui.authentication.Authentication;
 import com.example.firsttask.ui.authentication.presenter.AuthenticationPresenter;
-import com.example.firsttask.databinding.ActivityAuthenticationBinding;
+import com.example.firsttask.ui.transactions.view.DataActivity;
 
 import java.util.Locale;
 
@@ -33,6 +33,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
     private ActivityAuthenticationBinding binding;
 
     private AuthenticationPresenter presenter = new AuthenticationPresenter(AuthenticationActivity.this);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +53,11 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
             @Override
             public void onClick(View view) {
 
+
                 if (fieldsIsNotEmpty()) {
-                    if(binding.etMerchantCode.getText().length() < 6
+                    if (binding.etMerchantCode.getText().length() < 6
                             || binding.etUsername.getText().length() < 6
-                    ){
+                    ) {
                         Toast.makeText(AuthenticationActivity.this, R.string.fill_fields, Toast.LENGTH_SHORT).show();
                     } else {
                         presenter.login(
@@ -73,7 +75,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
 
     /**
      * Clear focus on touch outside for all EditText inputs.
-     *
+     * <p>
      * https://gist.github.com/sc0rch/7c982999e5821e6338c25390f50d2993
      */
     @Override
@@ -83,7 +85,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
             if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -135,12 +137,12 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
         binding.etUsername.setText(username);
         binding.etPassword.setText(password);
 
-        int yellow = getResources().getColor(R.color.primary);
+        int yellow = getResources().getColor(R.color.black);
 
         binding.etMerchantCode.setOnFocusChangeListener((v, hasFocus) -> {
             int color;
-            if(!hasFocus){
-                if(binding.etMerchantCode.getText().length() < 6  &&  binding.etMerchantCode.getText().length() >= 1){
+            if (!hasFocus) {
+                if (binding.etMerchantCode.getText().length() < 6 && binding.etMerchantCode.getText().length() >= 1) {
                     binding.tvMerchantCodeError.setVisibility(View.VISIBLE);
                 } else {
                     binding.tvMerchantCodeError.setVisibility(View.GONE);
@@ -155,8 +157,8 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
 
         binding.etUsername.setOnFocusChangeListener((v, hasFocus) -> {
             int color;
-            if(!hasFocus){
-                if(binding.etUsername.getText().length() < 6  &&  binding.etUsername.getText().length() >= 1){
+            if (!hasFocus) {
+                if (binding.etUsername.getText().length() < 6 && binding.etUsername.getText().length() >= 1) {
                     binding.tvUsernameError.setVisibility(View.VISIBLE);
                 } else {
                     binding.tvUsernameError.setVisibility(View.GONE);
@@ -173,7 +175,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 int color;
-                if(!hasFocus){
+                if (!hasFocus) {
                     color = Color.GRAY;
                 } else {
                     color = yellow;
@@ -185,7 +187,9 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
 
     @Override
     public void navigateToHomeActivity() {
+
         startActivity(new Intent(AuthenticationActivity.this, DataActivity.class));
+
         finish();
     }
 
@@ -239,7 +243,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
 
     private boolean fieldsIsNotEmpty() {
 
-        if(binding.etMerchantCode.getText().length() == 0
+        if (binding.etMerchantCode.getText().length() == 0
                 || binding.etUsername.getText().length() == 0
                 || binding.etPassword.getText().length() == 0
         ) {

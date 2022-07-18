@@ -30,6 +30,8 @@
     <color name="button_reject">#FFFFFFFF</color>
     <color name="button_resend">#263238</color>
 
+    <color name="fragment_color">#FFFFFFFF</color>
+    <color name="et_color">#201d1d</color>
 
     <!-- app settings-->
     <color name="gray">#adb5bd</color>
@@ -40,5 +42,9 @@
     <color name="dim_red">#D32F2F</color>
     <color name="light_gray">#6D7278</color>
     <color name="search_system_gray_color">#F3F3F3</color>
+
+    //whirligig
+    <color name="TextView_whirligig_skip">#00BCD4</color>
+    <color name="whirligig_circle">#a1e1ed</color>
 
 </resources>

@@ -1,8 +1,4 @@
-package com.example.firsttask.ui.transactions.view;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
+package com.example.firsttask.ui.transactions.view.history;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -10,11 +6,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.firsttask.App;
 import com.example.firsttask.R;
@@ -22,6 +20,7 @@ import com.example.firsttask.databinding.ActivityInvoiceDetailsBinding;
 import com.example.firsttask.ui.authentication.view.AuthenticationActivity;
 import com.example.firsttask.ui.transactions.Transactions;
 import com.example.firsttask.ui.transactions.preseter.TransactionsPresenter;
+import com.example.firsttask.ui.transactions.view.DataActivity;
 import com.example.firsttask.ui.transactions.view.entities.InvoiceDetails;
 
 public class InvoiceDetailsActivity extends AppCompatActivity implements Transactions.View {

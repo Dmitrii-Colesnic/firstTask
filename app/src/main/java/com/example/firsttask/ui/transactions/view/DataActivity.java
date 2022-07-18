@@ -1,30 +1,28 @@
 package com.example.firsttask.ui.transactions.view;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.example.firsttask.App;
 import com.example.firsttask.R;
@@ -33,7 +31,11 @@ import com.example.firsttask.ui.authentication.presenter.AuthenticationPresenter
 import com.example.firsttask.ui.authentication.view.AuthenticationActivity;
 import com.example.firsttask.ui.transactions.Transactions;
 import com.example.firsttask.ui.transactions.preseter.TransactionsPresenter;
+import com.example.firsttask.ui.transactions.view.chart.CreatingChartFragment;
 import com.example.firsttask.ui.transactions.view.entities.InvoiceDetails;
+import com.example.firsttask.ui.transactions.view.history.HistoryFragment;
+import com.example.firsttask.ui.transactions.view.transactions.AllItemsFragment;
+import com.example.firsttask.ui.transactions.view.transactions.FavoriteItemsFragment;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -64,13 +66,15 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
-            if (extras.getString("HistoryFragment").equals("HistoryFragment")) {
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_place, new HistoryFragment()).commit();
-                binding.bottomNavigation.setVisibility(View.GONE);
-            }
+        if (extras != null) {
+            Log.e("extras", extras.toString());
+            if (extras.getString("HistoryFragment") != null)
+                if (extras.getString("HistoryFragment").equals("HistoryFragment")) {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_place, new HistoryFragment()).commit();
+                    binding.bottomNavigation.setVisibility(View.GONE);
+                }
         } else {
             binding.bottomNavigation.setVisibility(View.VISIBLE);
         }
@@ -86,6 +90,10 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         binding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag("TAG_WhirligigChartFragment");
+                if(fragment != null)
+                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
 
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -106,21 +114,25 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
                         binding.bottomNavigation.setVisibility(View.VISIBLE);
                         drawerLayout.close();
                         break;
+                    case R.id.nav_material:
+                        fragmentTransaction.replace(R.id.fragment_place, new CreatingChartFragment()).commit();
+                        binding.bottomNavigation.setVisibility(View.GONE);
+                        drawerLayout.close();
                 }
 
                 return true;
             }
         });
 
-        if (!authenticationPresenter.isAuthenticated()) {
-            startActivity(new Intent(DataActivity.this, AuthenticationActivity.class));
-            finish();
-        } else {
-            if(extras == null) {
+//        if (!authenticationPresenter.isAuthenticated()) {
+//            startActivity(new Intent(DataActivity.this, AuthenticationActivity.class));
+//            finish();
+//        } else {
+            if (extras == null) {
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_place, new AllItemsFragment()).commit();
-            }
+//            }
         }
 
         binding.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -157,7 +169,9 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
     }
 
     @Override
-    public void showToast(String toastText) {Toast.makeText(DataActivity.this, toastText, Toast.LENGTH_SHORT).show();}
+    public void showToast(String toastText) {
+        Toast.makeText(DataActivity.this, toastText, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void showNoInternetDialog() {
@@ -169,7 +183,7 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         dialog.findViewById(R.id.btn_try_again).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(App.isNetworkAvailable()){
+                if (App.isNetworkAvailable()) {
                     dialog.dismiss();
                     startActivity(new Intent(DataActivity.this, DataActivity.class));
                     finish();
@@ -190,13 +204,16 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
     }
 
     @Override
-    public void setProgressDialog() {}
+    public void setProgressDialog() {
+    }
 
     @Override
-    public void dismissProgressDialog() {}
+    public void dismissProgressDialog() {
+    }
 
     @Override
-    public void setDetailsData(InvoiceDetails invoiceDetails) {}
+    public void setDetailsData(InvoiceDetails invoiceDetails) {
+    }
 
     public boolean selectFragment(MenuItem item) {
         FragmentManager fragmentManager = getFragmentManager();
@@ -214,7 +231,9 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         return false;
     }
 
-    /**    Clear focus on touch outside for all EditText inputs.    */
+    /**
+     * Clear focus on touch outside for all EditText inputs.
+     */
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -222,7 +241,7 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
             if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -269,4 +288,6 @@ public class DataActivity extends AppCompatActivity implements Transactions.View
         navHistory.setTitle(R.string.history);
         navTransactions.setTitle(R.string.transactions_favorites);
     }
+
+
 }

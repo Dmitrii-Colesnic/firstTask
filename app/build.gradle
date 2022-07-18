@@ -40,6 +40,12 @@ android {
 
 dependencies {
 
+    implementation("com.tbuonomo:dotsindicator:4.3")
+
+    //Chart
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+
+
     //calendar
     implementation "com.archit.calendar:awesome-calendar:2.0.0"
     implementation 'com.github.psinetron:slycalendarview:0.0.9'

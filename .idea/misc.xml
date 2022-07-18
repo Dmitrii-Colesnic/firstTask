@@ -26,25 +26,35 @@
         <entry key="app/src/main/res/drawable/navigation_bar_background.xml" value="0.231" />
         <entry key="app/src/main/res/drawable/progress_bar_dailog_background.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/toolbar_background.xml" value="0.231" />
+        <entry key="app/src/main/res/drawable/whirligig_progress_circle_background.xml" value="0.2905" />
+        <entry key="app/src/main/res/drawable/whirligig_progress_circle_selected_background.xml" value="0.2055" />
         <entry key="app/src/main/res/layout/activity_authentication.xml" value="0.333786231884058" />
         <entry key="app/src/main/res/layout/activity_data.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_display_data.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_history.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/activity_invoice_details.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_whirligig.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/calendar_dialog.xml" value="0.25" />
         <entry key="app/src/main/res/layout/copy_link__dialog.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/fragment_all_items.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_column_chart.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/fragment_creating_chart.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/fragment_favorite_items.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_history.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_material_chart.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_pie_chart.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/fragment_whirligig_chart.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/layout/item_description.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_description_test.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/layout_prompt.xml" value="0.25" />
         <entry key="app/src/main/res/layout/loading_dialog.xml" value="0.4148418491484185" />
         <entry key="app/src/main/res/layout/no_internet_dialog.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/parent_item_description.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/swipe.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/swipe_description.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/test_item_swipe.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/whirligig_item.xml" value="0.1" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.33" />
         <entry key="app/src/main/res/menu/navigation_drawer_menu.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2395" />

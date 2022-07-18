@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.transactions.view.chart.CreatingChartFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fragment_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_chart_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    app:hintTextColor="@color/et_color"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="30dp"
+                    android:hint="title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_chart_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="15"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_name_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="15dp"
+                    app:hintTextColor="@color/et_color"
+                    android:hint="quantity name 1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_chart_title"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_name_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:hintTextColor="@color/et_color"
+
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="30dp"
+                    android:hint="quantity 1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_chart_title"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_quantity_1_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="quantity1 and quantity text1 required"
+                    android:textColor="@color/error"
+                    android:textSize="10sp"
+                    android:visibility="gone"
+
+                    app:layout_constraintStart_toStartOf="@id/til_quantity_name_1"
+                    app:layout_constraintEnd_toEndOf="@+id/til_quantity_1"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_1"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_name_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="15dp"
+                    app:hintTextColor="@color/et_color"
+                    android:hint="quantity name 2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_1"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_name_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="30dp"
+                    app:hintTextColor="@color/et_color"
+                    android:hint="quantity 2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_1"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_quantity_2_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="quantity2 and quantity text2 required"
+                    android:textColor="@color/error"
+                    android:textSize="10sp"
+                    android:visibility="gone"
+
+                    app:layout_constraintStart_toStartOf="@id/til_quantity_name_2"
+                    app:layout_constraintEnd_toEndOf="@+id/til_quantity_2"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_2"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_name_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="15dp"
+                    app:hintTextColor="@color/et_color"
+                    android:hint="quantity name 3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_2"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_name_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="30dp"
+                    app:hintTextColor="@color/et_color"
+                    android:hint="quantity 3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_2"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_name_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="15dp"
+                    app:hintTextColor="@color/et_color"
+                    android:hint="quantity name 4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_3"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_name_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="30dp"
+                    app:hintTextColor="@color/et_color"
+                    android:hint="quantity 4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_3"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_name_5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="15dp"
+                    app:hintTextColor="@color/et_color"
+                    android:hint="quantity name 5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_4"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_name_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="30dp"
+                    app:hintTextColor="@color/et_color"
+                    android:hint="quantity 5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_4"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_name_6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="15dp"
+                    app:hintTextColor="@color/et_color"
+                    android:hint="quantity name 6"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_5"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_name_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="30dp"
+                    app:hintTextColor="@color/et_color"
+                    android:hint="quantity 6"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_5"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_name_7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="15dp"
+                    app:hintTextColor="@color/et_color"
+                    android:hint="quantity name 7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_6"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_name_7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_quantity_7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="30dp"
+                    app:hintTextColor="@color/et_color"
+                    android:hint="quantity 7"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_quantity_name_6"
+                    app:layout_constraintWidth_percent="0.4">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_quantity_7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btn_chart_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="40sp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
+            android:text="Start"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

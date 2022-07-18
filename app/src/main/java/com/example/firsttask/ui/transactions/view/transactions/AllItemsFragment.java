@@ -1,9 +1,7 @@
-package com.example.firsttask.ui.transactions.view;
+package com.example.firsttask.ui.transactions.view.transactions;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -39,8 +37,7 @@ public class AllItemsFragment extends Fragment implements Transactions.Fragment 
     private ItemAdapter itemAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAllItemsBinding.inflate(inflater, container, false);
 
         ImageView ivCalendar = getActivity().findViewById(R.id.iv_calendar);

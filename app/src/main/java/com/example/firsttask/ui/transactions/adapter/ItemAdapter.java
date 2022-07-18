@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
-import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
-import com.daimajia.swipe.util.Attributes;
 import com.example.firsttask.R;
 import com.example.firsttask.databinding.ItemDescriptionBinding;
 import com.example.firsttask.ui.transactions.Transactions;
